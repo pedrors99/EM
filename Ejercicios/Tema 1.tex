@@ -1,0 +1,943 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+
+\usepackage[bookmarks=true,
+					 bookmarksnumbered=false,
+					 bookmarksopen=false,
+					 colorlinks=true,
+					 allcolors=blue,
+					 urlcolor=blue]{hyperref}
+
+\usepackage[ruled]{algorithm2e}
+\SetKwInOut{Parameter}{parameter}
+
+\usepackage{array}
+\newcolumntype{N}{>{\centering\arraybackslash}m{0.5cm}}
+\newcolumntype{M}{>{\centering\arraybackslash}m{1cm}}
+
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+
+\begin{document}\pagenumbering{arabic}
+
+\textbf{Nombre:} Pedro Ramos Suárez.
+
+\begin{enumerate}[label=\arabic*.]
+\bfseries
+\item Sea $\mathbf{Y}$ un vector aleatorio definido por
+$$\mathbf{Y = \alpha + DX + Z}$$
+con $\mathbf{\alpha}$ un vector $\mathbf{p \times 1}$, $\mathbf{D}$ una matriz $\mathbf{p \times r}$, $\mathbf{X}$ un vector aleatorio con distribución $\mathbf{N_{r}(0, \Sigma_{X})}$ ($\mathbf{\Sigma_{X}}$ no singular) y $\mathbf{Z}$ un vector aleatorio con distribución $\mathbf{N_{p}(0, \sigma^{2}I_{p})}$, siendo $\mathbf{X}$ y $\mathbf{Z}$ independientes. Entonces:
+\begin{enumerate}[label=\alph*)]
+\item Obtener la distribución de Y.
+\vspace{0.5cm}
+\normalfont
+
+Sea $W = \alpha + DX$. Entonces la distribución de $W$ es:
+$$W \sim N_{p}(\alpha + D0, D\Sigma_{X}D') \equiv N_{p}(\alpha, D\Sigma_{X}D')$$
+Aplicando el teorema de Lévy-Cramér obtenemos:
+$$Y = W + Z \sim N_{p}(\alpha + 0, D\Sigma_{X}D' + \sigma^{2}I_{p}) \equiv N_{p}(\alpha, D\Sigma_{X}D' + \sigma^{2}I_{p})$$
+
+\vspace{0.5cm}
+
+Otra forma es a través de la función característica:
+$$\Phi_{Y}(t) = E[e^{it'(\alpha + DX + Z)}] = E[e^{it'(\alpha+DX)}e^{it'Z}] = E[e^{it'(\alpha+DX)}]E[e^{it'Z}] =$$
+$$= e^{it'\alpha}E[e^{it'DX}]E[e^{it'Z}] = e^{it'\alpha}\Phi_{X}(D't)\Phi_{Z}(t)$$
+donde
+$$\Phi_{X}(D't) = e^{-\frac{1}{2}t'D\Sigma_{X}D't}$$
+$$\Phi_{Z}(t) = e^{-\frac{1}{2}t'\sigma^{2}I_{p}t}$$
+Por lo que:
+$$\Phi_{Y}(t) = e^{it'\alpha}\Phi_{X}(D't)\Phi_{Z}(t) = e^{it'\alpha}e^{-\frac{1}{2}t'D\Sigma_{X}D't}e^{-\frac{1}{2}t'\sigma^{2}I_{p}t} =$$
+$$= e^{it'\alpha - \frac{1}{2}t'(D\Sigma_{X}D' + \sigma^{2}I_{p})t'}$$
+Y por la unicidad de la función característica tenemos:
+$$Y \sim N_{p}(\alpha, D\Sigma_{X}D' + \sigma^{2}I_{p})$$
+
+\vspace{1cm}
+\bfseries
+\item Obtener la distribución del vector conjunto $\mathbf{\begin{pmatrix} Y \\ X \end{pmatrix}}$.
+\vspace{0.5cm}
+\normalfont
+
+Tenemos:
+$$\begin{pmatrix} Y \\ X \end{pmatrix} = \begin{pmatrix} \alpha + DX + Z \\ X \end{pmatrix} = \begin{pmatrix} W + Z \\ X \end{pmatrix} + \begin{pmatrix} Z \\ 0 \end{pmatrix}$$
+donde:
+$$\begin{pmatrix} V \\ X \end{pmatrix} \sim N_{p+r} \begin{pmatrix}\begin{pmatrix} \alpha \\ 0 \end{pmatrix}, \begin{pmatrix}
+D\Sigma_{X}D' & D\Sigma_{X} \\
+\Sigma_{X}D' & \Sigma_{X}
+\end{pmatrix} \end{pmatrix}$$
+$$\begin{pmatrix} Z \\ 0 \end{pmatrix} \sim N_{p+r} \begin{pmatrix} \begin{pmatrix} 0 \\ 0 \end{pmatrix}, \begin{pmatrix}
+\sigma^{2}I_{p} & 0_{p \times r} \\
+0_{r \times p} & 0_{r \times r}
+\end{pmatrix} \end{pmatrix}$$
+Así que:
+$$\begin{pmatrix} Y \\ X \end{pmatrix} \sim N_{p + r} \begin{pmatrix} \begin{pmatrix} \alpha \\ 0 \end{pmatrix}, \begin{pmatrix}
+D\Sigma_{X}D' + \sigma^{2}I_{p} & D\Sigma_{X} \\
+\Sigma_{X}D' & \Sigma_{X}
+\end{pmatrix} \end{pmatrix}$$
+
+\vspace{1cm}
+\bfseries
+\item Probar que $\mathbf{E[X \mid Y] = \Sigma_{X}D'\Sigma_{X}^{-1}(Y-\alpha)}$.
+\vspace{0.5cm}
+\normalfont
+
+Tenemos el siguiente resultado: \\
+\itshape
+Resultado: Sea (como en el Resultado 2)
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+con el particionamiento
+$$X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix} \hspace{1cm} \mu = \begin{pmatrix} \mu_{(1)} \\ \mu_{(2)} \end{pmatrix} \hspace{1cm} \Sigma = \begin{pmatrix}
+\Sigma_{(11)} & \Sigma_{(12)} \\
+\Sigma_{(21)} & \Sigma_{(22)}
+\end{pmatrix}$$
+Entonces, se tiene que la distribución condicionada de $X_{(2)}$ dado $X_{(1)} = x_{(1)}$ es una DNM, de la forma
+$$N_{p-q}(\mu_{(2)} + \Sigma_{(21)}\Sigma_{(11)}^{-1}(x_{(1)} - \mu_{(1)}), \Sigma_{(22)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\Sigma_{(12)})$$
+\normalfont
+
+Considerando:
+$$K = \begin{pmatrix} Y \\ X \end{pmatrix}$$
+$$\mu_{K} = \begin{pmatrix} \mu_{Y} \\ \mu_{X} \end{pmatrix} = \begin{pmatrix} \alpha \\ 0 \end{pmatrix}$$
+$$\Sigma_{K} = \begin{pmatrix}
+D\Sigma_{X}D' + \sigma^{2}I_{p} & D\Sigma_{X} \\
+\Sigma_{X}D' & \Sigma_{X}
+\end{pmatrix}$$
+Tenemos:
+$$K \sim N_{r}(0 + \Sigma_{X}D'(D\Sigma_{X}D' + \sigma^{2}I_{p})^{-1}(Y-\alpha), \Sigma_{X} - \Sigma_{X}D'(D\Sigma_{X}D' + \sigma^{2}I_{p})D\Sigma_{X}) \equiv$$
+$$\equiv (\Sigma_{X}D'\Sigma_{Y}^{-1}(Y-\alpha), \Sigma_{X} - \Sigma_{X}D'\Sigma_{Y}^{-1}D\Sigma_{X})$$
+Así que:
+$$E[X \mid Y] = \Sigma_{X}D'\Sigma_{Y}^{-1}(Y-\alpha)$$
+
+\vspace{1cm}
+\bfseries
+\item Probar que $\mathbf{Y \mid X}$ tiene distribución $\mathbf{N_{p}(\alpha + DX, \sigma^{2}I_{p})}$.
+\vspace{0.5cm}
+\normalfont
+
+Utilizamos el resultado del ejercicio anterior considerando:
+$$L = \begin{pmatrix} X \\ Y \end{pmatrix}$$
+$$\mu_{L} = \begin{pmatrix} \mu_{X} \\ \mu_{Y} \end{pmatrix} = \begin{pmatrix} 0 \\ \alpha \end{pmatrix}$$
+$$\Sigma_{L} = \begin{pmatrix}
+\Sigma_{X} & \Sigma_{X}D' \\
+D\Sigma_{X} & D\Sigma_{X}D' + \sigma^{2}I_{p}
+\end{pmatrix}$$
+y tenemos:
+$$L \sim N_{p} (\alpha + D\Sigma_{X}\Sigma_{X}^{-1}(X-0), D\Sigma_{X}D' + \sigma^{2}I_{p} - D\Sigma_{X}\Sigma_{X}^{-1}\Sigma_{X}D') \equiv N_{p}(\alpha + DX, \sigma^{2}I_{p})$$
+\end{enumerate}
+
+\newpage
+\bfseries
+\item En relación con el ejercicio anterior, probar que los resultados obtenidos siguen siendo válidos en el caso en que sea $\mathbf{\Sigma_{X}}$ singular, con la salvedad de que en el apartado \emph{(d)} se tendrá que la distribución de $\mathbf{Y \mid X}$ es $\mathbf{N_{p}(\alpha + D\Sigma_{X}\Sigma_{X}^{-}X, \sigma^{2}I_{p})}$, siendo $\mathbf{\Sigma_{X}^{-}}$ una inversa generalizada de la matriz $\Sigma_{X}$ (es decir, alguna matriz tal que $\mathbf{\Sigma_{X}\Sigma_{X}^{-}\Sigma_{X} = \Sigma_{X}}$). [Para ello, tener en cuenta que el resultado sobre condicionamiento en la distribución normal multivariante se cumple en el caso de que la matriz $\Sigma$ pueda ser singular, reemplazando $\mathbf{\Sigma_{(11)}^{-1}}$ por $\mathbf{\Sigma_{(11)}^{-}}$ (análogamente, $\mathbf{\Sigma_{(22)}^{-1}}$ por $\mathbf{\Sigma_{(22)}^{-}}$)].
+\vspace{0.5cm}
+\normalfont
+
+En los apartados \emph{(a)} y \emph{(b)} no hemos usado la condición de que $\Sigma_{X}$ fuera no singular, así que seguimos teniendo los mismos resultados.
+
+En el apartado \emph{(c)} teníamos:
+$$K \sim N_{r}(0 + \Sigma_{X}D'(D\Sigma_{X}D' + \sigma^{2}I_{p})^{-1}(Y-\alpha), \Sigma_{X} - \Sigma_{X}D'(D\Sigma_{X}D' + \sigma^{2}I_{p})D\Sigma_{X}) \equiv$$
+$$\equiv (\Sigma_{X}D'\Sigma_{Y}^{-}(Y-\alpha), \Sigma_{X} - \Sigma_{X}D'\Sigma_{Y}^{-}D\Sigma_{X})$$
+Por lo que:
+$$E[X \mid Y] = \Sigma_{X}D'\Sigma_{Y}^{-}(Y-\alpha)$$
+Nos queda ver que $\Sigma_{Y}^{-} = \Sigma_{Y}^{-1}$, es decir, que es definida positiva, para lo cual:
+$$x'\Sigma_{Y}x = x'(D\Sigma_{X}D' + \sigma^{2}I_{p})x = x'D\Sigma_{X}D'x + x'\sigma^{2}I_{p}x = x'D\Sigma_{X}D'x + x' + \sigma^{2}||x||$$
+Como $\Sigma_{X}$ es definida no negativa, tenemos que
+$$x'D\Sigma_{X}D'x \geq 0$$
+por lo que
+$$x'D\Sigma_{X}D'x + x' + \sigma^{2}||x|| > 0$$
+y, por tanto, $\Sigma_{Y}$ es definida positiva, así que tenemos:
+$$E[X \mid Y] = \Sigma^{X}D'\Sigma_{Y}^{-1}(Y - \alpha)$$
+
+En el apartado \emph{(d)} teníamos:
+$$L \sim N_{p} (\alpha + D\Sigma_{X}\Sigma_{X}^{-}(X-0), D\Sigma_{X}D' + \sigma^{2}I_{p} - D\Sigma_{X}\Sigma_{X}^{-}\Sigma_{X}D') \equiv (\alpha + D\Sigma_{X}\Sigma_{X}^{-}X, \sigma^{2}I_{p})$$
+
+\newpage
+\bfseries
+\item Sea $\mathbf{X \sim N_{p}(\mu, \Sigma)}$ y sea $\mathbf{\alpha \in \mathbb{R}^{p}}$. Probar que:
+$$\mathbf{E[(\alpha'(X-\mu))^{k}] = \begin{cases}
+\mathbf{\frac{(2m)!}{2^{m}m!}(\alpha'\Sigma\alpha)^{m},} & \mathbf{\text{si } k = 2m \text{ (par)}} \\
+\mathbf{0,} & \mathbf{\text{si } k = 2m-1 \text{ (impar)}}
+\end{cases}}$$
+[Resultado auxiliar: Sea $\mathbf{X \sim N(0, \sigma^{2})}$. Entonces, los momentos de $\mathbf{X}$ vienen dados por:
+$$\mathbf{E[X^{k}] = \begin{cases}
+\mathbf{\sigma^{k}(k-1)!!,} & \mathbf{\text{si } k \text{ es par}} \\
+\mathbf{0,} & \mathbf{\text{si } k \text{ es impar}}
+\end{cases}}$$
+siendo $\mathbf{n!!}$ el factorial doble de $\mathbf{n}$, definido por el producto de todos los enteros $\mathbf{1}$ y $\mathbf{n}$ con la misma paridad (`par' o `impar') que $\mathbf{n}$].
+\vspace{0.5cm}
+\normalfont
+
+Sea $Y = \alpha'(X - \mu)$. Entonces:
+$$E[Y] = E[\alpha'(X - \mu)] = \alpha'(E[X] - \mu) = \alpha'(\mu - \mu) = 0$$
+$$Var[Y] = Var[\alpha'(X - \mu)]$$
+Usando que $Var(X) = E[(X - \mu)^{2}] = E[X^{2}] - E^{2}[X]$ tenemos:
+$$Var[Y] = Var[\alpha'(X - \mu)] = E[(\alpha'(X - \mu))^{2}] - E[\alpha'(X - \mu)]^{2} =$$
+$$= E[(\alpha'(X - \mu))^{2}] - 0 = E[\alpha'(X - \mu)(X - \mu)'\alpha] = \alpha'\Sigma_{X}\alpha$$
+
+Finalmente, aplicando la sugerencia:
+$$E(\alpha'(X-\mu))^{k} = \begin{cases}
+(\alpha' \Sigma \alpha)^{\frac{k}{2}}(k-1)!! & \text{si } k \text{ es par}\\
+0 & \text{si } k \text{ es impar}
+\end{cases}$$
+Llamando $m = \frac{k}{2} \Rightarrow k = 2m$ tenemos:
+$$(k-1)!! = (2m - 1)!! = \frac{(2m)!}{2^{m}m!}$$
+Así que:
+$$E(\alpha'(X-\mu))^{k} = \begin{cases}
+\frac{(2m)!}{2^{m}m!}(\alpha' \Sigma \alpha)^{m} & \text{si } k = 2m \\
+0 & \text{si } k = 2m - 1
+\end{cases}$$
+
+Nota:
+$$(2m-1)!! = 1 \cdot 3 \cdot ... \cdot (2m-1) = \frac{(2m-1)!}{2^{m-1}(m-1)!} = \frac{\frac{2m!}{2m}}{2^{m-1}\frac{m!}{m}} = \frac{2m!}{2^{m}m!}$$
+
+\newpage
+\bfseries
+\item Sea $\mathbf{X \sim N_{p}(0, \Sigma)}$, con $\mathbf{rango(\Sigma) = k}$. Sea la descomposición espectral de $\mathbf{\Sigma}$ dada por $\mathbf{\Sigma = H \Lambda H'}$, con el particionamiento $\mathbf{H = (H_{1} \mid H_{2})}$, $\mathbf{\Lambda = \begin{pmatrix} \mathbf{D} & \mathbf{0} \\ \mathbf{0} & \mathbf{0} \end{pmatrix}}$, siendo \\ $\mathbf{D = diag(\lambda_{1}, \dots, \lambda_{k})}$, con $\mathbf{\lambda_{1}, \dots, \lambda_{k} > 0}$. Probar que $\mathbf{\Sigma^{+} = H_{1}D^{-1}H_{1}'}$ es la matriz inversa de Moore-Penrose de $\mathbf{\Sigma}$, es decir, satisface las condiciones:
+\vspace{0.5cm}
+\normalfont
+
+Para todos los apartados vamos a usar:
+$$\Sigma = H \Lambda H' = \begin{pmatrix} H_{1} & H_{2} \end{pmatrix} \begin{pmatrix} D & 0 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} H_{1}' \\ H_{2}' \end{pmatrix} = H_{1}DH_{1}'$$
+Y que, como $H_{1}$ es ortogonal, $H_{1}H_{1}' = H_{1}'H_{1} = I$.
+
+Con esto podemos ver que:
+$$\Sigma^{+}\Sigma = (H_{1}D^{-1}H_{1}') (H_{1}DH_{1}') = I_{k}$$
+y
+$$\Sigma\Sigma^{+} = (H_{1}DH_{1}') (H_{1}D^{-1}H_{1}') = I_{k}$$
+
+\vspace{1cm}
+\begin{enumerate}[label=\alph*)]
+\item $\mathbf{\Sigma\Sigma^{+}\Sigma = \Sigma}$.
+\vspace{0.5cm}
+\normalfont
+
+Tenemos:
+$$\Sigma\Sigma^{+}\Sigma = I_{r} \Sigma = \Sigma$$
+
+\vspace{1cm}
+\item $\mathbf{\Sigma^{+}\Sigma\Sigma^{+} = \Sigma^{+}}$.
+\vspace{0.5cm}
+\normalfont
+
+Tenemos:
+$$\Sigma^{+}\Sigma\Sigma^{+} = I_{r} \Sigma^{+} = \Sigma^{+}$$
+
+\vspace{1cm}
+\item $\mathbf{(\Sigma^{+}\Sigma)' = \Sigma^{+}\Sigma}$.
+\vspace{0.5cm}
+\normalfont
+
+Tenemos:
+$$(\Sigma+\Sigma)' = (I_{r})' = I_{r} = \Sigma^{+}\Sigma$$
+
+\vspace{1cm}
+\item $\mathbf{(\Sigma\Sigma^{+})' = \Sigma\Sigma^{+}}$.
+\vspace{0.5cm}
+\normalfont
+
+Tenemos:
+$$(\Sigma\Sigma^{+})' = (I_{r})' = I_{r} = \Sigma\Sigma^{+}$$
+\end{enumerate}
+
+\newpage
+\bfseries
+\item Sea $\mathbf{\Sigma = (\sigma_{ij})}$ una matriz $\mathbf{3 \times 3}$ simétrica tal que:
+$$\mathbf{\sigma_{11} = \sigma_{22} = \sigma_{33} = 1, \hspace{1cm} \sigma_{12} = 0}$$
+Probar que, al menos para $\mathbf{(\sigma_{13} + \sigma_{23}) > \frac{3}{2}}$, $\mathbf{\Sigma}$ no es una matriz definida positiva.
+\vspace{0.5cm}
+\normalfont
+
+La matriz es:
+$$\Sigma = \begin{pmatrix}
+1 & 0 & x \\
+0 & 1 & y \\
+x & y & 1
+\end{pmatrix}$$
+Por lo que $\Sigma$ es definida positiva si:
+$$\begin{vmatrix}
+1 & 0 & x \\
+0 & 1 & y \\
+x & y & 1
+\end{vmatrix} > 0 \Rightarrow 1 - x^{2} - y^{2} > 0 \Rightarrow x^{2} < 1 - y^{2}$$
+
+Por otro lado, tenemos que
+$$\sigma_{13} + \sigma_{23} > \frac{3}{2} \Rightarrow x + y > \frac{3}{2} \Rightarrow x > \frac{3}{2} - y \Rightarrow x^{2} > \frac{9}{4} + y^{2} - 3y$$
+
+Por lo que tenemos el sistema:
+$$\begin{cases}
+x^{2} > \frac{9}{4} + y^{2} - 3y \\
+x^{2} < 1 - y^{2}
+\end{cases}$$
+Es decir:
+$$\frac{9}{4} + y^{2} - 3y < x^{2} < 1 - y^{2}$$
+Pero:
+$$f(y) = 1 - y^{2} - (\frac{9}{4} + y^{2} - 3y) = -\frac{5}{4} - 2y^{2} + 3y \Rightarrow f'(y) = -4y + 3 = 0 \iff y = \frac{3}{4}$$
+$$f(\frac{3}{4}) = -\frac{5}{4} - 2(\frac{3}{4})^{2} + 3(\frac{3}{4}) = -2(\frac{9}{16}) + 1 = 1 - \frac{9}{8} = -\frac{1}{8}$$
+Es decir, $1 - y^{2} < \frac{9}{4} + y^{2} - 3y, \forall y$ y, por lo tanto, el sistema anterior no tiene soluciones. Así que la matriz no puede ser positiva.
+
+\newpage
+\bfseries
+\item Sea $\mathbf{Z \sim N_{p}(0, I_{p})}$. Sean $\mathbf{Y_{1} = C_{1}Z}$ e $\mathbf{Y_{2} = C_{2}Z}$, con $\mathbf{C_{i}}$ una matriz $\mathbf{k_{i} \times p}$, $\mathbf{k_{i} \leq p}$ ($\mathbf{i = 1, 2}$). Encontrar una condición necesaria y suficiente para la independencia de $\mathbf{Y_{1}}$ e $\mathbf{Y_{2}}$.
+\vspace{0.5cm}
+\normalfont
+
+Expresamos el vector $Y = \begin{pmatrix} Y_{1} \\ Y_{2} \end{pmatrix}$ como:
+$$Y = CZ$$
+con $C = \begin{pmatrix} C_{1} \\ C_{2} \end{pmatrix}$, siendo entonces:
+$$Y \sim N(0, \begin{pmatrix} C_{1} \\ C_{2} \end{pmatrix} \begin{pmatrix} C_{1}' & C_{2}' \end{pmatrix}) \equiv N(0, \begin{pmatrix}
+C_{1}C_{1}' & C_{1}C_{2}' \\
+C_{2}C_{1}' & C_{2}C_{2}'
+\end{pmatrix})$$
+
+Utilizando el siguiente resultado: \\
+\itshape
+Resultado 1: Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio con DNM no singular,
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+Si la matriz $\Sigma$ es diagonal,
+$$\Sigma = \begin{pmatrix}
+\sigma_{1}^{2} & 0 & \dots & 0 \\
+0 & \sigma_{2}^{2} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & \sigma_{p}^{2}
+\end{pmatrix} = diag(\sigma_{1}^{2}, \dots, \sigma_{p}^{2})$$
+entonces las variables aleatorios componentes del vector, $X_{i}, i = 1, \dots, p$, son independientes y tienen un DN univariante (no degenerada),
+$$X_{i} \sim N(\mu_{i}, \sigma_{i}^{2}) \hspace{1cm} (\sigma_{i}^{2} > 0), \hspace{1cm} i = 1, \dots, p$$
+\normalfont
+
+Por lo que tendremos la independencia si:
+$$C_{1}C_{2}' = C_{2}C_{1}' = 0$$
+
+\newpage
+\bfseries
+\item Sea $\mathbf{Y \sim N_{3}(\mu, \Sigma)}$, donde:
+$$\mathbf{\mu = \begin{pmatrix} \mathbf{3} \\ \mathbf{1} \\ \mathbf{4} \end{pmatrix}, \Sigma = \begin{pmatrix}
+\mathbf{6} & \mathbf{1} & \mathbf{-2} \\
+\mathbf{1} & \mathbf{13} & \mathbf{4} \\
+\mathbf{-2} & \mathbf{4} & \mathbf{4}
+\end{pmatrix}}$$
+\vspace{0.5cm}
+\normalfont
+
+Como:
+$$\begin{vmatrix}
+6 & 1 & -2 \\
+1 & 13 & 4 \\
+-2 & 4 & 4
+\end{vmatrix} = 144 > 0$$
+la distribución es no singular.
+
+\bfseries
+\vspace{1cm}
+\begin{enumerate}[label=\arabic*)]
+\item Encontrar la distribución de $\mathbf{Z = 2Y_{1} - Y_{2} + 3Y_{3}}$.
+\vspace{0.5cm}
+\normalfont
+
+Como:
+$$\begin{pmatrix} Z_{1} \\ Z_{2} \end{pmatrix} = \begin{pmatrix} 2 & -1 & 3 \end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+la  distribución de $Z$ es:
+$$Z \sim N(\begin{pmatrix} 2 & -1 & 3 \end{pmatrix} \mu, \begin{pmatrix} 2 & -1 & 3 \end{pmatrix} \Sigma \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix} 2 & -1 & 3 \end{pmatrix} \begin{pmatrix} 3 \\ 1 \\ 4 \end{pmatrix}, \begin{pmatrix} 2 & -1 & 3 \end{pmatrix} \begin{pmatrix}
+6 & 1 & -2 \\
+1 & 13 & 4 \\
+-2 & 4 & 4
+\end{pmatrix} \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}) \equiv N(17,21)$$
+
+\bfseries
+\vspace{1cm}
+\item Encontrar la distribución conjunta de $\mathbf{Z_{1} = Y_{1} + Y_{2} + Y_{3}}$ y $\mathbf{Z_{2} = Y_{1} - Y_{2} + 2Y_{3}}$.
+\vspace{0.5cm}
+\normalfont
+
+Como:
+$$\begin{pmatrix} Z_{1} \\ Z_{2} \end{pmatrix} = \begin{pmatrix}
+1 & 1 & 1 \\
+1 & -1 & 2
+\end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+la distribución de $\begin{pmatrix} Z_{1} \\ Z_{2} \end{pmatrix}$ es:
+$$\begin{pmatrix} Z_{1} \\ Z_{2} \end{pmatrix} \sim N(\begin{pmatrix}
+1 & 1 & 1 \\
+1 & -1 & 2
+\end{pmatrix} \mu, \begin{pmatrix}
+1 & 1 & 1 \\
+1 & -1 & 2
+\end{pmatrix} \Sigma \begin{pmatrix}
+1 & 1 \\
+1 & -1 \\
+1 & 2
+\end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix}
+1 & 1 & 1 \\
+1 & -1 & 2
+\end{pmatrix} \begin{pmatrix} 3 \\ 1 \\ 4 \end{pmatrix}, \begin{pmatrix}
+1 & 1 & 1 \\
+1 & -1 & 2
+\end{pmatrix} \begin{pmatrix}
+6 & 1 & -2 \\
+1 & 13 & 4 \\
+-2 & 4 & 4
+\end{pmatrix} \begin{pmatrix}
+1 & 1 \\
+1 & -1 \\
+1 & 2
+\end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix} 8 \\ 10 \end{pmatrix}, \begin{pmatrix}
+29 & -1 \\
+-1 & 9
+\end{pmatrix})$$
+
+\bfseries
+\vspace{1cm}
+\item Encontrar la distribución de $\mathbf{Y_{2}}$.
+\vspace{0.5cm}
+\normalfont
+
+Como:
+$$Y_{2} = \begin{pmatrix} 0 & 1 & 2 \end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+la distribución de $Y_{2}$ es:
+$$Y_{2} \sim N(\begin{pmatrix} 0 & 1 & 0 \end{pmatrix} \mu, \begin{pmatrix} 0 & 1 & 0 \end{pmatrix} \Sigma \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} \equiv$$
+$$\equiv N(\begin{pmatrix} 0 & 1 & 0 \end{pmatrix} \begin{pmatrix} 3 \\ 1 \\ 4 \end{pmatrix}, \begin{pmatrix} 0 & 1 & 0 \end{pmatrix} \begin{pmatrix}
+6 & 1 & -2 \\
+1 & 13 & 4 \\
+-2 & 4 & 4
+\end{pmatrix} \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} \equiv N(1, 13)$$
+
+\bfseries
+\vspace{1cm}
+\item Encontrar la distribución conjunta de $\mathbf{Y_{1}}$ e $\mathbf{Y_{3}}$.
+\vspace{0.5cm}
+\normalfont
+
+Como:
+$$\begin{pmatrix} Y_{1} \\ Y_{3} \end{pmatrix} = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+la distribución de $\begin{pmatrix} Y_{1} \\ Y_{3} \end{pmatrix}$ es:
+$$\begin{pmatrix} Y_{1} \\ Y_{3} \end{pmatrix} \sim N(\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \mu, \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \Sigma \begin{pmatrix}
+1 & 0 \\
+0 & 0 \\
+0 & 1
+\end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} 3 \\ 1 \\ 4 \end{pmatrix}, \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix}
+6 & 1 & -2 \\
+1 & 13 & 4 \\
+-2 & 4 & 4
+\end{pmatrix} \begin{pmatrix}
+1 & 0 \\
+0 & 0 \\
+0 & 1
+\end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix} 3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+6 & -2 \\
+-2 & 4
+\end{pmatrix})$$
+
+\bfseries
+\vspace{1cm}
+\item Encontrar la distribución conjunta de $\mathbf{Y_{1}}$, $\mathbf{Y_{3}}$ y $\mathbf{\frac{1}{2}(Y_{1} + Y_{2})}$.
+\vspace{0.5cm}
+\normalfont
+
+Como:
+$$\begin{pmatrix} Y_{1} \\ Y_{3} \\ \frac{1}{2}(Y_{1} + Y_{2}) \end{pmatrix} = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+\frac{1}{2} & \frac{1}{2} & 0
+\end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+la distribución de $\begin{pmatrix} Y_{1} \\ Y_{3} \\ \frac{1}{2}(Y_{1} + Y_{2}) \end{pmatrix}$ es:
+$$\begin{pmatrix} Y_{1} \\ Y_{3} \\ \frac{1}{2}(Y_{1} + Y_{2}) \end{pmatrix} \sim N(\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+\frac{1}{2} & \frac{1}{2} & 0
+\end{pmatrix} \mu, \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+\frac{1}{2} & \frac{1}{2} & 0
+\end{pmatrix} \Sigma \begin{pmatrix}
+1 & 0 & \frac{1}{2} \\
+0 & 0 & \frac{1}{2} \\
+0 & 1 & 0
+\end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+\frac{1}{2} & \frac{1}{2} & 0
+\end{pmatrix} \begin{pmatrix} 3 \\ 1 \\ 4 \end{pmatrix}, \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+\frac{1}{2} & \frac{1}{2} & 0
+\end{pmatrix} \begin{pmatrix}
+6 & 1 & -2 \\
+1 & 13 & 4 \\
+-2 & 4 & 4
+\end{pmatrix} \begin{pmatrix}
+1 & 0 & \frac{1}{2} \\
+0 & 0 & \frac{1}{2} \\
+0 & 1 & 0
+\end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix} 3 \\ 1 \\ 2 \end{pmatrix}, \begin{pmatrix}
+6 & -2 & \frac{7}{2} \\
+-2 & 4 & 1 \\
+\frac{7}{2} & 1 & \frac{21}{4}
+\end{pmatrix})$$
+
+
+\bfseries
+\vspace{1cm}
+\item Encontrar un vector $\mathbf{Z}$ tal que $\mathbf{Z = (T')^{-1}(Y - \mu) \sim N_{3}(0, I)}$, siendo $\mathbf{T}$ la matriz correspondiente a la factorización de Cholesky, $\mathbf{\Sigma = T'T}$.
+\vspace{0.5cm}
+\normalfont
+
+La matriz $T$ es:
+$$T = \begin{pmatrix}
+a & 0 & 0 \\
+b & c & 0 \\
+d & e & f
+\end{pmatrix}$$
+
+Y como $\Sigma = T'T$, tenemos:
+$$\begin{pmatrix}
+6 & 1 & -2 \\
+1 & 13 & 4 \\
+-2 & 4 & 4
+\end{pmatrix} = \begin{pmatrix}
+a & b & d \\
+0 & c & e \\
+0 & 0 & f
+\end{pmatrix} \begin{pmatrix}
+a & 0 & 0 \\
+b & c & 0 \\
+d & e & f
+\end{pmatrix} = \begin{pmatrix}
+a^{2} + b^{2} + d^{2} & bc + de & df \\
+bc + de & c^{2} + e^{2} & ef \\
+df & ef & f^{2}
+\end{pmatrix}$$
+Por lo que tenemos:
+$$T = \begin{pmatrix}
+2 & 0 & 0 \\
+1 & 3 & 0 \\
+-1 & 2 & 2
+\end{pmatrix}$$
+Y el $Z$ es:
+$$Z = T^{-1}(Y - \mu) = \begin{pmatrix}
+2 & 0 & 0 \\
+1 & 3 & 0 \\
+-1 & 2 & 2
+\end{pmatrix}^{-1} \begin{pmatrix}
+Y_{1}-3 \\
+Y_{2}-1 \\
+Y_{3}-4
+\end{pmatrix} =$$
+$$= \begin{pmatrix} \frac{1}{2}(-3+Y_{1}) & \frac{3-Y_{1}}{6} + \frac{1}{3}(-1+Y_{2}) & \frac{5}{12}(-3+Y_{1}) + \frac{1-Y_{2}}{3} + \frac{1}{2}(-4+Y_{3}) \end{pmatrix}$$
+
+\bfseries
+\vspace{1cm}
+\item Encontrar un vector $\mathbf{Z}$ tal que $\mathbf{Z = \Sigma^{-\frac{1}{2}}(Y - \mu) \sim N_{3}(0, I)}$, siendo $\mathbf{\Sigma^{-\frac{1}{2}}}$ la inversa de la matriz correspondiente a la factorización en raíz cuadrada, $\mathbf{\Sigma = \Sigma^{\frac{1}{2}} \Sigma^{\frac{1}{2}}}$.
+\vspace{0.5cm}
+\normalfont
+
+\end{enumerate}
+
+\newpage
+\bfseries
+\item  Sea $\mathbf{Y \sim N_{3}(\mu, \Sigma)}$, donde
+$$\mathbf{\mu = \begin{pmatrix} \mathbf{2} \\ \mathbf{-3} \\ \mathbf{4} \end{pmatrix}, \Sigma = \begin{pmatrix}
+\mathbf{4} & \mathbf{-3} & \mathbf{0} \\
+\mathbf{-3} & \mathbf{6} & \mathbf{0} \\
+\mathbf{0} & \mathbf{0} & \mathbf{5}
+\end{pmatrix}}$$
+¿Cuáles de las variables y vectores aleatorios siguientes son independientes?
+\begin{enumerate}[label=\alph*)]
+\item $\mathbf{Y_{1}}$ e $\mathbf{Y_{2}}$.
+\vspace{0.5cm}
+\normalfont
+
+Calculamos $Z = \begin{pmatrix} Y_{1} \\ Y_{2} \end{pmatrix}$:
+$$Z = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+$$Z \sim N_{2}(\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{pmatrix} \begin{pmatrix} 2 \\ -3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{pmatrix} \begin{pmatrix}
+4 & -3 & 0 \\
+-3 & 6 & 0 \\
+0 & 0 & 5
+\end{pmatrix} \begin{pmatrix}
+1 & 0 \\
+0 & 1 \\
+0 & 0
+\end{pmatrix}) \equiv N(\begin{pmatrix} 2 \\ -3 \end{pmatrix}, \begin{pmatrix}
+4 & -3 \\
+-3 & 6
+\end{pmatrix})$$
+No son incorreladas, por lo que no son independientes.
+
+\bfseries
+\vspace{1cm}
+\item $\mathbf{Y_{1}}$ e $\mathbf{Y_{3}}$.
+\vspace{0.5cm}
+\normalfont
+
+Calculamos $Z = \begin{pmatrix} Y_{1} \\ Y_{3} \end{pmatrix}$:
+$$Z = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+$$Z \sim N_{2}(\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} 2 \\ -3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix}
+4 & -3 & 0 \\
+-3 & 6 & 0 \\
+0 & 0 & 5
+\end{pmatrix} \begin{pmatrix}
+1 & 0 \\
+0 & 0 \\
+0 & 1
+\end{pmatrix}) \equiv N(\begin{pmatrix} 2 \\ 4 \end{pmatrix}, \begin{pmatrix}
+4 & 0 \\
+0 & 5
+\end{pmatrix})$$
+Como la matriz es diagonal, son independientes.
+
+\bfseries
+\vspace{1cm}
+\item $\mathbf{Y_{2}}$ e $\mathbf{Y_{3}}$.
+\vspace{0.5cm}
+\normalfont
+
+Calculamos $Z = \begin{pmatrix} Y_{2} \\ Y_{3} \end{pmatrix}$:
+$$Z = \begin{pmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+$$Z \sim N_{2}(\begin{pmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} 2 \\ -3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix}
+4 & -3 & 0 \\
+-3 & 6 & 0 \\
+0 & 0 & 5
+\end{pmatrix} \begin{pmatrix}
+0 & 0 \\
+1 & 0 \\
+0 & 1
+\end{pmatrix}) \equiv N(\begin{pmatrix} -3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+6 & 0 \\
+0 & 5
+\end{pmatrix})$$
+Como la matriz es diagonal, son independientes.
+
+\bfseries
+\vspace{1cm}
+\item $\mathbf{(Y_{1}, Y_{2})}$ e $\mathbf{Y_{3}}$.
+\vspace{0.5cm}
+\normalfont
+
+Calculamos $Z = \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$:
+$$Z = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+$$Z \sim N_{2}(\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix} 2 \\ -3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{pmatrix} \begin{pmatrix}
+4 & -3 & 0 \\
+-3 & 6 & 0 \\
+0 & 0 & 5
+\end{pmatrix} \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix} 2 \\ -3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+4 & -3 & 0 \\
+-3 & 6 & 0 \\
+0 & 0 & 5
+\end{pmatrix})$$
+Como la matriz es diagonal, son independientes.
+
+\bfseries
+\vspace{1cm}
+\item $\mathbf{(Y_{1}, Y_{3})}$ e $\mathbf{Y_{2}}$.
+\vspace{0.5cm}
+\normalfont
+
+Calculamos $Z = \begin{pmatrix} Y_{1} \\ Y_{3} \\ Y_{2} \end{pmatrix}$:
+$$Z = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+0 & 1 & 0
+\end{pmatrix} \begin{pmatrix} Y_{1} \\ Y_{2} \\ Y_{3} \end{pmatrix}$$
+$$Z \sim N_{2}(\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+0 & 1 & 0
+\end{pmatrix} \begin{pmatrix} 2 \\ -3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+0 & 1 & 0
+\end{pmatrix} \begin{pmatrix}
+4 & -3 & 0 \\
+-3 & 6 & 0 \\
+0 & 0 & 5
+\end{pmatrix} \begin{pmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+0 & 1 & 0
+\end{pmatrix}) \equiv$$
+$$\equiv N(\begin{pmatrix} 2 \\ -3 \\ 4 \end{pmatrix}, \begin{pmatrix}
+4 & -3 & 0 \\
+0 & 0 & 5 \\
+-3 & 6 & 0
+\end{pmatrix})$$
+No son incorreladas, por lo que no son independientes.
+\end{enumerate}
+
+\newpage
+\bfseries
+\item Suponer que $\mathbf{Y}$ y $\mathbf{X}$ son subvectores de dimensiones respectivas $\mathbf{2 \times 1}$ y $\mathbf{3 \times 1}$, con $\mathbf{\mu}$ y $\mathbf{\Sigma}$ conjuntas correspondientemente particionadas según:
+$$\mathbf{\mu = \begin{pmatrix}\begin{array}{c}
+\mathbf{3} \\
+\mathbf{-2} \\ \hline
+\mathbf{4} \\
+\mathbf{-3} \\
+\mathbf{5}
+\end{array}\end{pmatrix}, \Sigma = \begin{pmatrix}\begin{array}{cc|ccc}
+\mathbf{14} & \mathbf{-8} & \mathbf{15} & \mathbf{0} & \mathbf{3} \\
+\mathbf{-8} & \mathbf{18} & \mathbf{8} & \mathbf{6} & \mathbf{-2} \\ \hline
+\mathbf{15} & \mathbf{8} & \mathbf{50} & \mathbf{8} & \mathbf{5} \\
+\mathbf{0} & \mathbf{6} & \mathbf{8} & \mathbf{4} & \mathbf{0} \\
+\mathbf{3} & \mathbf{-2} & \mathbf{5} & \mathbf{0} & \mathbf{1}
+\end{array}\end{pmatrix}}$$
+Suponer que $\mathbf{\begin{pmatrix} \mathbf{Y} \\ \mathbf{X} \end{pmatrix} \sim N_{5}(\mu, \Sigma)}$.
+\begin{enumerate}[label=\alph*)]
+\item Encontrar $\mathbf{E[Y \mid X]}$.
+\item Encontrar $\mathbf{Cov(Y \mid X)}$.
+\end{enumerate}
+\vspace{0.5cm}
+\normalfont
+
+Tenemos el siguiente resultado: \\
+\itshape
+Resultado: Sea (como en el Resultado 2)
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+con el particionamiento
+$$X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix} \hspace{1cm} \mu = \begin{pmatrix} \mu_{(1)} \\ \mu_{(2)} \end{pmatrix} \hspace{1cm} \Sigma = \begin{pmatrix}
+\Sigma_{(11)} & \Sigma_{(12)} \\
+\Sigma_{(21)} & \Sigma_{(22)}
+\end{pmatrix}$$
+Entonces, se tiene que la distribución condicionada de $X_{(2)}$ dado $X_{(1)} = x_{(1)}$ es una DNM, de la forma
+$$N_{p-q}(\mu_{(2)} + \Sigma_{(21)}\Sigma_{(11)}^{-1}(x_{(1)} - \mu_{(1)}), \Sigma_{(22)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\Sigma_{(12)})$$
+\normalfont
+
+Por lo que:
+$$E[Y \mid X] = \begin{pmatrix}
+3 \\
+-2
+\end{pmatrix} + \begin{pmatrix}
+15 & 0 & 3 \\
+8 & 6 & -2
+\end{pmatrix} \begin{pmatrix}
+50 & 8 & 5 \\
+8 & 4 & 0 \\
+5 & 0 & 1
+\end{pmatrix}^{-1}(\begin{pmatrix}
+X_{1} \\
+X_{2} \\
+X_{3}
+\end{pmatrix} - \begin{pmatrix}
+4 \\
+-3 \\
+5
+\end{pmatrix}) =$$
+$$= \begin{pmatrix}
+3 \\
+-2
+\end{pmatrix} + \begin{pmatrix}
+0 & 0 & 3 \\
+\frac{2}{3} & \frac{1}{6} & -\frac{16}{3}
+\end{pmatrix}\begin{pmatrix}
+X_{1} \\
+X_{2} \\
+X_{3}
+\end{pmatrix} - \begin{pmatrix}
+-15 \\
+\frac{49}{2}
+\end{pmatrix} = \begin{pmatrix}
+3 + 3X_{3} + 15 \\
+-2 + \frac{2}{3}X_{1} + \frac{1}{6}X_{2} - \frac{16}{3}X_{3} - \frac{49}{2}
+\end{pmatrix} =$$
+$$= \begin{pmatrix}
+18 + 3X_{3} \\
+-\frac{51}{2} + \frac{2}{3}X_{1} + \frac{1}{6}X_{2} - \frac{16}{3}X_{3}
+\end{pmatrix}$$
+
+$$Cov(Y \mid X) = \begin{pmatrix}
+14 & -8 \\
+-8 & 18
+\end{pmatrix} - \begin{pmatrix}
+15 & 0 & 3 \\
+8 & 6 & -2
+\end{pmatrix} \begin{pmatrix}
+50 & 8 & 5 \\
+8 & 4 & 0 \\
+5 & 0 & 1
+\end{pmatrix}^{-1} \begin{pmatrix}
+15 & 8 \\
+0 & 6 \\
+3 & -2
+\end{pmatrix} = \begin{pmatrix}
+5 & -2 \\
+-2 & 1
+\end{pmatrix}$$
+
+\newpage
+\bfseries
+\item Suponer que las variables aleatorias $\mathbf{X}$ e $\mathbf{Y}$ tiene función de distribución conjunta
+$$\mathbf{F(x, y) = \Phi(x)\Phi(y)[1 + \alpha(1 - \Phi(x))(1 - \Phi(y))]}$$
+siendo $\mathbf{|\alpha| \leq 1}$ y denotando $\mathbf{\Phi(\cdot)}$ la función de distribución normal estándar. Probar que las distribuciones marginales correspondientes a $\mathbf{X}$ e $\mathbf{Y}$ son normales estándar.
+\vspace{0.5cm}
+\normalfont
+
+Como $\Phi(x)$ y $\Phi(y)$ son funciones de distribución, tenemos:
+$$\lim\limits_{x \to \infty} \Phi(x) = 1 \hspace{2cm} \lim\limits_{y \to \infty} \Phi(y) = 1$$
+Por lo que, tomando límites en el infinito, tenemos:
+$$F(X) = \lim\limits_{y \to \infty} F(x, y) = \Phi(x)$$
+$$F(Y) = \lim\limits_{x \to \infty} F(x, y) = \Phi(y)$$
+
+\newpage
+\bfseries
+\item Sean $\mathbf{X_{1}, X_{2}, \dots}$ vectores aleatorios independientes tales que $\mathbf{X_{i} \sim N_{m}(\mu, \Sigma), i = 1, 2, \dots}$ y sea
+$$\mathbf{S_{N} = \sum_{i=1}^{N}X_{i}}$$
+Para $\mathbf{N_{1} < N_{2}}$:
+\begin{enumerate}[label=\alph*)]
+\item Encontrar la distribución de $\mathbf{(S_{N_{1}}', S_{N_{2}}')'}$.
+\item Encontrar la distribución condicionada de $\mathbf{S_{N_{1}}'}$ dada $\mathbf{S_{N_{2}}'}$.
+\end{enumerate}
+\vspace{0.5cm}
+\normalfont
+
+Sea $Z = S_{N_{2}} - S_{N_{1}}$ y entonces:
+$$S_{N_{1}} \sim N_{m}(N_{1}\mu, N_{1}\Sigma)$$
+$$Z \sim N_{m}((N_{2} - N_{1}) \mu, (N_{2} - N_{1}) \Sigma)$$
+
+Aplicando el resultado sobre normalidad de transformaciones lineales de vectores con DNM tenemos:
+$$\begin{pmatrix}
+S_{N_{1}} \\
+S_{N_{2}}
+\end{pmatrix} \sim N_{2m}(\begin{pmatrix}
+N_{1}\mu \\
+N_{2}\mu
+\end{pmatrix}, \begin{pmatrix}
+N_{1}\Sigma, N_{1}\Sigma \\
+N_{1}\Sigma, N_{2}\Sigma
+\end{pmatrix}$$
+y usando el siguiente resultado: \\
+\itshape
+Resultado: Sea (como en el Resultado 2)
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+con el particionamiento
+$$X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix} \hspace{1cm} \mu = \begin{pmatrix} \mu_{(1)} \\ \mu_{(2)} \end{pmatrix} \hspace{1cm} \Sigma = \begin{pmatrix}
+\Sigma_{(11)} & \Sigma_{(12)} \\
+\Sigma_{(21)} & \Sigma_{(22)}
+\end{pmatrix}$$
+Entonces, se tiene que la distribución condicionada de $X_{(2)}$ dado $X_{(1)} = x_{(1)}$ es una DNM, de la forma
+$$N_{p-q}(\mu_{(2)} + \Sigma_{(21)}\Sigma_{(11)}^{-1}(x_{(1)} - \mu_{(1)}), \Sigma_{(22)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\Sigma_{(12)})$$
+\normalfont
+
+tenemos:
+$$S_{N_{1}} \mid S_{N_{2}} \sim N_{m}(N_{1}\mu + N_{1}N_{2}^{-1}(S_{N_{2}} N_{2}\mu), (N_{1} - N_{1}N_{2}^{-1})\Sigma)$$
+
+\newpage
+\bfseries
+\item Suponer que $\mathbf{X \sim N_{3}(0, \Sigma)}$, siendo:
+$$\mathbf{\Sigma = \begin{pmatrix}
+\mathbf{1} & \mathbf{\rho} & \mathbf{0} \\
+\mathbf{\rho} & \mathbf{1} & \mathbf{\rho} \\
+\mathbf{0} & \mathbf{\rho} & \mathbf{1}
+\end{pmatrix}}$$
+¿Existe algún valor de $\mathbf{\rho}$ para el cual las variables $\mathbf{X_{1} + X_{2} + X_{3}}$ y $\mathbf{X-{1}-X_{2}-X_{3}}$ sean independientes?
+\end{enumerate}
+\vspace{0.5cm}
+\normalfont
+
+Sea:
+$$Z = \begin{pmatrix}
+1 & 1 & 1 \\
+1 & -1 & -1
+\end{pmatrix} \begin{pmatrix}
+X_{1} \\
+X_{2} \\
+X_{3}
+\end{pmatrix}$$
+Entonces:
+$$Cov(Z) = \begin{pmatrix}
+1 & 1 & 1 \\
+1 & -1 & -1
+\end{pmatrix} \Sigma \begin{pmatrix}
+1 & 1 \\
+1 & -1 \\
+1 & -1
+\end{pmatrix} = \begin{pmatrix}
+1 & 1 & 1 \\
+1 & -1 & -1
+\end{pmatrix} \begin{pmatrix}
+1 & \rho & 0 \\
+\rho & 1 & \rho \\
+0 & \rho & 1
+\end{pmatrix} \begin{pmatrix}
+1 & 1 \\
+1 & -1 \\
+1 & -1
+\end{pmatrix} =$$
+$$= \begin{pmatrix}
+4\rho+3 & -2\rho-1 \\
+-2\rho-1 & 3
+\end{pmatrix}$$
+Sabemos que son independientes si la covarianza es una matriz diagonal, es decir, si:
+$$-2\rho-1 = 0 \Rightarrow \rho = -\frac{1}{2}$$
+
+\end{document}

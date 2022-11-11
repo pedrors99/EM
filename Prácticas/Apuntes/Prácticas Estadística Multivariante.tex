@@ -1,0 +1,326 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+
+\usepackage[bookmarks=true,
+					 bookmarksnumbered=false,
+					 bookmarksopen=false,
+					 colorlinks=true,
+					 allcolors=blue,
+					 urlcolor=blue]{hyperref}
+
+\usepackage[ruled]{algorithm2e}
+\SetKwInOut{Parameter}{parameter}
+
+\usepackage{array}
+\newcolumntype{N}{>{\centering\arraybackslash}m{0.5cm}}
+\newcolumntype{M}{>{\centering\arraybackslash}m{1cm}}
+
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+
+\begin{document}\pagenumbering{arabic}
+\begin{titlepage}
+\centering
+\includegraphics[width=0.15\textwidth]{/Users/pedrors/Desktop/DGIIM/Latex/UGR}\par\vspace{1cm}
+{\scshape\LARGE Universidad de Granada \par}
+\vspace{1cm}
+\vspace{1.5cm}
+{\huge\bfseries Estadística Multivariante\par}
+\vspace{1cm}
+{\large\bfseries Prácticas\par}
+\vspace{2cm}
+{\Large\itshape Pedro Ramos Suárez\par}
+\vfill
+Doble Grado de Ingeniería Informática y Matemáticas
+\vfill
+{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{PCA}
+
+Sea $X = (X_{1}, \dots, X_{n})$. Cuando $n$ es muy grande, tenemos un problema.
+
+Buscamos reducir la dimensión, es decir, buscamos $(U_{1}, \dots, U_{p})$ un $p < n$ que recoja la mayor cantidad de información:
+$$U_{1} = a_{11}X_{1} + a_{12}X_{2} + \dots + a_{1n}X_{n}$$
+$$\vdots$$
+$$U_{p} = a_{p1}X_{1} + a_{p2}X_{2} + \dots + a_{pn}X_{n}$$
+
+Test de Bartlett:
+$$H_{0} \equiv det(R) = 1$$
+$$H_{1} \equiv det(R) \neq 1$$
+Quiero que el test sea significativo (rechazar la hipótesis nula) $\Rightarrow p < 0.05 \Rightarrow$ rechazo $H_{0}$.
+
+Test Barttlet: $\chi^{2}_{exp} = 789.26$ \\
+$p = 1.32e-130 < 0.05$ Test significativo.
+
+Con un botplox podemos encontrar los outliers que queremos eliminar.
+
+\subsection{Teoría}
+
+Sea $X = (X_{1}, \dots, X_{p})$. Busco $U_{i} = a_{i}'X, i=1, \dots, q \leq p$. ($a_{i}' = a_{i1}, \dots, a_{iq}$).
+
+Tiene que ocurrir que $Var U_{i}$ sea máxima, y que $U_{i}$ está incorrelado con $U_{j}, j = 1, \dots, q$.
+
+Asumimos que $X$ es centrado ($E[X] = 0$), y veremos que $a_{i}$ son los vectores propios asociados a $R = E[XX']$, y $Var U_{i} = \lambda_{i}$ los valores propios asociados.
+
+Nota: Sea $a \in \mathbb{R}^{n}$ y $A \in M_{n}(\mathds{K}) \Rightarrow \frac{\delta a'Aa}{\delta a} = (a + A')a$.
+
+\subsubsection{Paso 1}
+
+En el primer paso se obtiene la primera componente principal $U_{1}$ maximizando su varianza.
+
+Asumimos que $a_{1}$ es un vector unitario, es decir,
+$$||a_{1}|| = a_{1}'a_{1} = 1$$
+
+Como $E[X] = 0 \Rightarrow E[a_{1}'X] = 0$. Entonces:
+$$Var[U_{1}] = E[U_{1}^{2}] = E[a_{1}'Xa_{1}'X] = E[a_{1}'XXta_{1}] = a'E[XX']a_{1} = a_{1}'Ra_{1}$$
+Por lo que el problema queda de la forma:
+$$\begin{cases}
+\max_{a_{1}} a_{1}'Ra_{1} \\
+\text{s.a. } a_{1}'a_{1} = 1
+\end{cases}$$
+
+Aplicamos el Teorema de los multiplicadores de Lagrange, reduciendo el problema a:
+$$\max_{a_{1}} \{a_{1}'Ra_{1} - \lambda(a_{1}'a_{1} - 1)\} = F$$
+$$\frac{\delta F}{\delta a_{1}} = 0 \Rightarrow (R+R') - 2 \lambda_{1} I a_{1} = 0 \Rightarrow 2 R a_{1} - 2 \lambda_{1} I a_{1} = 0 \Rightarrow (R - \lambda_{1}I)a_{1} = 0$$
+Por lo que $a_{1}$ es un vector propio asociado a $\lambda_{1}$.
+
+$$Ra_{1} - \lambda_{1}a_{1} = 0 \Rightarrow a_{1}'Ra_{1} = \lambda_{1}a_{1}'a_{1} \Rightarrow Var U_{1} = \lambda_{1}a_{1}'a_{1} = \lambda_{1}$$
+donde en la última igualdad hemos usado que $a_{1}$ es unitario.
+
+\subsubsection{Paso 2}
+
+Para calcular la segunda componente principal, $U_{2}$ tenemos:
+$$\begin{cases}
+\max Var[U_{2}] \\
+\text{s.a. } ||a_{2}|| = a_{2}a_{2}' = 1 \\
+cov(U_{1}, U_{2}) = 0
+\end{cases} \Rightarrow \begin{cases}
+\max_{a_{2}} a_{2}'Ra_{2} \\
+\text{s.a. } a_{2}'a_{2} = 1 \\
+a_{1}'Ra_{2} = 0
+\end{cases}$$
+
+Volvemos a aplicar el Teorema de los multiplicadores de Lagrange:
+$$F = a_{2}'Ra_{2} - \lambda_{2}(a_{2}'a_{2} - 1) - \mu(a_{1}'Ra_{2})$$
+$$\frac{\delta F}{\delta a_{2}} = 0 \Rightarrow 2Ra_{2} - 2\lambda_{2}Ia_{2} - \mu Ra_{1} = 0 $$
+Multiplicamos todo por $a_{1}'$ a la izquierda:
+$$2Ra_{1}'a_{2} - 2\lambda_{2}a_{1}'a_{2} - \mu a_{1}'Ra_{1} = 0$$
+Como $a_{1}$ y $a_{2}$ son perpendiculares, $a_{1}'a_{2} = 0$, y como $a_{1}'Ra_{1} = Var[U_{1}] \neq 0$, tenemos:
+$$0 - 0 - \mu a_{1}'Ra_{1} = 0 \Rightarrow \mu = 0$$
+Y entonces:
+$$2Ra_{2} - 2\lambda_{2}a_{2} = 0 \Rightarrow (R - \lambda_{2})a_{2} = 0$$
+Por lo que $a_{2}$ es el valor propio asociado a $\lambda_{2}$.
+
+\subsubsection{Paso 3}
+
+Para calcular la tercera componente principal, $U_{3}$ tenemos:
+$$\begin{cases}
+\max Var[U_{3}] \\
+\text{s.a. } ||a_{3}|| = a_{3}a_{3}' = 1 \\
+cov(U_{1}, U_{3}) = 0 \\
+cov(U_{2}, U_{3}) = 0
+\end{cases} \Rightarrow \begin{cases}
+\max_{a_{3}} a_{3}Ra_{3} \\
+\text{s.a. } a_{3}'a_{3} = 1 \\
+a_{1}Ra_{3} = 0 \\
+a_{2}Ra_{3} = 0
+\end{cases}$$
+
+Volvemos a aplicar el Teorema de los multiplicadores de Lagrange:
+$$F = a_{3}'Ra_{3} - \lambda_{3}(a_{3}'a_{3} - 1) - \mu_{1} a_{1}'Ra_{3} - \mu_{2} a_{2}'Ra_{3}$$
+$$\frac{\delta F}{\delta a_{3}} = 0 \Rightarrow 2Ra_{3} - 2\lambda_{3}Ia_{3} - \mu_{1}Ra_{1} - \mu_{2}Ra_{2} = 0$$
+
+Multiplicamos todo por $a_{1}'$ a la izquierda:
+$$2Ra_{1}'a_{3} - 2\lambda_{3}a_{1}'a_{3} - \mu_{1}a_{1}'Ra_{1} - \mu_{2}a_{1}'Ra_{2} = 0$$
+Como $a_{1}$, $a_{2}$ y $a_{3}$ son perpendiculares, $a_{1}'a_{2} = 0$ y $a_{1}'a_{3} = 0$, y como $a_{1}'Ra_{1} = Var[U_{1}] \neq 0$ tenemos:
+$$0 - 0 - \mu_{1}Var[U_{1}] - 0 = 0 \Rightarrow \mu_{1} = 0$$
+
+Multiplicando todo por $a_{2}'$ a la derecha:
+$$2Ra_{2}'a_{3} - 2\lambda_{3}a_{2}'a_{3} - \mu_{1}a_{2}'Ra_{1} - \mu_{2}a_{2}'Ra_{2} = 0$$
+Como $a_{1}$, $a_{2}$ y $a_{3}$ son perpendiculares, $a_{2}'a_{1} = 0$ y $a_{2}'a_{3} = 0$, y como $a_{2}'Ra_{2} = Var[U_{2}] \neq 0$ tenemos:
+$$0 - 0 - 0 - \mu_{2}Var[U_{2}] = 0 \Rightarrow \mu_{2} = 0$$
+
+Entonces:
+$$2Ra_{3} - 2\lambda_{3}Ia_{3} - \mu_{1}Ra_{1} - \mu_{2}Ra_{2} = 0 \Rightarrow 2Ra_{3} - 2\lambda_{3}a_{3} = 0 \Rightarrow (R - \lambda_{3})a_{3} = 0$$
+Por lo que $a_{3}$ es el valor asociado a $\lambda{3}$.
+
+\newpage
+
+\section{Análisis Factorial}
+
+$$X_{p \times 1} = A_{p \times k}F_{k \times 1} + L_{p \times 1}$$
+$$X = \begin{pmatrix}
+a_{11} & \dots & a_{1k} \\
+\vdots & \ddots & \vdots \\
+a_{p1} & \dots & a_{pk}
+\end{pmatrix} \begin{pmatrix} F_{1} \\ \vdots \\ F_{k} \end{pmatrix} + L_{p \times 1}$$
+Haciendo el desarrollo matricial:
+$$X_{1} = a_{11}F_{1} + \dots + a_{1k}F_{k} + L_{1}$$
+$$X_{2} = a_{21}F_{1} + \dots + a_{2k}F_{k} + L_{2}$$
+
+Igualdad fundamental:
+$$\Sigma = E[XX'] = AA' + D$$
+Demostración:
+$$E[XX'] = E[(AF+L)(AF+L)'] = E[(AF+L)(F'A'+L')] = E[AFF'A' + AFL' + LF'A' + LL'] =$$
+$$= E[AFF'A'] + E[AFL'] + E[LF'A'] + E[LL'] = AE[FF']A' + AE[FL'] + E[LF']A' + E[LL'] =$$
+$$= AI_{k}A' + A0 + 0A' + D = AA' + D = \Sigma$$
+
+De la expresión:
+$$\Sigma = AA' + D$$
+tenemos:
+$$\begin{pmatrix}
+\sigma_{11} & \dots & \sigma_{1p} \\
+\vdots & \ddots & \vdots \\
+\sigma_{p1} & \dots & \sigma_{pp}
+\end{pmatrix} = \begin{pmatrix}
+a_{11} & \dots & a_{1k} \\
+\vdots & \ddots & \vdots \\
+a_{p1} & \dots & a_{pk}
+\end{pmatrix} \begin{pmatrix}
+a_{11} & \dots & a_{p1} \\
+\vdots & \ddots & \vdots \\
+a_{1k} & \dots & a_{pk}
+\end{pmatrix} + \begin{pmatrix} d_{1} \\ \vdots \\ d_{p} \end{pmatrix}$$
+Por lo que:
+$$\sigma_{11} = \sum_{j=1}^{k} a_{1j}^{2} + d_{1}$$
+$$\vdots$$
+$$\sigma_{ii} = \sum_{j=1}^{k} a_{ij}^{2} + d_{i}$$
+$$\sigma_{ij} = \sum_{l=1}^{k} a_{il}a_{lj}$$
+
+\subsection{Ejemplo}
+
+$$X = (X_{1}, X_{2}, X_{3}) \Rightarrow \Sigma = S = \begin{pmatrix}
+1 & 0.83 & 0.78 \\
+0.83 & 1 & 0.67 \\
+0.78 & 0.83 & 1
+\end{pmatrix}$$
+Ajustar el modelo factorial con $K=1$:
+$$X_{3 \times 1} = A_{3 \times 1}F_{1 \times 1} + L_{3 \times 1}$$
+$$\begin{pmatrix} X_{1} \\ X_{2} \\ X_{3} \end{pmatrix} = \begin{pmatrix} a_{11} \\ a_{21} \\ a_{31} \end{pmatrix} F_{1} + \begin{pmatrix} L_{1} \\ L_{2} \\ L_{3} \end{pmatrix}$$
+Tenemos que resolver:
+$$\Sigma = AA^{t} + D$$
+$$\begin{pmatrix}
+1 & 0.83 & 0.78 \\
+0.83 & 1 & 0.67 \\
+0.78 & 0.67 & 1
+\end{pmatrix} = \begin{pmatrix} a_{11} \\ a_{21} \\ a_{31} \end{pmatrix} \begin{pmatrix} a_{11} & a_{21} & a_{31} \end{pmatrix} + \begin{pmatrix}
+d_{1} & 0 & 0 \\
+0 & d_{2} & 0 \\
+0 & 0 & d_{3}
+\end{pmatrix}$$
+De donde obtenemos las siguientes 6 ecuaciones con 6 incógnitas:
+$$\begin{aligned}
+a_{11}^{2} + d_{1} & = & & 1 \\
+a_{21}^{2} + d_{2} & = & & 1 \\
+a_{31}^{2} + d_{3} & = & & 1 \\
+a_{11}a_{21} & = & & 0.83 \\
+a_{11}a_{31} & = & & 0.78 \\
+a_{21}a_{31} & = & & 0.67
+\end{aligned}$$
+Por lo que el modelo queda ajustado:
+$$\begin{pmatrix} X_{1} \\ X_{2} \\ X_{3} \end{pmatrix} = \begin{pmatrix} 0.983 \\ 0.844 \\ 0.793 \end{pmatrix} F + \begin{pmatrix} L_{1} \\ L_{2} \\ L_{3} \end{pmatrix}$$
+
+Ajustar el modelo factorial con $K = 2$:
+$$X_{3 \times 1} = A_{3 \times 2}F_{2 \times 1} + L{3 \times 1}$$
+$$\begin{pmatrix}
+X_{1} \\ X_{2} \\ X_{3}
+\end{pmatrix} = \begin{pmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22} \\
+a_{31} & a_{32}
+\end{pmatrix} \begin{pmatrix}
+F_{1} \\ F_{2}
+\end{pmatrix} + \begin{pmatrix}
+L_{1} \\ L_{2} \\ L_{3}
+\end{pmatrix}$$
+
+Tenemos que resolver:
+$$\Sigma = AA^{t} + D$$
+$$\begin{pmatrix}
+1 & 0.83 & 0.78 \\
+0.83 & 1 & 0.67 \\
+0.78 & 0.67 & 1
+\end{pmatrix} = \begin{pmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22} \\
+a_{31} & a_{32}
+\end{pmatrix} \begin{pmatrix}
+a_{11} & a_{21} & a_{31} \\
+a_{12} & a_{22} & a_{32}
+\end{pmatrix} + \begin{pmatrix}
+d_{1} & 0 & 0 \\
+0 & d_{2} & 0 \\
+0 & 0 & d_{3}
+\end{pmatrix} =$$
+$$= \begin{pmatrix}
+a_{11}^{2} + a_{12}^{2} + d_{1} & a_{11}a_{21} + a_{12}a_{22} & a_{11}a_{31} + a_{12}a_{32} \\
+a_{21}a_{11} + a_{22}a_{12} & a_{21}^{2} + a_{22}^{2} + d_{2} & a_{21}a_{31} + a_{22}a_{32} \\
+a_{31}a_{11} + a_{32}a_{12} & a_{31}a_{21} + a_{32}a_{22} & a_{31}^{2} + a_{32}^{2} + d_{3}
+\end{pmatrix}$$
+De donde obtenemos las siguientes 9 ecuaciones con 9 incógnitas:
+$$\begin{aligned}
+a_{11}^{2} + a_{12}^{2} + d_{1} & = & & 1 \\
+a_{21}^{2} + a_{22}^{2} + d_{2} & = & & 1 \\
+a_{31}^{2} + a_{32}^{2} + d_{3} & = & & 1 \\
+a_{11}a_{21} + a_{12}a_{22} & = & & 0.83 \\
+a_{21}a_{11} + a_{22}a_{12} & = & & 0.83 \\
+a_{11}a_{31} + a_{12}a_{32} & = & & 0.78 \\
+a_{31}a_{11} + a_{32}a_{12} & = & & 0.78 \\
+a_{21}a_{31} + a_{22}a_{32} & = & & 0.67 \\
+a_{31}a_{21} + a_{32}a_{22} & = & & 0.67
+\end{aligned}$$
+
+\subsubsection{Rotaciones}
+
+$G$ isometría $\Rightarrow G^{-1} = G' \Rightarrow GG' = I_{k}$.
+Llamando $B = AG$, tenemos:
+$$\Sigma = AGG'A' + D = BB' + D$$
+$$X = AF + L = AGG'F + L = BF_{G} + L$$
+donde $F_{G} = G'F$.
+
+\newpage
+
+\section{Práctica final}
+
+Para los valores perdidos, creamos una nueva columna que sea \emph{NombreColumna\_NA}, en la que tendremos 0 si el valor existe, o 1 si el valor es NA.
+
+Luego comparamos esta columna con otra columna previamente existente, y podemos comparar la media de esta columna cuando el valor es 0 con respecto a la media cuando el valor es 1 realizando un test como el de Student o el de Wiluxom.
+$$\begin{cases}
+H_{0} \equiv \mu Variable1 = \mu Variable2 \\
+H_{1} \equiv \mu Variable1 \neq \mu Variable2
+\end{cases}$$
+
+Si tomamos un dataset sin valores perdidos, podemos tomar una variable y eliminar el 5\% de los datos para realizar el análisis.
+
+Realizamos el apartado 1 d) antes del 1 c).
+
+Contraste de normalidad:
+$$\begin{cases}
+H_{0} \equiv \text{ Siguen normalidad} \\
+H_{1} \equiv \text{ No siguen normalidad}
+\end{cases}$$
+
+Para ver si hay correlación, aunque hay que hacer el test de Barlett, también hay que poner salidas gráficas, como mapas de calor.
+
+En materiales y métodos, si tratamos con personas tiene sentido poner la media y desviación de edades, y la distribución de sexo.
+
+En la sección de resultados tenemos que aportar resultados de forma objetiva, sin ninguna opinión, y en la discusión asociamos estos resultados a los datos.
+
+\end{document}

@@ -1,0 +1,1596 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{enumitem}
+
+
+\usepackage[bookmarks=true,
+					 bookmarksnumbered=false,
+					 bookmarksopen=false,
+					 colorlinks=true,
+					 allcolors=blue,
+					 urlcolor=blue]{hyperref}
+
+\usepackage[ruled]{algorithm2e}
+\SetKwInOut{Parameter}{parameter}
+
+\usepackage{array}
+\newcolumntype{N}{>{\centering\arraybackslash}m{0.5cm}}
+\newcolumntype{M}{>{\centering\arraybackslash}m{1cm}}
+
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+
+\begin{document}\pagenumbering{arabic}
+\begin{titlepage}
+\centering
+\includegraphics[width=0.15\textwidth]{/Users/pedrors/Desktop/DGIIM/Latex/UGR}\par\vspace{1cm}
+{\scshape\LARGE Universidad de Granada \par}
+\vspace{1cm}
+\vspace{1.5cm}
+{\huge\bfseries Estadística Multivariante\par}
+\vspace{2cm}
+{\Large\itshape Pedro Ramos Suárez\par}
+\vfill
+Doble Grado de Ingeniería Informática y Matemáticas
+\vfill
+{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Distribución Normal Multivariante}
+
+\subsection{Motivación sobre la DNM}
+
+\subsubsection{General}
+\begin{itemize}
+\item La DNM es una de las distribuciones más conocidas en la estadística, jugando un papel predominante en muchas áreas de aplicación.
+
+\item En el Análisis Multivariante, por ejemplo, la mayor parte de los procedimientos de inferencia para el análisis de datos vector-valuados se han desarrollado bajo la suposición de normalidad.
+\end{itemize}
+
+\subsubsection{Aspectos específicos}
+\begin{itemize}
+\item La DNM constituye la extensión natural, al contexto multivariante, de la distribución normal univariante. En particular, las distribuciones marginales univariantes de la DNM son normales.
+
+Más aún, las distribuciones marginales de cualquier dimensión de la DNM son también DNMs.
+
+\item Muchos procedimientos basados en la suposición de normalidad (multivariante, en general), particularmente procedimientos basados en los momentos de primer y segundo orden, cumplen ciertas propiedades de optimalidad.
+
+En determinados casos, los procedimientos presentan cierta robustez frente a desviaciones de la normalidad en la distribución teórica subyacente o en los propios datos. Una justificación viene dada, por ejemplo, por el TCL acerca de la DNM asintótica del vector de medias muestrales, de modo que, para grandes muestras, la DNM puede usarse como aproximación.
+
+En otros casos, la DNM sirve como modelo de referencia para evaluar posibles desviaciones de la normalidad.
+
+\item Técnicamente, la DNM ha sido estudiada en profundidad y ofrece ciertas ventajas en su tratamiento analítico, también desde el punto de vista estadístico-probabilístico:
+\begin{itemize}
+\item La DNM viene determinada de forma única por los momentos de primer y segundo orden ($\mu$, $\Sigma$).
+
+\item Si dos subvectores de un vector aleatorio con DNM tienen correlaciones curzadas nulas, entonces dichos subvectores son mutuamente independientes.
+
+\item La familia de DNMs es cerrada bajo transformaciones lineales (...).
+
+\item La familia de DNMs es cerrada bajo combinaciones lineales de vectores independientes (...).
+
+\item Las distribuciones condicionadas (internamente) en una DNM sin también DNMs. Sus momentos de primer y segundo orden se obtienen de forma sencilla a partir de los correspondientes a la DNM de referencia.
+
+\item ...
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Algunas notas históricas}
+\begin{itemize}
+\item La DN bivariante comenzó a estudiarse a mediados del s. XIX. Tuvo un gran impacto a partir de una publicación de Francias Galton (1988), sobre análisis de correlación en genética.
+
+\item Karl Pearson (1892), a partir del trabajo de Galton, estableció su formulación matemática de forma rigurosa.
+
+\item Francis Edgeworth (1892) introdujo, en el estudio de la regresión múltiple y el análisis de correlación parcial y múltiple, elementos fundamentales para el desarrollo de la DNM.
+
+\item Durante el s. XX se sucedieron importantes avances en relación con la fundamentación teórica de la DNM, la inferencia estadística con referencia a la DNM (incluyendo el desarrollo y estudio de otras distribuciones relacionadas, e.g. $T^{2}$ de Hotelling, Wishart), así como su contextualización en familias de distribuciones más generales (e.g. distribuciones simétricas de contornos elípticos).
+\end{itemize}
+
+\subsection{Fundamentación probablilística (recordatorio)}
+
+\subsubsection{Elementos}
+\begin{itemize}
+\item $(\Omega, \mathcal{F}, P)$ espacio de probabilidad.
+\begin{itemize}
+\item $\Omega$: Espacio muestral.
+\item $\mathcal{F}$: $\sigma$-álgebra.
+\item $P$: Medida de probabilidad.
+\end{itemize}
+
+\item $X = (X_{1}, \dots, X_{p})'$, vector aleatorio; i.e., aplicación medible
+$$\begin{aligned}
+X: & & (\Omega, \mathcal{F}) & \to & & (\mathbb{R}^{p}, \mathcal{B}^{p}) \\
+& & w & \mapsto & & X(w) = (X_{1}(w), \dots, X_{p}(w))',
+\end{aligned}$$
+$$\forall B \in \mathcal{B}^{p}, X^{-1}(B) := \{w \in \Omega: X(w) \in B\} \in \mathcal{F}$$
+
+\item $P_{X}$, distribución de probabilidad inducida por $X$ sobre ($\mathbb{R}^{p}, \mathcal{B}^{p}$):
+$$P_{X}[B] := P[X^{-1}(B)], \text{ para cada } B \in \mathcal{B}^{p}$$
+
+\item Nota: $X = (X_{1}, \dots, X_{p})' = (X_{1}, \dots, X_{p})^{t} = \begin{pmatrix} X_{1} \\ \vdots \\ X_{p} \end{pmatrix}$.
+\end{itemize}
+
+\subsubsection{Función de distribución}
+\begin{itemize}
+\item Se define la función de distribución asociada a $P_{X}$ como
+$$F_{X}(x) = P_{X}[X_{1} \leq x_{1}, \dots, X_{p} \leq x_{p}], \forall (x_{1}, \dots, x_{p}) \in \mathbb{R}^{p}$$
+
+\item Si existe $f_{X}$ integrable (en el sentido de Lebesgue) tal que
+$$F_{X}(x) = \int_{-\infty}^{x_{p}} \dots \int_{-\infty}^{x_{1}} f_{X}(u_{1}, \dots, u_{p}) du_{1} \dots du_{p}, \forall x \in \mathbb{R}^{p}$$
+$f_{X}$ se denomina función de distribución, estando definida salvo conjuntos de medida de Lebesgue nula. (Se dice entonces que la distribución de $X$ es ``continua'').
+
+Si $f_{X}$ es una función continua, se puede escribir:
+$$f_{X}(x) = \frac{\delta^{n}}{\delta x_{1} \dots \delta x_{p}} F_{X}(x), \forall x \in \mathbb{R}^{p}$$
+(en otro caso, se podrá escribir la expresión únicamente para los puntos de continuidad de $f_{X}$) y $f_{X}$ estará definida de forma unívoca bajo esa condición.
+\end{itemize}
+
+\subsubsection{Independencia}
+\begin{itemize}
+\item En general, para un conjunto producto de la forma $B = B_{1} \times \dots \times B_{p}$, con $B_{j} \in \mathcal{B} (j = 1, \dots, p)$, se tendrá que
+$$P_{X}[B] \neq P_{X_{1}}[B_{1}] \cdot ... \cdot P_{X_{p}}[B_{p}]$$
+
+\item Cuando se da la igualdad para todo conjunto producto $B = B_{1} \times \dots \times B_{p} \in \mathcal{B}$ se dice que las variables $X_{1}, \dots, X_{p}$, componentes del vector aleatorio $X$, son independientes entre sí (o mutuamente independientes).
+
+\item Equivalentemente, esto ocurre cuando
+$$F_{X}(x) = F_{X_{1}}(x_{1}) \cdot ... \cdot F_{X_{p}}(x_{p}), \forall x = (x_{1}, \dots, x_{p})' \in \mathbb{R}^{p}$$
+y en el caso continuo, si y sólo si
+$$f_{X}(x) = f_{X_{1}}(x_{1}) \cdot ... \cdot f_{X_{p}}(x_{p}), \forall x = (x_{1}, \dots, x_{p})' \in \mathbb{R}^{p}$$
+
+\item De forma más general, se habla de independencia entre cualquier número finito de vectores aleatorios (por ejemplo, entre subvectores de un vector aleatorio dado), bajo condiciones de factorización similares en términos de los factores correspondientes a éstos.
+
+\item $X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix}$ \hspace{2cm} $X_{(1)} = \begin{pmatrix} X_{1} \\ \vdots \\ X_{k} \end{pmatrix}$ \hspace{1cm} $X_{(2)} = \begin{pmatrix} X_{k+1} \\ \vdots \\ X_{p} \end{pmatrix}$.
+
+Si se cumple que
+$$f_{X}(x) = f_{X_{(1)}}(x_{(1)}) \cdot f_{X_{(2)}}(x_{(2)}), \forall x \in \mathbb{R}^{p}$$
+$$x = \begin{pmatrix} x_{(1)} \\ x_{(2)} \end{pmatrix} \iff X_{(1)} \text{ y } X_{(2)} \text{ son independientes}$$
+
+\item Si $X, Y$ son independientes, entonces $g(X), h(Y)$ son independientes para aplicaciones medibles $g$ y $h$.
+$$\begin{aligned}
+g:(\mathbb{R}^{p}, \mathcal{B}^{p}) \to (\mathbb{R}^{p'}, \mathcal{B}^{p'}) & & h:(\mathbb{R}^{q}, \mathcal{B}^{q}) \to (\mathbb{R}^{q'}, \mathcal{B}^{q'}) \\
+\underset{\underset{g(X)}{\longrightarrow}}{(\Omega, F) \overset{X}{\to} (\mathbb{R}^{p}, \mathcal{B}^{p}) \overset{g}{\to} (\mathbb{R}^{p'}, \mathcal{B}^{p'})} & & \underset{\underset{h(Y)}{\longrightarrow}}{(\Omega, F) \overset{Y}{\to} (\mathbb{R}^{q}, \mathcal{B}^{q}) \overset{h}{\to} (\mathbb{R}^{q'}, \mathcal{B}^{q'})}
+\end{aligned}$$
+\end{itemize}
+
+\subsubsection{Función característica}
+\begin{itemize}
+\item Dado un vector aleatorio $X = (X_{1}, \dots, X_{p})'$, se define su función característica como
+$$\phi_{X}(t) = E[e^{it'X}] = \int_{\Omega} e^{it'X(w)}P(dw) = \int_{\mathbb{R}^{p}} e^{it'x}P_{X}(dx), \forall t = (t_{1}, \dots, t_{p})' \in \mathbb{R}^{p}$$
+
+\item Recordatorio: $e^{ia} = \cos a + i \sin a$. \hspace{2cm} $\mathbb{C} \equiv \mathbb{R}^{2}$.
+
+\item Teorema (existencia y unicidad): La función característica de un vector aleatorio siempre existe, y determina de forma única su distribución.
+
+\item La f.c. tiene gran utilidad como herramienta en la resolución de aspectos analíticos sobre distribuciones de vectores aleatorios.
+\end{itemize}
+
+\subsubsection{Función característica e independencia}
+Dos resultados importantes:
+\begin{itemize}
+\item Resultado 1: Las componentes del vector aleatorio $X = (X_{1}, \dots, X_{p})'$ son independientes si y sólo si su función característica se factoriza de la forma
+$$\phi_{X}(t) = E[e^{it'X}] = \prod_{k=1}^{p} E[e^{it_{k}X_{k}}] = \phi_{X_{1}}(t_{1}) \cdot ... \cdot \phi_{X_{p}}(t_{p})$$
+$$\forall t = (t_{1}, \dots, t_{p})' \in \mathbb{R}^{p}$$
+(i.e., como el producto de las funciones características de las distribuciones univariantes marginales).
+
+\item Resultado 2: Si las componentes del vector aleatorio $X = (X_{1}, \dots, X_{p})'$ son independientes, entonces la función característica de la variable aleatoria
+$$Y = \sum_{k=1}^{p} X_{k}$$
+se factoriza como
+$$\phi_{Y}(t) = E[e^{itY}] = \prod_{k=1}^{p} E[e^{itX_{k}}] = \phi_{X_{1}}(t) \cdot ... \cdot \phi_{X_{p}}(t), \forall t \in \mathbb{R}$$
+\end{itemize}
+
+\subsubsection{Función característica y transformaciones lineales}
+\begin{itemize}
+\item Sea $X = (X_{1}, \dots, X_{p})'$ un vector $p$-dimensional, y sea $Y = (Y_{1}, \dots, Y_{q})'$ un vector $q$-dimensional definido como
+$$Y = BX + b$$
+con $B$ matriz $q \times p$ (cte) y $b$ vector $q \times 1$ (cte).
+
+Entonces, la f.c. de $Y$ se obtiene, para cada $t = (t_{1}, \dots, t_{q})' \in \mathbb{R}^{q}$, como
+$$\phi_{Y}(t) = e^{it'b} \phi_{X}(B't) \hspace{1cm} (1)$$
+En particular, si el vector aleatorio $X$ se particiona en dos subvectores como $X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix}$, con $X_{(1)}$ de dimensión $k \times 1$ y $X_{2}$ de dimensión $(p-k) \times 1$, se tiene que
+$$\phi_{X_{(1)}}(t_{(1)}) = \phi_{X} \begin{pmatrix} t_{(1)} \\ 0_{(2)} \end{pmatrix} \hspace{1cm} (2)$$
+con $t_{(1)} = (t_{1}, \dots, t_{k})' \in \mathbb{R}^{k}$ y $0_{(2)} = (0, \dots, 0)' \in \mathbb{R}^{p-k}$.
+
+\item (1) $$\phi_{Y}(t) E[e^{it'Y}] = E[e^{it'(BX+b)}] =$$
+$$E[e^{it'b} + e^{it'Bx}] = e^{it'b}E[e^{i'Bx}] = e^{it'b} \phi_{X}(Bt)$$
+
+\item (2) $$B = (I_{k}, 0_{p-k}) \hspace{2cm} b = 0_{k \times 1}$$
+$$X_{(1)} = (I_{k}, 0_{p-k})X + 0_{k \times 1}$$
+$$X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix}$$
+Aplicamos $(1)$.
+$$\phi_{X_{(1)}} = e^{it_{(1)}'b} \phi_{X} (\begin{pmatrix} I_{k} \\ 0_{p-k} \end{pmatrix} t_{(1)}) \overset{t_{(1)}'b=0}{=} \phi_{X} \begin{pmatrix} t_{(1)} \\ 0_{p-k} \end{pmatrix} = \phi_{X} \begin{pmatrix} t_{(1)} \\ 0_{(2)} \end{pmatrix}$$
+\end{itemize}
+
+\subsubsection{Función característica y función de densidad (caso continuo)}
+\begin{itemize}
+\item La función de densidad de un vector aleatorio $X = (X_{1}, \dots, X_{p}='$ con distribución continua se puede obtener como la transformada de Fourier de la función característica:
+$$f_{X}(x) = \frac{1}{(2\pi)^{p}} \int_{\mathbb{R}^{p}} e^{-it'x} \phi_{X}(t) dt$$
+Recordemos que, en este caso, la función característica también se escribe como
+$$\phi_{X}(t) = \int_{\mathbb{R}^{p}} e^{it'x}f_{X}(x) dx$$
+(Es decir, $f_{X}(\cdot)$ y $\phi_{X}(\cdot)$ constituyen un ``par de transformadas de Fourier'')
+\end{itemize}
+
+\subsubsection{Observaciones finales}
+\begin{itemize}
+\item Desde el punto de vista puramente estadístico, especialmente en el contexto de la Inferencia Estadística, interesa acerca de un vector aleatorio, $X$, el conocimiento sobre su distribución, $P_{X}$, puesto que los sucesos de interés vendrán expresados en términos de condiciones relativas a los valores que toma $X$.
+
+\item Son importantes, en particular, las familias de distribuciones multivariantes (modelos) que, de forma flexible, puedan dar una representación exacta o aproximada de la variabilidad o el comportamiento de poblaciones o fenómenos objeto de investigaciones aplicadas.
+
+\item En este contexto, la distribución normal multivariante (DNM) constituye un modelo central en el desarrollo y aplicación de la Estadística Multivariante.
+\end{itemize}
+
+\subsection{Aspectos generales sobre vectores aleatorios}
+
+\subsubsection{Esperanza y covarianza (``operadores'')}
+\begin{itemize}
+\item Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio.
+
+\item Se define el vector de medias de $X$ como
+$$\mu_{X} := E[X] := \begin{pmatrix}
+E[X_{1}] \\
+\vdots \\
+E[X_{p}]
+\end{pmatrix} = \begin{pmatrix}
+\mu_{1} \\
+\vdots \\
+\mu_{p}
+\end{pmatrix}$$
+(siempre que existan las esperanzas unidimensionales)
+
+\item Propiedad de linealidad: Sea $Y = (Y_{1}, \dots, Y_{1})'$ definido como
+$$Y = BX + b$$
+con $B$ matriz $q \times p$ (cte) y $b$ vector $q \times 1$ (cte).
+
+Entonces,
+$$\mu_{Y} = BE[X] + b = B \mu_{X} + b \hspace{1cm} (1)$$
+(El resultado se extiende convenientemente al caso de transformaciones lineales de matrices aleatorias $(2)$).
+
+\item (1) $$B = (b_{ij})_{\underset{1 \leq j \leq p}{1 \leq i \leq q}} \hspace{1cm} b = (b_{i})_{1 \leq i \leq p}$$
+$$E(\sum_{j=1}^{p} b_{ij}X_{i} + b_{i}) = \sum_{j=1}^{p} b_{ij} E(X_{i}) + b_{i}$$
+$$E[BX + b] = BE[X] + b$$
+
+\item (2) $X$ matriz aleatoria $p \times q$. Sean $B$ una matriz $m \times p$ (cte.), $C$ una matriz $q \times n$ (cte.) y $D$ una matriz $m \times n$ (cte.). Construimos:
+$$W = BXC + D$$
+$W$ es una matriz aleatoria $m \times n$.
+
+Definimos
+$$E[X] = (E[X_{ij}])_{\underset{j = 1, \dots, q}{i = 1, \dots, p}}$$
+$$E[W] = (E[W_{kl}])_{\underset{l = 1, \dots, n}{k = 1, \dots, m}} = BE[X]C + D$$
+
+\item Se define la matriz de covarianzas de $X$ como
+$$\Sigma_{X} = Cov(X) := E[(X - \mu_{X})(X - \mu_{X})'] = \begin{pmatrix}
+\sigma_{11} & \dots & \sigma_{1p} \\
+\vdots & \ddots & \vdots \\
+\sigma_{p1} & \dots & \sigma_{pp}
+\end{pmatrix}$$
+con
+$$\sigma_{ij} = E[(X_{i}-\mu_{i})(X_{j}-\mu_{j})] \hspace{1cm} (= \mu_{ji})$$
+(siempre que existan las esperanzas unidimensionales).
+
+En particular,
+$$\sigma_{ii} = E[(X_{i}) - \mu_{i})^{2}] = Var(X_{i}) \hspace{1cm} (= \sigma_{i}^{2}, \text{ notación})$$
+
+\item Propiedades:
+\begin{enumerate}
+\item $\Sigma_{X}$ es simétrica.
+
+\item Los elementos de la diagonal de $\Sigma_{X}$ son no negativos.
+
+\item La clase de matrices de covarianzas (dim. $p \times p$) coincide con la clase de matrices simétricas definidas no negativas (dim. $p \times p$) $(3)$.
+\end{enumerate}
+
+\item (3) \begin{itemize}
+\item[$\Rightarrow$)] $\forall \alpha \in \mathbb{R}^{p}$.
+$$0 \leq Var(\alpha'X) = E[(\alpha'X - \underset{= \alpha'\mu}{E[\alpha'X]})^{2}] = E[(\alpha'(X - \mu))^{2}] = E[\alpha'(X - \mu)(X - \mu)'\alpha] =$$
+$$= \alpha'E[(X - \mu)(X - \mu)']\alpha = \alpha'\Sigma_{X}\alpha$$
+
+\item[$\Leftarrow$)] $r = rango(\Sigma_{p \times p}), r \leq p, \Sigma = C_{p \times r}C', rango(C) = r$. \\
+Definimos $Y$ un v.a. $r \times 1$ con $\mu_{y} = 0$ y $Cov(Y) = I_{r \times r}$ tal que $X = CY$.
+$$E[X] = C - E[Y] = 0$$
+$$Cov(X) = E[XX'] = E[(CY)(CY)'] = E[CYY'C'] = CE[YY']C' = CC' = \Sigma$$
+Hemos encontrado un v.a. que tiene a $\Sigma$ como matriz de covarianzas.
+\end{itemize}
+
+\item En relación con la propiedad 3, para cualquier matriz de covarianzas, $\Sigma$, se distinguen los casos siguientes:
+\begin{enumerate}[label=(\Alph*)]
+\item $\Sigma$ definida positiva (notación: $\Sigma > 0$).
+
+En este caso, $\Sigma$ es no singular, con $|\Sigma| > 0$, y $\exists \Sigma^{-1}$.
+
+``Normalización'' y distancia de Mahalanobis: Dado un vector aleatorio $p$-dimensional $X \sim (\mu, \Sigma)$, con $\Sigma > 0$, para cualquier elección de una matriz $C$ de dimensión $p \times p$ tal que $\Sigma = CC'$ se obtiene una ``normalización'' (en origen y escala multidimensionales) del vector mediante la transformación
+$$Z = C^{-1}(X - \mu)$$
+En efecto, se tiene que $Z \sim (0_{p}, I_{p \times p})$. \hspace{1cm} $(4)$
+
+\begin{itemize}
+\item (4) Veamos que $E[Z] = 0_{p}, Cov(Z) = \Sigma_{Z} = I_{p \times p}$
+$$E[Z] = E[C^{-1}(X-\mu)] = C^{-1}E[X-\mu] = C^{-1}(\underset{= \mu}{E[X]} - \mu) = 0_{p}$$
+$$Cov(Z) = \Sigma_{Z} = E[ZZ'] = E[C^{-1}(X-\mu)(X-\mu)'(C^{-1})'] =$$
+$$= C^{-1}E[(X-\mu)(X-\mu)'](C^{-1})' = C^{-1}C C'(C-1)' = I_{p \times p}$$
+
+\item Nota: $A$ matriz ortogonal.
+$$AA' = A'A = I$$
+$$\Sigma = CC' = CIC' = CAA'C' = CA(CA)'$$
+Es decir, la transformación $\Sigma = CC'$ no es única.
+\end{itemize}
+
+Se define la distancia de Mahalanobis de $X \sim (\mu, \Sigma)$ (con $\Sigma > 0$) con respecto a su vector de medias $\mu$ como
+$$\Delta(X, \mu) := \{(X - \mu)' \Sigma^{-1} (X - \mu)\}^{\frac{1}{2}}$$
+
+Interpretación y observaciones:
+\begin{itemize}
+\item Se comprueba fácilmente que $\Delta(X, \mu) = ||Z||_{p}$, para cualquier normalización $Z$ de $X$ ($||\cdot||_{p}$ denota la norma euclídea en el espacio $\mathbb{R}^{p}$) $(5)$.
+
+\item $\Delta(X, \mu)$ es una variable aleatoria, cumpliéndose que
+$$E[\Delta^{2}(X, \mu)] = p \hspace{1cm} (6)$$
+
+\item La ecuación
+$$\Delta(x, \mu) = k$$
+para $k \geq 0$ (cte.) y $x \in \mathbb{R}^{p}$, define un hiperelipsoide en $\mathbb{R}^{p}$, de tal modo que los puntos transformados por normalización se corresponden con la esfera euclídea $p$-dimensional de radio $k$ con centro en el origen 0 (7).
+
+Nota: Esfera para $Z$, elipsoide para $X$.
+
+Los ejes del elipsoide vienen determinados por los autovectores. La longitud de los semiejes son los inversos de las raíces cuadradas de los autovalores de la matriz $(k^{2}\Sigma)^{-1}$, es decir, $k\sqrt{\lambda_{j}}$.
+
+\item (5) $$\Delta(X, \mu) = ((X - \mu)' \Sigma^{-1} (X - \mu))^{\frac{1}{2}} = ((X - \mu)' (CC')^{-1} (X - \mu))^{\frac{1}{2}} =$$
+$$= ((X - \mu) (C')^{-1} C^{-1} (X-\mu))^{\frac{1}{2}} = ((X - \mu)' (C^{-1})' C^{-1} (X - \mu))^{\frac{1}{2}} =$$
+$$= ((C^{-1}(X - \mu))' C^{-1} (X - \mu))^{\frac{1}{2}} = (Z'Z)^{\frac{1}{2}} = ||Z||_{2}$$
+
+\item (6) $E[\Delta^{2}(X, \mu)] = p$.
+$$Z \sim (0_{p}, I_{p \times p}) \hspace{1cm} Z = C^{-1}(X - \mu) \hspace{1cm} \Sigma = CC'$$
+$$E[\Delta^{2}(X, \mu)] = E[(X - \mu)'(CC')^{-1}(X - \mu)] = E[Z'Z] =$$
+$$= \sum_{i=1}^{p} E[Z_{i}^{2}] - \underset{= 0}{\underline{E[Z_{i}]E[Z_{i}]}} = \sum_{i=1}^{p} Var(Z_{i}) = \sum_{i=1}^{p} 1 = p$$
+
+\item (7) $\Delta(x, \mu) = k, k \geq 0, x \in \mathbb{R}^{p}$.
+$$\Delta(x, \mu) = ||z|| \hspace{1cm} z = C^{-1}(x - \mu) \hspace{1cm} \Sigma = CC'$$
+$$||z|| = k$$
+$$\Delta(x, \mu) = k \Rightarrow \{(x-\mu)' \Sigma^{-1} (x - \mu)\}^{\frac{1}{2}} = k \Rightarrow (x - \mu)' \Sigma^{-1} (x - \mu) = k^{2} \Rightarrow$$
+$$\Rightarrow (x - \mu)' (k^{2}\Sigma)^{-1} (x - \mu) = 1$$
+Como $\Sigma$ definida positiva, $k^{2} \Sigma$ es definida positiva y $(k^{2} \Sigma)^{-1}$ también lo es, por lo que la última ecuación representa un elipsoide.
+
+Si los autovalores de $\Sigma$ son $\lambda_{j}$, los de $k^{2}\Sigma$ son $k^{2}\lambda_{j}$ y los de $(k^{2}\Sigma)^{-1}$ son $(k^{2}\lambda_{j})^{-1}$.
+\end{itemize}
+
+\item $\Sigma$ semidefinida positiva (notación $\Sigma \geq 0$ indicará, en general, ``definida no negativa'').
+
+En este caso, $\Sigma$ es singular, es decir, $|\Sigma| = 0$ y $\nexists \Sigma^{-1}$.
+
+Por tanto, no se puede realizar una normalización en todo el espacio $\mathbb{R}^{p}$, ni definir la distancia de Mahalanobis de $X \sim (\mu, \Sigma)$ con respecto a su vector de medias $\mu$ a nivel $p$-dimesional.
+
+Observaciones:
+\begin{itemize}
+\item Se tendrá que, siendo $rango(\Sigma) = r < p$, se puede escribir
+$$\Sigma = CC', \text{ con } C \text{ matriz } p \times r \text{ de rango } r$$
+
+\item Como consecuencia: Con probabilidad 1, las componentes del vector aleatorio $X = (X_{1}, \dots, X_{p})'$ cumplirán (al menos) una relación de dependencia lineal del tipo
+$$\alpha'X = k, \text{ con } \alpha \neq 0 \hspace{1cm} (8)$$
+(es decir, la variabilidad de $X$ se sitúa ($P_{X}-$c.s.) en un hiperplano afín en $\mathbb{R}^{p}$)
+
+\item (8) $\Sigma_{X}$ semidefinida positiva $\Rightarrow \exists \alpha$ autovector asociado autovalor 0.
+$$Y = \alpha'X$$
+$$\mu_{Y} = E[Y] = E[\alpha'X] = \alpha' E[X] = \alpha' \mu_{X} = k$$
+$$Var[Y] = E[(Y - \mu_{y})^{2}] = E[(\alpha'X - \alpha'\mu_{X})^{2}] = E[(\alpha'[X - \mu_{X}])^{2}] =$$
+$$= E[\alpha'(X - \mu_{X})(X - \mu_{X})(\alpha')'] = \alpha' E[(X - \mu_{X})'(X - \mu_{x})] \alpha  = \underset{0_{p}}{\alpha' \Sigma_{X} \alpha} = 0 \Rightarrow$$
+$$\Rightarrow P[Y=k] = 1$$
+\end{itemize}
+\end{enumerate}
+
+\item Transformaciones lineales: Sean $X \sim (\mu_{X}, \Sigma_{X})$ vec. a. $p$-dimensional, $Y = BX + b$ vec. a. $q$-dimensional, con $B$ matriz $q \times p$ (cte.) y $b$ vector $q \times 1$ (cte.).
+
+Entonces, se tiene que
+$$Y \sim (\mu_{Y}, \Sigma_{Y}) = (B \mu_{X} + b, B \Sigma_{X} B') \hspace{1cm} (9)$$
+
+\item (9) $$E[Y] = E[BX + b] = BE[X] + b = B\mu_{X} + b$$
+$$Var[Y] = E[(Y - \mu_{y})(Y - \mu_{Y})'] = E[(Bx+b - B\mu_{X}-b)(Bx+b - B\mu_{X}-b)'] =$$
+$$=E[(B(X - \mu_{X}))(B(X - \mu_{X}))'] = E[B(X - \mu_{X})(X - \mu_{X})B'] =$$
+$$= B E[(X - \mu_{X})(X - \mu_{X})']B' = B\Sigma_{X}B'$$
+
+\item Algunas medias globales de variación:
+\begin{itemize}
+\item $|\Sigma| = \prod_{j=1}^{p} \lambda_{j}$ (determinante).
+
+\item $tr(\Sigma) = \sum_{j=1}^{p} \sigma_{j}^{2} = \sum_{j=1}^{p} \lambda_{j}$ (traza).
+\end{itemize}
+($\lambda_{1}, \dots, \lambda_{p}$ autovalores de $\Sigma$)
+\end{itemize}
+
+\subsubsection{Función característica}
+\begin{itemize}
+\item Recordatorio: Dado un vector aleatorio $X = (X_{1}, \dots, X_{p})'$, se define su función característica como:
+$$\phi_{X}(t) = E[e^{it'X}] = \int_{\Omega} e^{it'X(w)} P(dw) = \int_{\mathbb{R}^{d}} e^{it'x}P_{X}(dx), \forall t = (t_{1}, \dots, t_{p})' \in \mathbb{R}^{p}$$
+
+\item Teorema: Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio. Se tiene que la distribución (multivariante) de $X$ queda unívocamente determinada por el conjunto de todas las distribuciones (univariantes) de variables aleatorias de la forma
+$$\alpha' X, \forall \alpha \in \mathbb{R}^{p} \hspace{1cm} (10)$$
+
+\item (10) Sabemos que $\phi_{X}(t) = E[e^{it'X}]$. Tomamos $Y_{n} = \alpha'X = \sum_{j=1}^{p} \alpha_{j}X_{j} \Rightarrow \phi_{Y_{\alpha}}(t) = E[e^{it(\alpha'X)}]$.
+
+Tomando $t = 1 \Rightarrow \phi_{Y_{\alpha}} (1) = E[e^{i\alpha'X}] = \phi_{X}(\alpha)$. \\
+Tomando $Y_{t} = t'X \Rightarrow \phi_{Y_{t}}(1) = \phi_{X}(t)$.
+
+\item Conocer todas las distribuciones de $X_{1}, \dots, X_{p}$ no nos permiten conocer la de $X$ excepto en el caso de independencia, mientras que conocer todas las combinaciones de la forma $\alpha_{1}X_{1} + \dots + \alpha_{p}X_{p}$ si nos lo permite.
+\end{itemize}
+
+\subsubsection{Momentos y cumulantes}
+
+Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio con función característica $\phi_{X}(t), t \in \mathbb{R}^{p}$.
+\begin{itemize}
+\item Momentos: Se define el momento (no centrado) $p$-dimensional de orden $(r_{1}, \dots, r_{p})$ de $X$ como
+$$\mu_{r_{1} \dots r_{p}}^{1 \dots p} = E[X_{1}^{r_{1}} \dots X_{p}^{r_{p}}]$$
+
+Los momentos pueden obtenerse a partir de la función característica, derivándose de su expansión de Taylor (respecto al origen):
+$$\phi(t) = E[e^{it'x}] = E[\sum_{r=0}^{\infty} \frac{1}{r!} (it'X)^{r}] = \sum_{r=0}^{\infty} \sum_{r_{1} + \dots + r_{p} = r} \mu_{r_{1} \dots r_{p}}^{1 \dots p} \frac{(it_{1})^{r_{1}} \dots (it_{p})^{r_{p}}}{r_{1}! \dots r_{p}!}$$
+\end{itemize}
+
+En particular, se tiene el siguiente resultado:
+\begin{itemize}
+\item Teorema: Si $E[|X_{1}^{m_{1}}| \dots |X_{p}|^{m_{p}}] < \infty$, entonces la función característica de $X$ es $(m_{1}, \dots, m_{p})$ veces continuamente diferenciable, y
+$$\frac{\delta^{m}}{\delta_{t_{1}}^{m_{1}} \dots \delta_{t_{p}}^{m_{p}}} \phi(t) \mid_{t=0} = i^{m}E[X_{1}^{m_{1}} \dots X_{p}^{m_{p}}] = i^{m} \mu_{m_{1} \dots m_{p}}^{1 \dots p}$$
+($m = m_{1} + \dots + m_{p}$)
+\end{itemize}
+
+Cumulantes: Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio con función característica $\phi_{X}(t)$, $t \in \mathbb{R}^{p}$. Consideramos la función
+$$\log \phi(t)$$
+\begin{itemize}
+\item Se definen los cumulantes $p$-dimensional de orden ($r_{1}, \dots, r_{p}$) de $X$ como los coeficientes de la correspondiente expansión (respecto al origen),
+$$\log \phi(t) = \sum_{r=0}^{\infty} \sum_{r_{1} + \dots + r_{p} = r} \kappa_{r_{1} \dots r_{p}}^{1 \dots p} \frac{(it_{1})^{r_{1}} \dots (it_{p})^{r_{p}}}{r_{1}! \dots r_{p}!}$$
+\end{itemize}
+
+\subsubsection{Cambio de variables}
+\begin{itemize}
+\item Teorema: Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio con función de densidad $f_{X}(x), x \in \mathbb{R}^{p}$, positiva sobre $S \subseteq \mathbb{R}^{p}$ y continua-
+
+Sea $Y = (Y_{1}, \dots, Y_{p})'$ un vector aleatorio con
+$$Y = g(x) = (g_{1}(X), \dots, g_{p}(X))',$$
+siendo la restricción
+$$g = (g_{1}, \dots, g_{p})': S \to T \equiv g(S) \subseteq \mathbb{R}^{p}$$
+una aplicación biyectiva, y sea $g^{-1} =: h = (h_{1}, \dots, h_{p})'$. Supongamos que existen las derivadas parciales
+$$\frac{\delta h_{i} (y)}{\delta y_{j}}, (i, j = 1, \dots, p)$$
+y son continuas sobre $T$.
+
+Entonces, la función de densidad $f_{Y}(y)$, $y \in \mathbb{R}^{p}$, del vector aleatorio $Y = g(X)$ viene dada por
+$$f_{Y}(y) = f_{X}(g^{-1}(y)) \cdot abs(J_{g^{-1}}(y))$$
+siendo $J_{g^{-1}}(y) = [J_{g}(g^{-1}(y))]^{-1}$ el determinante de la matriz jacobiana de la transformación $g^{-1}$.
+
+\item Caso lineal: Sean $X$ vec.a. $p$-dimensional, $Y$ vec.a. $p$-dimensional, definido por la transformación
+$$Y = g(X) := BX + b$$
+con $B$ matriz $p \times p$ (cte.) no singular, $b$ vector $p \times 1$ (cte.).
+
+Entonces, en este caso, se tiene que
+$$X = B^{-1}(Y - b)$$
+$$J_{g^{-1}}(\cdot) \equiv |B^{-1}| = |B|^{-1}$$
+$$f_{Y}(y) = f_{X}(B^{-1}(y-b)) \cdot abs(|B|^{-1})$$
+\end{itemize}
+
+\subsection{Descomposición Matriciales Diagonalización}
+
+$A$ matriz cuadrada $p \times p$, simétrica, definida no negativa
+$$A = QDQ' \iff Q'AQ = D$$
+\begin{itemize}
+\item $Q$ matriz ortogonal, $QQ' = Q'Q = I$.
+\item $D$ matriz diagonal (autovalores).
+\end{itemize}
+
+Como es definida no negativa, podemos escribirlo como:
+$$A = QD^{\frac{1}{2}}D^{\frac{1}{2}}Q' = (QD^{\frac{1}{2}})(QD^{\frac{1}{2}})'$$
+(ya que $D^{\frac{1}{2}} = (D^{\frac{1}{2}})'$)
+
+Llamando $C = D^{\frac{1}{2}}$, podemos tomar otra matriz $H$ otrogonal tal que $HH' = H'H = I$ y tenemos:
+$$A = CC' = CIC' = CHH'C' = (CH)(CH)' = EE'$$
+
+Tomando $H = Q'$ tenemos:
+$$A = QD^{\frac{1}{2}}Q'QD^{\frac{1}{2}}Q' = (QD^{\frac{1}{2}}Q')(QD^{\frac{1}{2}}Q') = RR = R^{2}$$
+Esta $R$ se interpreta como la raíz cuadrada de $A$ ($R = A^{\frac{1}{2}}$).
+
+\subsubsection{Descomposición de Cholesky}
+
+Es de la forma
+$$A = TT'$$
+donde $T$ es una matriz triangular superior (y por tanto $T'$ es triangular inferior), con todos los elementos de la diagonal no negativos.
+
+Si $rango(A) = r$, entonces $T$ tiene $p - r$ filas nulas.
+
+\subsection{Caso \texorpdfstring{$\Sigma > 0$}: definiciones, propiedades y caracterizaciones}
+
+\subsubsection{Definición en términos de la densidad}
+\begin{itemize}
+\item Definición: Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio. Se dice que $X$ tiene una distribución normal $p$variante si su densidad es de la forma
+$$f_{X}(x) = \frac{1}{(2\pi)^{\frac{p}{2}} |\Sigma|^{\frac{1}{2}}} exp\{-\frac{1}{2}(x-\mu)' \Sigma^{-1} (x-\mu)\}, \forall x \in \mathbb{R}^{p}$$
+siendo $\mu = (\mu_{1}, \dots, \mu_{p})' \in \mathbb{R}^{p}$ y $\Sigma$ una matriz escalar $(p \times p)$-dimensional simétrica y definida positiva.
+
+Se denota $X \sim N_{p}(\mu, \Sigma)$, representando $\mu$ y $\Sigma$ los ``parámetros'' de la distribución.
+
+Se demuestra que $f_{X}$ está bien definida, es decir, que cumple las condiciones para ser una  función de densidad:
+\begin{enumerate}
+\item $f_{X}(x) \geq 0, \forall x \in \mathbb{R}^{p}$.
+\item $\int_{\mathbb{R}^{p}} f_{X}(x) dx = 1 \hspace{1cm} (1)$.
+\item[(1)] $\int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{\frac{1}{2}(X - \mu)' \Sigma^{-1} (X - \mu)\} dX$. \\
+Al ser $\Sigma > 0$, tomamos una descomposición $\Sigma = CC'$, con $C$ matriz cuadrada $p \times p$ no singular. Hacemos el siguiente ``cambio de variable'':
+$$Z = C^{-1}(X - \mu)$$
+$$X = CZ + \mu$$
+Elegimos $C$ tal que $|C| > 0$. Supongamos que $|C| < 0$, tomamos $A$ tal que $\Sigma = (CA)(CA)' = CAA'C'$ con $AA' = A'A = I$ de forma que $|CA| > 0$, y tomamos $CA$ como C.
+
+El determinante del Jacobiano de la transformación:
+$$|C^{-1}| = |C|^{-1} \Rightarrow dZ = |C|^{-1} dZ \Rightarrow dZ = |C| dX$$
+$$\Sigma^{-1} = (CC')^{-1} = (C^{-1})'C^{-1}$$
+$$|\Sigma| = |C||C'| = |C|^{2} \Rightarrow |\Sigma|^{\frac{1}{2}} = |C|$$
+
+Con todo esto, nos queda:
+$$\int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{\frac{1}{2}(X - \mu)' \Sigma^{-1} (X - \mu)\} dX = \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|C|} exp\{-\frac{1}{2}Z'Z\} |C| dZ =$$
+$$= \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}} exp\{-\frac{1}{2} \sum_{j=1}^{p} z_{j}^{2}\} dZ = \prod_{j=1}^{p} \int_{\mathbb{R}} \frac{1}{(2\pi)^{\frac{1}{2}}} exp\{-\frac{1}{2} z_{j}^{2}\} dz_{j} = \prod_{j=1}^{p} 1 = 1$$
+\end{enumerate}
+
+\item Nota: Esto corresponde a
+$$f_{X}(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2}(\frac{x-\mu}{\sigma})}$$
+\end{itemize}
+
+\subsubsection{Vector de medias y matriz de covarianzas}
+\begin{itemize}
+\item A partir de cualquier factorización de la forma
+$$\Sigma = CC'$$
+para alguna matriz $C$ de dimensión $p \times p$ no singular (por ser $\Sigma > 0$), se tiene que el vec.a. $Z = (Z_{1}, \dots, Z_{p})'$ definido por:
+$$Z = C^{-1}(X - \mu) \hspace{2cm} (\text{es decir, con } X = CZ + \mu)$$
+se distribuye con función de densidad
+$$f_{Z}(z) = \prod_{j=1}^{p} \frac{1}{\sqrt{2\pi}} exp\{-\frac{1}{2} z^{\frac{1}{2}}\} = \prod_{j=1}^{p} f_{Z_{j}}(z_{j})$$
+Es decir, para cada $j = 1, \dots, p$,
+$$Z_{j} \sim N_{1}(0, 1)$$
+siendo $Z_{1}, \dots, Z_{p}$ independientes (por tanto, incorreladas), y
+$$Z \sim N_{p}(0, I_{p})$$
+
+\item Se comprueba de forma inmediata que $\mu$ y $\Sigma$ representan, respectivamente, el vector de medias y la matriz de covarianzas del vector aleatorio $X$, es decir:
+$$ \mu_{X} = \mu \hspace{1cm} (2)$$
+$$ \Sigma_{X} = \Sigma \hspace{1cm} (3)$$
+
+\item (2) $CC' = \Sigma$.
+$$\mu_{X} = E[X] = E[CZ + \mu] = CE[Z] + \mu = \mu$$
+\item (3) $$\Sigma_{X} = E[(X-\mu)(X-\mu)'] = E[(CZ+\mu-\mu)(CZ+\mu-\mu)'] = CE[ZZ']C' = CC'$$
+Donde hemos utilizado que $Z_{1}, \dots, Z{p}$ son independientes:
+$$E[Z_{1}Z_{2}] = E[Z_{1}]E[Z_{2}] = 0$$
+$$E[ZZ'] = \begin{pmatrix}
+z_{1}^{2} & z_{2}z_{1} & \dots \\
+z_{1}z_{2} & z_{2}^{2} & \dots \\
+\vdots & \vdots & \ddots
+\end{pmatrix} = \begin{pmatrix}
+z_{1}^{2} & 0 & \dots \\
+0 & z_{2}^{2} & \dots \\
+\vdots & \vdots & \ddots
+\end{pmatrix} = I$$
+\end{itemize}
+
+\subsubsection{Algunas propiedades (caso \texorpdfstring{$\Sigma > 0$}))}
+\begin{itemize}
+\item[1] Cambio de variables lineal: Sean
+$$X \sim N_{p}(\mu_{X}, \Sigma_{X}) \hspace{1cm} (\Sigma > 0)$$
+$$Y = BX + b$$
+con $B$ matriz $p \times p$ (cte.) no singular y $b$ vector $p \times 1$ (cte.).
+
+Entonces, se tiene que:
+$$Y \sim N_{p}(\mu_{Y}, \Sigma_{Y}) = N_{p}(B \mu_{X} + b, B\Sigma_{X}B') \hspace{1cm} (4)$$
+
+\item (4) $X \sim N_{p}(\mu_{X}, \Sigma_{X}),  Y = BX + b$
+$$f_{Y}(y) = F_{X}(B^{-1}(y-b)) abs(|B|^{-1}) =$$
+$$= \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{-\frac{1}{2} (B^{-1}(y-b) - \mu)' \Sigma^{-1} (B^{-1}(y-\mu) - b)\} abs(|B|^{-1}) =$$
+Utilizamos que $I = B^{-1}B$, y que $abs(|B^{-1}|) = \sqrt{|B|^{-2}}$.
+$$= \frac{1}{(2\pi)^{\frac{p}{2}} |\Sigma|^{\frac{1}{2}} |B|^{\frac{1}{2}} |B|^{\frac{1}{2}}} exp\{-\frac{1}{2} (y-B\mu-b)' (B \Sigma B')^{-1} (y-B\mu-b)\}$$
+($|\Sigma|^{\frac{1}{2}} |B|^{\frac{1}{2}} |B|^{\frac{1}{2}} = |B \Sigma B'|^{\frac{1}{2}}$)
+$$Y \sim N_{p}(B\mu+b, B \Sigma B')$$
+
+\item Caracterización 1: Un vector aleatorio $p$-dimensional $X$ tiene una DNM no singular, $X \sim N_{p}(\mu, \Sigma)$ ($\Sigma > 0$), si y sólo si
+$$X \overset{d}{=} AZ + \mu$$
+con $A$ matriz $p \times p$ (cte.) no singular, $AA' = \Sigma$ y $Z \sim N_{p}(0, I_{p})$ (5).
+
+($\overset{d}{=}$ igual en distribución, tienen la misma distribución)
+
+\item (5)
+\begin{itemize}
+\item[$\Leftarrow$] Supongamos $X \overset{d}{=} AZ + \mu \Rightarrow X \sim N_{p}(A \cdot 0 + \mu, A I_{p} A') = N_{p}(\mu, AA') = N_{p}(\mu, \Sigma)$.
+\item[$\Rightarrow$] Supongamos $X \sim N_{p}(\mu, \Sigma), \Sigma > 0$. \\
+Sea $A_{p \times p}$ no singular tal que $\Sigma = AA'$. Definimos $Z = A^{-1}(X - \mu) \Rightarrow X = AZ + \mu$.
+$$Z = A^{-1}X + (A^{-1}\mu) \Rightarrow Z \sim N_{p} (A^{-1} \mu + (-A^{-1}\mu), A^{-1}\Sigma(A^{-1})') \equiv$$
+$$\equiv N_{p} (0, A^{-1}AA'(A^{-1})') \equiv N_{p}(0, I_{p})$$
+\end{itemize}
+
+\item[2] Independencia y condicionamiento: Vemos a continuación algunos resultados fundamentales (dos sobre independencia y uno sobre condicionamiento) que, entre sobre posibilidades, pueden tratarse a partir de la definición de la DNM no singular en términos de su densidad.
+
+\begin{itemize}
+\item Resultado 1: Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio con DNM no singular,
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+Si la matriz $\Sigma$ es diagonal,
+$$\Sigma = \begin{pmatrix}
+\sigma_{1}^{2} & 0 & \dots & 0 \\
+0 & \sigma_{2}^{2} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & \sigma_{p}^{2}
+\end{pmatrix} = diag(\sigma_{1}^{2}, \dots, \sigma_{p}^{2})$$
+entonces las variables aleatorios componentes del vector, $X_{i}, i = 1, \dots, p$, son independientes y tienen un DN univariante (no degenerada),
+$$X_{i} \sim N(\mu_{i}, \sigma_{i}^{2}) \hspace{1cm} (\sigma_{i}^{2} > 0), \hspace{1cm} i = 1, \dots, p \hspace{1cm} (6)$$
+
+\item (6) $$f_{X}(x) = \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{-\frac{1}{2}(x - \mu)' \Sigma^{-1}(x - \mu)\} =$$
+$$= \frac{1}{(2\pi)^{\frac{p}{2}}|\prod_{i}^{p} \sigma_{i}^{2}|^{\frac{1}{2}}} exp\{-\frac{1}{2} (x-\mu)' \begin{pmatrix}
+\sigma_{1}^{-2} & 0 & \dots & 0 \\
+0 & \sigma_{2}^{-2} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & \sigma_{p}^{-2}
+\end{pmatrix} (x - \mu)\} =$$
+$$= \frac{1}{(2\pi)^{\frac{p}{2}}|\prod_{i}^{p} \sigma_{i}^{2}|^{\frac{1}{2}}} exp\{-\frac{1}{2} (\sigma_{1}^{-2} (x_{1} - \mu_{1})^{2} \cdot ... \cdot \sigma_{p}^{-2}(x_{p} - \mu_{p})^{2})\} =$$
+$$= \prod_{i=1}^{p} \frac{1}{(2\pi)^{\frac{1}{2}}|\sigma_{i}^{2}|^{\frac{1}{2}}} exp\{-\frac{1}{2} \sigma_{i}^{-2} (x_{i} - \mu_{i})^{2}\} = \prod_{i=1}^{p} \frac{1}{(2\pi)^{\frac{1}{2}}|\sigma_{i}^{2}|^{\frac{1}{2}}} exp\{-\frac{1}{2} (\frac{x_{i} - \mu_{i}}{\sigma_{i}})^{2}\} =$$
+$$= \prod_{i=1}^{p} f_{X_{i}}(x) \hspace{2cm} X_{i} \sim N(\mu_{i}, \sigma_{i}^{2})$$
+
+\item El recíproco de este resultado es cierto en el siguiente sentido:
+
+Si $X = (X_{1}, \dots, X_{p})'$ es un vector aleatorio con componentes (mutuamente) independientes, cada una de ellas con DN univariantes (no degenerada),
+$$X_{i} \sim N(\mu_{i}, \sigma_{i}^{2}) \hspace{1cm} (\sigma_{i}^{2}), \hspace{1cm} i = 1, \dots, p$$
+entonces $X$ tiene DNM no singular,
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+(Observación: El resultado no es válido si solo se supone la incorrelación, o incluso la ``independencia dos a dos'', entre las componentes del vector).
+
+\item El Resultado 1 se puede generalizar al caso en que la matriz $\Sigma$ es una matriz diagonal por cajas, estableciéndose las conclusiones en términos de los correspondientes subvectores del vector $X$ (se enunciará, por simplicidad, en el caso de dos subvectores):
+
+\item Resultado 2: Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio con DNM no singular,
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+Supongamos que las componentes de $X$ están ordenadas de tal modo que para la partición del vector
+$$X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix}$$
+con $X_{(1)} = (X_{1}, \dots, X_{1})', X_{(2)} = (X_{1+q}, \dots, X_{p})'$, se tiene
+$$\mu = \begin{pmatrix} \mu_{(1)} \\ \mu_{(2)} \end{pmatrix} \hspace{1cm} \Sigma = \begin{pmatrix}
+\Sigma_{(11)} & \Sigma_{(12)} \\
+\Sigma_{(21)} & \Sigma_{(22)}
+\end{pmatrix} = \begin{pmatrix}
+\Sigma_{(11)} & 0 \\
+0 & \Sigma_{(22)}
+\end{pmatrix}$$
+(i. e., $\Sigma = diag(\Sigma_{(11)}, \Sigma_{(22)})$). Entonces, los vectores aleatorios $X_{(1)}$ y $X_{(2)}$ son (mutuamente) independientes y tienen cada uno DNM, de dimensiones respectivas $q$ y $p-q$,
+$$\begin{aligned} X_{(1)} \sim N_{q}(\mu_{(1)}, \Sigma_{(11)}) \\
+X_{(2)} \sim N_{p-q}(\mu_{(2)}, \Sigma_{(22)}) \end{aligned} \hspace{1cm} (7)$$
+
+\item (7) $$f_{X}(x) = \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{-\frac{1}{2} (x - \mu)'\Sigma(x - \mu)\} = (*) \hspace{1cm} X \sim N_{p}(\mu, \Sigma)$$
+\begin{itemize}
+\item $|\Sigma| = |\Sigma_{(11)}||\Sigma_{(22)}| \hspace{1cm} |\Sigma|^{\frac{1}{2}} = |\Sigma_{(11)}|^{\frac{1}{2}}|\Sigma_{(22)}|^{\frac{1}{2}} \hspace{1cm} \Sigma^{-1} = \begin{pmatrix}
+(\Sigma_{(11)})^{-1} & 0 \\
+0 & (\Sigma_{(22)})^{-1}
+\end{pmatrix}$
+\item $(x-\mu)'\Sigma(x-\mu) = (X_{(1)} - \mu_{(1)})(X_{(2)} - \mu_{(2)}) \begin{pmatrix}
+(\Sigma_{(11)})^{-1} & 0 \\
+0 & (\Sigma_{(22)})^{-1}
+\end{pmatrix} \begin{pmatrix}
+X_{(1)}-\mu_{(1)} \\
+X_{(2)}-\mu_{(2)}
+\end{pmatrix} =$ \\ 
+$= (X_{(1)}-\mu_{(1)})'(\Sigma_{(11)})^{-1}(X_{(1)}-\mu_{(1)}) + (X_{(2)}-\mu_{(2)})'(\Sigma_{(22)})^{-1}(X_{(2)}-\mu_{(2)})$
+\end{itemize}
+\begin{tiny}
+$$(*) = \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma_{(11)}|^{\frac{1}{2}}|\Sigma_{(22)}|^{\frac{1}{2}}} exp\{-\frac{1}{2}(X_{(1)}-\mu_{(1)})'(\Sigma_{(11)})^{-1}(X_{(1)}-\mu_{(1)})\} exp\{-\frac{1}{2}(X_{(2)}-\mu_{(2)})'(\Sigma_{(22)})^{-1}(X_{(2)}-\mu_{(2)})\} =$$
+\end{tiny}
+$$= f_{X_{(1)}}(x_{(1)}) f_{X_{(2)}}(x_{(2)}) \hspace{2cm} (\frac{p}{2} = \frac{q+p-q}{2})$$
+
+\item Resultado 3: Sea (como en el Resultado 2)
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+con el particionamiento
+$$X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix} \hspace{1cm} \mu = \begin{pmatrix} \mu_{(1)} \\ \mu_{(2)} \end{pmatrix} \hspace{1cm} \Sigma = \begin{pmatrix}
+\Sigma_{(11)} & \Sigma_{(12)} \\
+\Sigma_{(21)} & \Sigma_{(22)}
+\end{pmatrix}$$
+Entonces, se tiene que:
+\begin{enumerate}
+\item Los vectores $X_{(1)}$ y $X_{(2)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}X_{(1)}$ son independientes.
+\item Dichos vectores se distribuyen según
+\begin{itemize}
+\item $X_{(1)} \sim N_{q}(\mu_{(1)}, \Sigma_{(11)})$.
+\item $X_{(2)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}X_{(1)} \sim N_{p-q} (\mu_{(2)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\mu_{(1)}, \Sigma_{(22)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\Sigma_{(12)})$.
+\end{itemize}
+\item La distribución condicionada de $X_{(2)}$ dado $X_{(1)} = x_{(1)}$ es una DNM, de la forma
+$$N_{p-q}(\mu_{(2)} + \Sigma_{(21)}\Sigma_{(11)}^{-1}(x_{(1)} - \mu_{(1)}), \Sigma_{(22)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\Sigma_{(12)}) \hspace{1cm} (8)$$
+(En adelante, se denotará $\Sigma_{22 \cdot 1} = \Sigma_{(22)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\Sigma_{(12)}$)
+\end{enumerate}
+
+\item (8) Definimos la matriz
+$$C = \begin{pmatrix}
+I_{(1)} & 0 \\
+-\Sigma_{(21)}\Sigma_{(11)}^{-1} & I_{(2)}
+\end{pmatrix} \hspace{1cm} |C| = 1 \Rightarrow C \text{ no singular }$$
+Consideramos el cambio de variables dado por la transformación:
+$$Y = CX = C \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix} = \begin{pmatrix}
+X_{(1)} \\
+X_{(2)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}X_{(1)}
+\end{pmatrix} = \begin{pmatrix} Y_{(1)} \\ Y_{(2)} \end{pmatrix} = Y \hspace{1cm} X = C^{-1}Y$$
+$$Y \sim N_{p}(C \mu, C \Sigma C') = N_{p}(C \begin{pmatrix} \mu_{(1)} \\ \mu_{(2)} \end{pmatrix}, C \begin{pmatrix} \Sigma_{(11)} & \Sigma_{(12)} \\ \Sigma_{(21)} & \Sigma_{(22)} \end{pmatrix} C^{-1}) =$$
+$$= N_{p} (\begin{pmatrix} \mu_{(1)} \\ \mu_{2} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\mu_{(1)} \end{pmatrix}, \begin{pmatrix}
+\Sigma_{(11)} & 0 \\
+0 & \Sigma_{(22)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}\Sigma_{(12)} = \Sigma_{22 \cdot 1}
+\end{pmatrix})$$
+Por el Resultado 2, los vectores $X_{(1)}$ y $X_{(2)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}X_{(1)}$ son independientes.
+
+Nos queda ver el punto 3. Al tratarse de una distribución continua
+$$f_{X_{(2)} \mid X_{(1)} = x_{(1)}} (x_{(2)}) = \frac{f_{X_{(1)}X_{(2)}}(x_{(1)}, x_{(2)})}{f_{X_{(1)}}(x_{(1)})} \overset{\text{c.v.}}{=} \frac{f_{Y_{(1)}Y_{(2)}}(x_{(1)}, x_{(2)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}x_{(1)}) \cdot 1}{f_{X_{(1)}}(x_{(1)})} =$$
+$$= \frac{\frac{1}{(2\pi)^{\frac{p}{2}}(|\Sigma_{11}| |\Sigma_{22 \cdot 1}|)^{\frac{1}{2}}} exp\{-\frac{1}{2}[A + B(x_{(2)})]\}}{\frac{1}{(2\pi)^{\frac{q}{2}} |\Sigma_{(11)}|^{\frac{1}{2}}} exp\{-\frac{1}{2}A\}} = \frac{1}{(2\pi)^{\frac{(p-1)}{2}} |\Sigma_{22 \cdot 1}|^{\frac{1}{2}}} exp\{-\frac{1}{2} B x_{(2)}\}$$
+Nota: El cambio de variable lo vimos en la sección 1.3.4. Cambio de variables.
+$$Cx = \begin{pmatrix}
+I_{(1)} && 0 \\
+-\Sigma_{(21)} \Sigma_{(11)}^{-1} & I_{(2)}
+\end{pmatrix} \begin{pmatrix}
+x_{(1)} \\ x_{(2)}
+\end{pmatrix} = \begin{pmatrix}
+x_{(1)} \\ x_{(2)} - \Sigma_{(21)}\Sigma_{(11)}^{-1}x_{(1)}
+\end{pmatrix}$$
+\begin{scriptsize}
+$$\begin{pmatrix}
+X_{(1)} \\ X_{(2)} - \Sigma_{(21)} \Sigma_{(11)}^{-1} x_{(1)}
+\end{pmatrix} - \begin{pmatrix}
+\mu_{(1)} \\ \mu_{(2)} - \Sigma_{(21)} \Sigma_{(21)} \Sigma_{(11)}^{-1} \mu_{(1)}
+\end{pmatrix} = \begin{pmatrix}
+X_{(1)} - \mu_{(1)} \\
+X_{(2)} - (\mu_{(2)} + \Sigma_{(21)} \Sigma_{(11)}^{-1}(x_{1} - \mu_{(1)}))
+\end{pmatrix} \Rightarrow$$
+$$\Rightarrow \begin{pmatrix}
+X_{(1)} - \mu_{(1)} \\
+X_{(2)} - (\mu_{(2)} + \Sigma_{(21)} \Sigma_{(11)}^{-1}(x_{1} - \mu_{(1)}))
+\end{pmatrix}' \begin{pmatrix}
+\Sigma_{(11)}^{-1} & 0 \\
+0 & \Sigma_{22 \cdot 1}^{-1}
+\end{pmatrix}^{-1} \begin{pmatrix}
+X_{(1)} - \mu_{(1)} \\
+X_{(2)} - (\mu_{(2)} + \Sigma_{(21)} \Sigma_{(11)}^{-1}(x_{1} - \mu_{(1)}))
+\end{pmatrix} =$$
+\end{scriptsize}
+\begin{tiny}
+$$= (X_{(1)} - \mu_{(1)})' \Sigma_{(11)}^{-1}(X_{(1)} - \mu_{(1)}) + (x_{(2)} - (\mu_{(2)} + \Sigma_{(21)}\Sigma_{(11)}^{-1}(X_{(1)} - \mu_{(1)}))' \Sigma_{22 \cdot 1}^{-1} (x_{(2)} - (\mu_{(2)} + \Sigma_{(21)}\Sigma_{(11)}^{-1}(x_{(1)} - \mu_{(1)}))) =$$
+\end{tiny}
+$$ = A + B(x_{(2)})$$
+
+Por lo que tenemos:
+$$N_{p-q} (\mu_{(2)} + \Sigma_{(21)} \Sigma_{(11)}^{-1}(x_{(1)} - \mu_{(1)}), \Sigma_{(22)} - \Sigma_{(21)} \Sigma_{(11)}^{-1} \Sigma_{(12)})$$
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Función característica de la DNM (caso \texorpdfstring{$\Sigma > 0$}))}
+La función característica de la DNM, en el caso no singular ($\Sigma > 0$), puede obtenerse de forma directa a partir de la función de densidad.
+
+\begin{itemize}
+\item Caracterización 2: Un vector aleatorio $p$-dimensional $X$ con vector de medias $\mu$ y matriz de covarianzas $\Sigma > 0$ tiene una DNM no singular, $X \sim N_{p}(\mu, \Sigma)$, si y sólo si su función característica tiene la forma
+$$\phi_{X}(t) = exp\{it'\mu - \frac{1}{2}t'\Sigma t\} \hspace{1cm} t \in \mathbb{R}^{p} \hspace{1cm} (9)$$
+(Observación: Se verá más adelante que en el casos singular, con $\Sigma$ semidefinida positiva, la función característica tiene la misma expresión formal).
+
+\item (9) $$\phi_{X}(t) = E[e^{it'X}] \hspace{1cm} \forall t \in \mathbb{R}^{p}$$
+$$\phi_{X}(t) = \int_{\mathbb{R}^{p}} e^{it'x} f_{X}(x)dx = \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}} |\Sigma|^{\frac{1}{2}}} exp\{it'x - \frac{1}{2}(x - \mu)'\Sigma^{-1}(x - \mu)\} dx =$$
+Hacemos un cambio de variable: $\Sigma = CC', Y = C^{-1}(X - \mu) \Rightarrow X = CY + \mu$:
+$$= \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}(|C||C'|)^{\frac{1}{2}}} exp\{it'(CY + \mu) - \frac{1}{2}Y'Y\} |C| dy =$$
+$$= e^{it'\mu} \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}} exp\{i(t'C)Y - \frac{1}{2}Y'Y\} dy =$$
+Llamamos $t'C = \alpha = (\alpha_{1}, \dots, \alpha_{p})$.
+$$= e^{it'\mu} \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{1}{2}}} exp\{\sum_{j=1}^{p}[i \alpha_{j} y_{j} - \frac{1}{2}y_{j}^{2}]\} dy =$$
+$$= \prod_{j=1}^{p} e^{it_{j}\mu_{j}} \phi_{Y_{j}}(\alpha_{j}) =$$
+donde $\phi_{N(\mu, \sigma^{2})}(t) = e^{it\mu - \frac{1}{2}\sigma^{2}t^{2}}$, por lo que $\phi_{N(0, 1)}(t) = e^{-\frac{1}{2}t^{2}}$, y como $Y \sim N(0, I_{p \times p}) \Rightarrow Y_{j} \sim N(0,1)$.
+$$= \prod_{j=1}^{p} e^{it_{j}\mu_{j} - \frac{1}{2} \alpha_{j}^{2}} =$$
+$$= exp\{\sum_{j=1}^{p} (it_{j}\mu_{j} - \frac{1}{2} \alpha_{j}^{2})\} = e^{it'\mu - \frac{1}{2}t't\Sigma t}$$
+donde hemos usado $\sum_{j=1}^{p} t_{j}\mu_{j} = t'\mu$, $\sum_{j=1}^{p} \alpha_{j}^{2} = \alpha'\alpha = t'CC't = t' \Sigma t$.
+
+\item Recordatorio: $X$ v.a. (multidimensional) $\sim N(\mu, \sigma^{2})$, $\mu \in \mathbb{R}, \sigma^{2} > 0$. Función característica:
+$$\phi_{X}(t) = e^{it\mu - \frac{1}{2}\sigma^{2}t^{2}} \hspace{1cm} t \in \mathbb{R}$$
+En el caso $Z \sim N(0, 1)$, tenemos:
+$$\phi_{Z}(t) = e^{\frac{-1}{2}t^{2}} \hspace{1cm} t \in \mathbb{R}$$
+
+\item Frente al uso directo de la función de densidad (caso no singular), la función característica es muy útil en la derivación de diversos resultados, algunos de los cuales se ven a continuación.
+
+\item Resultado 4: Sean
+$$X \sim N_{p}(\mu_{X}, \Sigma_{X}) \hspace{1cm} (\Sigma_{X} > 0)$$
+$$Y = BX + b$$
+con $B$ matriz $q \times p$ (cte.) de rango $q$ ($\Rightarrow q \leq p$) y $b$ vector $q \times 1$ (cte.).
+
+Entonces, se tiene que
+$$Y \sim N_{q}(\mu_{Y}, \Sigma_{Y}) = N_{q}(B\mu_{X}+b, B\Sigma_{X}B')$$
+(siendo $rango(B\Sigma_{X}B') = q$, es decir, $B\Sigma_{X}B' > 0$) \hspace{1cm} (10)
+
+\item (10) $$\phi_{Y}(t) = E[e^{it'(BX + b)}] = E[e^{it'BX} e^{it'b}] = e^{it'b} E[e^{it'BX}] =$$
+$$= e^{it'b} \phi_{X}(B't) = e^{it'b} exp\{i(B't)'\mu_{X} - \frac{1}{2}(B't)'\Sigma_{X}(B't)\} =$$
+$$= exp\{it'(B\mu_{X}+b) - \frac{1}{2}t'B\Sigma_{X}B't\} = exp\{it'\mu_{y} - \frac{1}{2}t'\Sigma_{Y}t\} \Rightarrow$$
+$$\Rightarrow Y \sim N_{q}(\mu_{Y}, \Sigma_{Y}) = N_{q}(B\mu_{X}+b, B\Sigma_{X}B')$$ 
+
+Sea $A$ una matriz cuadrada no singular ($p \times p$).
+\begin{itemize}
+\item Si $B$ matriz ($m \times p$), entonces $rango(BA) = rango(B)$.
+\item Si $C$ matriz ($p \times n$), entonces $rango(AC) = rango(C)$.
+\end{itemize}
+Si $D$ es una matriz ($m \times n$), entonces $rango(DD') = rango(D'D) = rango(D) = rango(D')$.
+
+En este caso, tenemos $\Sigma_{X} = CC'$, por lo que:
+$$B\Sigma_{X}B' = BCC'B' = (BC)(BC)'$$
+con $B$ no singular, y $rango(C) = q$, entonces $rango(BC) = rango(B) = q$, y por lo tanto, $rango((BC)(BC)') = rango(BC) = q$.
+\end{itemize}
+
+\subsubsection{Marginalización (caso \texorpdfstring{$\Sigma > 0$}))}
+En particular, del resultado anterior, se obtiene el siguiente, sobre normalidad de las distribuciones marginales en una DNM
+\begin{itemize}
+\item Resultado 5: Sea
+$$X = (X_{1}, \dots, X_{p})' \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+Entonces, para todo subvector
+$$X_{r} = (X_{r_{1}}, \dots, X_{r_{q}})', \hspace{1cm} r = (r_{1}, \dots, r_{1})', \hspace{1cm} q \leq p$$
+(con $r_{1}, \dots, r_{1}$ distintos entre sí) se tiene que
+$$X_{r} \sim N_{q}(\mu_{r}, \Sigma_{r}) \hspace{1cm} (\Sigma_{r} > 0)$$
+siendo
+$$\mu_{r} \text{ el subvector de } \mu \text{ correspondiente a } r$$
+$$\Sigma_{r} \text{ la submatriz principal de } \Sigma \text{ correspondiente a } r$$
+$$(11)$$
+
+\item (11) Tomamos $B_{q \times p} = (b_{ij})_{\underset{j = 1, \dots, p}{i = 1, \dots, q}}$ con $b_{ij} = \begin{cases}
+1 & \text{si } j = r_{i}\\
+0 & \text{si } j \neq r_{i} 
+\end{cases}$.
+$$X_{r} = BX + b \sim N_{q}(B\mu + b, B\Sigma_{X}B')$$
+con $B\mu + b = B \mu = \mu_{r}$ y $B \Sigma B' = \Sigma_{r}$, por lo que $X_{r} \sim N_{q}(\mu_{r}, \Sigma_{r})$.
+\end{itemize}
+
+\subsubsection{Caracterización de la DNM en términos de normalidad de combinaciones lineales de las componentes (caso \texorpdfstring{$\Sigma > 0$}))}
+\begin{itemize}
+\item Caracterización 3: Un vector aleatorio $p$-dimensional $X = (X_{1}, \dots, X_{p})'$ tiene una DNM no singular si y solo si toda combinación de la forma
+$$\alpha'X, \hspace{1cm} \text{con } \alpha \in \mathbb{R}^{p} \setminus \{0\}$$
+tiene una DN univariante no degenerada (i. e., con varianza no nula) \hspace{1cm} (12).
+
+\item (12)
+\begin{itemize}
+\item[$\Rightarrow$] $X \sim N_{p}(\mu, \Sigma), \Sigma > 0$, $\alpha = (\alpha_{1}, \dots, \alpha_{p}) \in \mathbb{R}^{p} \setminus \{0\}$. \\
+$Y_{\alpha} = a'X \Rightarrow Y_{\alpha} \sim N(\alpha'\mu, \alpha'\Sigma\alpha)$
+\item[$\Leftarrow$] $\alpha \in \mathbb{R}^{p} \setminus \{0\}$, $Y_{\alpha} = \alpha'X \sim N(\mu_{\alpha}, \sigma_{\alpha}^{2}), \sigma_{\alpha}^{2} > 0$. \\
+$\mu_{\alpha} = \alpha'\mu_{X}, \sigma_{\alpha}^{2} = \alpha'\Sigma_{X}\alpha > 0$. \\
+$\phi_{X}(t) = \phi_{Y_{t}}(1), t \in \mathbb{R}^{p}$. \\
+$\phi_{Y_{t}}(s) = exp\{is\mu_{t} - \frac{1}{2}\sigma_{t}^{2}s^{2}\}$. \\
+$\phi_{Y_{t}}(1) = exp\{it'\mu_{t} - \frac{1}{2}t'\Sigma_{X}t\} \Rightarrow X \sim N_{p}\{\mu_{X}, \Sigma_{X}'\}, \Sigma_{X} > 0$.
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Caracterización de la DNM en términos de la densidad esférica estándar (caso \texorpdfstring{$\Sigma > 0$}))}
+\begin{itemize}
+\item Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio con DNM no singular,
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+Para alguna elección de una matriz $C$ no singular con $\Sigma = CC'$, consideramos la normalización de $X$ dada por el vector aleatorio
+$$Z := C^{-1}(X - \mu) \sim N_{p}(0, I_{p})$$
+Definimos ahora el vector aleatorio
+$$U := \frac{Z}{||Z||} = \frac{Z}{(Z'Z)^{\frac{1}{2}}}$$
+Puesto que $||U|| = ||\frac{Z}{||Z||}|| = \frac{||Z||}{||Z||} = 1$, se tiene que $U$ se distribuye sobre la esfera unidad en $\mathbb{R}^{p}, \mathcal{S}_{p}$. Además, se cumple que
+$$U \overset{d}{=} HU$$
+para toda matriz ortogonal $H$ de dimensión $p$ (i.e., $HH' = H'H = I_{p}$); es decir, $U$ ha de tener la distribución uniforme sobre $\mathcal{S}_{p}$ (distribución esférica sobre la esfera unidad) (13).
+
+\item[(13)] $$HU = H \frac{Z}{||Z||} = H \frac{Z}{(Z'Z)^{\frac{1}{2}}} = H \frac{Z}{(Z'H'HZ)^{\frac{1}{2}}} = \frac{HZ}{((HZ)(HZ)')^{\frac{1}{2}}} =$$
+$$= \frac{HZ}{||HZ||} \overset{*}{=} \frac{HZ}{||Z||} \overset{d}{=} \frac{Z}{||Z||} \Rightarrow HU \overset{d}{=} U$$
+$*$ se debe a:
+$$Z \sim N_{p}(0, I_{p})$$
+$$HZ \sim N_{p}(H \cdot 0, H I_{p} H') = N_{p}(0, I_{p})$$
+
+\item Un resultado importante: El vector aleatorio
+$$U = \frac{Z}{(Z'Z)^{\frac{1}{2}}}$$
+y la variable aleatoria
+$$R = (Z'Z)^{\frac{1}{2}}$$
+son independientes.
+
+(Este resultado se demuestra, en general, para vectores aleatorios con distribución esférica)
+
+\item Caracterización 4: Un vector aleatorio $p$-dimensional $X = (X_{1}, \dots, X_{p})'$ tiene una DNM no singular,
+$$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+si y sólo si las realizaciones de $X$ pueden generarse a partir del siguiente procedimiento (experimento aleatorio):
+\begin{enumerate}
+\item Observar el valor de una variable aleatoria $R^{2} := V \sim \mathcal{X}_{p}^{2}$ (Se identifica $V=v$).
+\item Elegir aleatoriamente (i.e., según la distribución uniforme), y de forma independiente, un punto en la esfera $p$-dimensional de radio $r = \sqrt{v}$ (Se identifica como $Z = (Z_{1}, \dots, Z_{p})' = (z_{1}, \dots, z_{p})' = z$).
+\item Dados un vector de medias $\mu$ y una matriz de covarianzas $\Sigma > 0$, eligiendo $C$ no singular tal que $\Sigma = CC'$, obtener el valor de $X$ mediante la expresión $X := CZ + \mu$ (Se identifica $X = x = Cz + \mu$).
+\end{enumerate}
+\end{itemize}
+
+\subsection{Extensión al caso general, \texorpdfstring{$\Sigma \geq 0$})}
+
+\subsubsection{Introducción}
+\begin{itemize}
+\item En el apartado anterior se ha introducido la DNM en el caso $\Sigma > 0$, dándose varias formulaciones equivalentes, una de las cuales se ha adoptado como definición y las otras como caracterizaciones:
+\begin{itemize}
+\item[D] En términos de la densidad asociada (se requiere formalmente la condición $|\Sigma| \neq 0$ y, por tanto, $\exists \Sigma^{-1}$).
+
+\item[C-I] Como transformación lineal (no singular) de un vector de componentes independientes con DN univariante estándar.
+
+\item[C-II] En términos de la forma de la función característica.
+
+\item[C-III] Bajo la condición de normalidad (no degenerada) de combinaciones lineales de las componentes.
+
+\item[C-IV] Mediante transformaciones lineales (no singulares) a partir de la densidad esférica estándar y radio aleatorio $\sqrt{\chi_{p}^{2}}$ (donde también se requiere explícitamente la existencia de $\Sigma^{-1}$)
+\end{itemize}
+
+\item Con el fin de dar una formulación de la DNM extendida al caso general en que $\Sigma \geq 0$ (pudiendose ser singular, es decir, semidefinida positiva), se observa que [C-I], [C-II] y [C-III] ofrecen una viabilidad más directa, especialmente en el caso de [C-II].
+
+\item En este apartado, se trata de introducir dicha formulación extendida partiendo de la identificación de la DNM por su función característica (enfoque [C-II]) y discutiendo las implicaciones con respecto a las otras formas de interpretación.
+\end{itemize}
+
+\subsubsection{Sobre la descomposición espectral de la matriz de covarianzas, \texorpdfstring{$\Sigma \geq 0$})}
+\begin{itemize}
+\item Sea $\Sigma$ la matriz de covarianzas de algún vector aleatorio $p-$dimensional. Por ser $\Sigma \geq 0$ y simétrica, puede factorizarse de la forma:
+$$\Sigma = H \Lambda H'$$
+con $H$ una matriz $p \times p$ ortogonal ($HH' = H'H = I_{p}$), $\Lambda$ una matriz $p \times p$ diagonal, cuyos elementos diagonales distintos son los autovalores de $\Sigma$.
+
+Sea $r = rango(\Sigma), r \leq p$. Supongamos, por conveniencia, que las matrices se eligen de modo que
+$$\Lambda = \begin{pmatrix}
+D & 0 \\
+0 & 0
+\end{pmatrix}$$
+con $D$ una matriz $r \times r$ no singular, escribiendo
+$$H = \begin{pmatrix} H_{1} & H_{2} \end{pmatrix}$$
+con $H_{1}$ una matriz $p \times r$ y $H_{2}$ una matriz $p \times (p - r)$.
+
+Se tiene entonces que
+$$\Sigma = \begin{pmatrix} H_{1} & H_{2} \end{pmatrix} \begin{pmatrix}
+D & 0 \\
+0 & 0
+\end{pmatrix} \begin{pmatrix} H_{1}' \\ H_{2}' \end{pmatrix} = H_{1} D H_{1}'$$
+\end{itemize}
+
+\subsubsection{Función característica de la DNM (caso \texorpdfstring{$\Sigma \geq 0$}))}
+Introducimos formalmente la DNM en el caso general ($\Sigma \geq 0$) mediante la identificación de su función característica:
+
+\begin{itemize}
+\item Definición (extensión de [C-II]): Un vector aleatorio $p-$dimensional $X$ con vector de medias $\mu$ y matriz de covarianzas $\Sigma \geq 0$ tiene una DNM, $X \sim N_{p}(\mu, \Sigma)$, su y sólo si su función característica tiene la forma:
+$$\phi_{X}(t) = exp\{it'\mu - \frac{1}{2}t' \Sigma t\}$$
+
+\item Antes de tratar las extensiones de [C-I] y [C-II] a partir de esta definición, veremos un resultado general sobre transformaciones lineales.
+\end{itemize}
+
+\subsubsection{Transformaciones lineales de rango no necesariamente máximo (caso \texorpdfstring{$\Sigma \geq 0$}))}
+\begin{itemize}
+\item Resultado: Sean
+$$X \sim N_{p}(\mu_{X}, \Sigma_{X}) \hspace{1cm} (\Sigma_{X} \geq 0)$$
+$$Y = BX + b$$
+con $B$ matriz $q \times p$ (cte.) ($\Rightarrow rango(B) \leq \min\{q, p\}$), $b$ vector $q \times 1$ (cte.).
+
+Entonces, se tiene que
+$$Y \sim N_{q}(\mu_{Y}, \Sigma_{Y}) = N_{q}(B\mu_{X} + b, B\Sigma_{X}B')$$
+(siendo $rango(B\Sigma_{X}B') \leq \min\{rango(B), rango(\Sigma_{X})\}$) (1).
+
+\item[(1)] $t \in \mathbb{R}^{q}$,
+$$\phi_{Y}(t) = E[e^{it'Y}] = E[e^{it'(BX+b)}] = e^{it'b}E[e^{it'BX}] = e^{it'b}E[e^{i(B't)'X}] = e^{it'b}\phi_{X}(B't) =$$
+$$= e^{it'b}[e^{i(B't)\mu_{X}-\frac{1}{2}(B't)'\Sigma_{X}(B't)}] = e^{it'(B\mu_{X}+b)-\frac{1}{2}t'(B\Sigma_{X}B')t} = e^{it'\mu_{Y}-\frac{1}{2}t'\Sigma_{y}t} \Rightarrow$$
+$$\Rightarrow Y \sim N_{q}(B\mu_{X}+b, B\Sigma_{X}B')$$
+Para ver el rango:
+$$rango(B(\Sigma_{X}B')) \leq \min\{rango(B), rango(\Sigma_{X}B')\}$$
+Como:
+$$rango(\Sigma_{X}B') \leq \min\{rango(\Sigma_{X}), rango(B)\}$$
+tenemos:
+$$rango(B\Sigma_{X}B') \leq \min\{rango(B), rango(\Sigma_{X})\}$$
+\end{itemize}
+
+\subsubsection{Extensión de la caracterización [C-I] (caso \texorpdfstring{$\Sigma \geq 0$}))}
+\begin{itemize}
+\item Intuitivamente, en el caso en que la matriz $\Sigma$ sea singular, la variabilidad del vector aleatorio $X$, con DNM (versión extendida) podrá ser explicada (con probabilidad 1) en términos de un número de variables aleatorias, con DN univariante e independientes, igual al rango de $\Sigma$. A continuación, vemos la argumentación formal para llegar al enunciado de la correspondiente caracterización, como extensión de [C-I].
+
+\item A partir de la descomposición espectral de $\Sigma$, vista al principio, de la forma:
+$$\Sigma = H_{1}DH_{1}'$$
+y teniendo en cuenta que
+$$HH' = \begin{pmatrix} H_{1} & H_{2} \end{pmatrix} \begin{pmatrix} H_{1}' \\ H_{2}' \end{pmatrix} = H_{1}H_{1}' + H_{2}H_{2}'$$
+podemos escribir la función característica de $X$ como:
+$$\phi_{X}(t) = e^{it'\mu - \frac{1}{2}t'\Sigma t} = e^{it'HH'\mu - \frac{1}{2}t'H_{1}DH_{1}'t} = e^{it'H_{1}H_{1}'\mu - \frac{1}{2}t'H_{1}DH_{1}t}e^{it'H_{2}H_{2}'\mu}$$
+
+\item Esta expresión sugiere considerar el cambio de variables lineal
+$$Y := H'X = \begin{pmatrix} H_{1}' \\ H_{2}' \end{pmatrix} X = \begin{pmatrix} H_{1}'X \\ H_{2}'X \end{pmatrix} =: \begin{pmatrix} Y_{1} \\ Y_{2} \end{pmatrix}$$
+de modo que, por ser $H$ ortogonal, se tiene también que $X = HY$.
+
+Los momentos de primer y segundo orden de $Y$ vienen dados por
+$$\mu_{y} = H'\mu = \begin{pmatrix} H_{1}'\mu \\ H_{2}'\mu \end{pmatrix} = \begin{pmatrix} \mu_{Y_{1}} \\ \mu_{Y_{2}} \end{pmatrix}$$
+$$\Sigma_{Y} = H'\Sigma H = H'H \Lambda H'H = \Lambda = \begin{pmatrix}
+D & 0 \\
+0 & 0
+\end{pmatrix} =: \begin{pmatrix}
+\Sigma_{Y_{1}} & 0 \\
+0 & \Sigma_{Y_{2}}
+\end{pmatrix}$$
+Es decir,
+$$Y_{1} \sim N_{r}(H_{1}'\mu, D)$$
+$$Y_{2} \sim N_{p-r}(H_{2}'\mu, 0)$$
+(es decir, la distribución degenerada en $H_{2}'\mu: P[Y_{2} = H_{2}'\mu] = 1$)
+
+\item Por tanto, tenemos que la función característica de $X$ se puede interpretar como
+$$\phi_{X}(t) = E[e^{it'X}] = E[E^{it'HY}] = \phi_{Y}(H't)$$
+Con el cambio de variables
+$$v := H't = \begin{pmatrix} H_{1}' \\ H_{2}' \end{pmatrix} t = \begin{pmatrix} H_{1}'t \\ H_{2}'t \end{pmatrix} =: \begin{pmatrix} v_{1} \\ v_{2} \end{pmatrix}$$
+podemos escribir
+$$\phi_{Y}(v) = \phi_{X}(t) = e^{it'H_{1}H_{1}'\mu - \frac{1}{2}t'H_{1}DH_{1}'t} e^{it'H_{2}H_{2}'\mu} = e^{iv_{1}'\mu_{Y_{1}} - \frac{1}{2}v_{1}'\Sigma_{Y_{1}}v_{1}}e^{iv_{2}'\mu_{Y_{2}}} = \phi_{Y_{1}}(v_{1})\phi_{Y_{2}}(v_{2})$$
+Es decir, $Y_{1}$ e $Y_{2}$ son independientes.
+
+\item Ahora, puesto que $Y_{1} \sim N_{r} (H_{1}'\mu, D)$, con $D > 0$, se tiene por [C-I] que $Y_{1}$ puede representarse en distribución como
+$$Y_{1} \overset{d}{=} D^{\frac{1}{2}}Z + H_{1}'\mu$$
+con $Z \sim N_{R}(0, I_{r})$.
+
+Para $Y_{2}$ se puede escribir
+$$Y_{2} \overset{P-c.s.}{=} H_{2}'\mu \equiv 0Z + H_{2}'\mu$$
+siendo aquí 0 una matriz $(p-r) \times r$.
+
+Conjuntamente (teniendo en cuenta que $\overset{P-c.s.}{=} \Rightarrow \overset{d}{=}$), podemos escribir
+$$Y = \begin{pmatrix} Y_{1} \\ Y_{2} \end{pmatrix} \overset{d}{=} \begin{pmatrix}
+D^{\frac{1}{2}}Z + H_{1}'\mu \\
+0Z + H_{2}'
+\end{pmatrix} \begin{pmatrix} D^{\frac{1}{2}} \\ 0 \end{pmatrix}Z + H'\mu$$
+Se deshace el cambio de variables multiplicando por $H$,
+$$X = NY \overset{d}{=} H \begin{pmatrix} D^{\frac{1}{2}} \\ 0 \end{pmatrix}Z + HH'\mu = H_{1}D^{\frac{1}{2}}Z + \mu$$
+Finalmente, denotando $A = H_{1}D^{\frac{1}{2}}$, se tiene que
+$$X \overset{d}{=} AZ + \mu$$
+con $A$ matriz $p \times r$ (cte.) de rango $r$, $Z \sim N_{r}(0, I_{r})$.
+
+\item Recíprocamente, es inmediato que si se cumple que
+$$X \overset{d}{=} AZ + \mu$$
+con $A$ matriz $p \times r$ (cte.) de rango r, $Z \sim N_{r}(0, I_{r})$, teniendo en cuenta que la correspondencia biunívoca entre distribuciones y funciones características (teorema de inversión de Paul Lévy), ha de ser
+$$\phi_{X} \equiv \phi_{AZ + \mu}$$
+Es decir, para todo $t \in \mathbb{R}^{p}$
+$$\phi_{X}(t) = \phi_{AZ + \mu}(t) = E[e^{it'(AZ + \mu)}] = e^{it'\mu} E[e^{i(t'A)Z}] = e^{it'\mu}\phi_{Z}(A't) =$$
+$$= e^{it'\mu}e^{-\frac{1}{2}(t'A)(A't)} = e^{it'\mu - \frac{1}{2}t'(AA')t}$$
+Por tanto, según la definición general de la DNM dada a partir de la extensión de [C-II],
+$$X \sim N_{p}(\mu, \Sigma)$$
+con $\Sigma_{X} = AA' \geq 0$.
+
+\item Se puede enunciar, como conclusión, la caracterización siguiente:
+
+Caracterización 1 (caso general): Un vector aleatorio $p$-dimensional $X$ tiene una DNM, $X \sim N_{p}(\mu, \Sigma)$ ($\Sigma \geq 0$), si y solo si
+$$X \overset{d}{=} AZ + \mu$$
+con $A$ matriz $p \times r$ (cte.), $rango(A) = r$, $AA' = \Sigma$, $Z \sim N_{r}(0, I_{r})$.
+\end{itemize}
+
+\subsubsection{Extensión de la caracterización [C-III] (caso \texorpdfstring{$\Sigma \geq 0$}))}
+En relación con la caracterización [C-III], el resultado extendido al caso general puede enunciarse de la forma siguiente:
+
+\begin{itemize}
+\item Caracterización 3 (caso general): Un vector aleatorio $p$-dimensional $X = (X_{1}, \dots, X_{p})'$ tiene una DNM (versión extendida) si y solo si toda combinación de la forma
+$$\alpha'X \hspace{1cm} \text{con } \alpha \in \mathbb{R}^{p}$$
+tiene una DN univariante (posiblemente degenerada, i.e. con varianza nula) (2).
+
+(La demostración es similar a la correspondiente al caso no singular, con mínimas modificaciones)
+
+\item[(2)] \begin{itemize}
+\item[$\Rightarrow$] Supongamos $X \sim N_{p}(\mu, \Sigma)$ $(\Sigma \geq 0)$. \\
+Sea $\alpha \in \mathbb{R}^{p}$ y sea $Y = \alpha'X$. \\
+Tomamos $B_{1 \times p} = \alpha'$, $b_{1 \times 1} = 0$. Aplicando el resultado de transformaciones lineales de rango no necesariamente máximo, tenemos:
+$$Y_{\alpha} \sim N_{1}(\alpha'\mu, \alpha'\Sigma\alpha) \hspace{1cm} \text{con } \alpha'\Sigma\alpha \geq 0$$
+en el caso en el que $\alpha'\Sigma\alpha = 0 \Rightarrow$ degenerada.
+
+\item[$\Leftarrow$] Supongamos $Y_{\alpha} = \alpha'X \sim N_{1}(\mu_{Y_{\alpha}}, \sigma_{Y_{\alpha}}^{2})$, con $\alpha \in \mathbb{R}^{p}$. \\
+Necesariamente se tiene $\mu_{Y_{\alpha}} = \alpha'\mu$ y $\sigma_{Y_{\alpha}} = \alpha'\Sigma\alpha$, por lo que $X \sim (\mu, \Sigma)$. \\
+Utilizamos el Teorema de la página 8 de vectores aleatorios: La distribución de $X$ queda unívocamente definida por el conjunto de todas las distribuciones univariantes de la forma $\alpha'X$ del siguiente modo:
+$$\phi_{Y_{t}}(1) = \phi_{X}(t) \hspace{1cm} \text{con } Y_{t} = t'X \text{ (hemos cambiado } \alpha \text{ por } t)$$
+$$\phi_{Y_{t}}(s) = exp\{is't'X-\frac{1}{2}s't'\Sigma ts\}$$
+para $s=1$:
+$$\phi_{Y_{t}}(1) = exp\{it'X - \frac{1}{2}t'\Sigma t\} = \phi_{X}(t)$$
+$\Rightarrow X \sim N_{p}(\mu, \Sigma)$.
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Discusión en relación con la posible no existencia de densidad en todo \texorpdfstring{$\mathbb{R}^{p}$}) (caso \texorpdfstring{$\Sigma \geq 0$}))}
+\begin{itemize}
+\item En referencia a la definición basada en la función de densidad, dada para el caso no singular ($\Sigma > 0$), en el caso general que nos ocupa ($\Sigma \geq 0$) sólo existirá propiamente la densidad para un subvector, con dimensión igual al rango de la matriz $\Sigma$, de un vector obtenido a partir de $X$ mediante un cambio de variables conveniente.
+
+Dicho cambio estará asociado a la descomposición espectral de $\Sigma$, y el subvector corresponderá a las componentes generadas por los autovalores estrictamente positivos de $\Sigma$.
+
+Es decir, se tiene que la distribución es no singular en un subespacio afín de dimensión $r = rango(\Sigma)$. Para el resto de dimensiones, la distribución es degenerada.
+
+\item Análogamente, se podrá dar una representación como distribución simétrica de contornos elípticos restringida al subespacio afín de dimensión $r = rango(\Sigma)$ mencionado.
+\end{itemize}
+
+\subsubsection{Normalidad de combinaciones lineales de vectores aleatorios con DNM (versión general) independientes}
+\begin{itemize}
+\item Resultado: Sean $X_{k}$, $k = 1, \dots, m$, vectores aleatorios $p$-dimensionales con DNM
+$$X_{k} \sim N_{p}(\mu_{k}, \Sigma_{k}) \hspace{1cm} \text{respectivamente)}$$
+e independientes. Entonces, para cualquier conjunto de matrices $A_{k}$, $k = 1, \dots, m$ (ctes.), de dimensión $q \times p$, se verifica que
+$$Y := \sum_{k=1}^{m} A_{k}X_{k} \sim N_{q}(\sum_{k=1}^{m}A_{k}\mu_{k}, \sum_{k=1}^{m}A_{k}\Sigma_{k}A_{k}') \hspace{1cm} (3)$$
+
+\item (3) $X_{k} \sim N_{p}(\mu_{k}, \Sigma_{k})$ indep., $A_{k} \in \mathcal{M}_{q \times p}$ (ctes.) $\Rightarrow$ \\ $\Rightarrow Y = \sum_{k=1}^{m} A_{k}X_{k} \sim N_{q} (\sum_{i=1}^{m} A_{k}\mu_{k}, \sum_{k=1}^{m}A_{k}\Sigma_{k}A_{k}')$.
+
+Demostración:
+$$\phi_{Y}(t) = E[e^{it'Y}] = E[e^{it'(\sum_{k=1}^{m}A_{k}X_{k})}] = E[e^{\sum_{k=1}^{m} it'A_{k}X_{k}}] = E[e^{\sum_{i=1}^{m} i(A_{k}'t)'X_{k}}] =$$
+$$= \prod_{k=1}^{m} E[e^{i(A_{k}'t)'X_{k}}] = \prod_{k=1}^{m} \phi_{X_{k}}(A_{k}tX_{k}) = \prod_{k=1}^{m} e^{it'A_{x}\mu_{X} - \frac{1}{2}t'A_{k}\Sigma_{k}A_{k}'t} = e^{\sum_{k=1}^{m}(it'A_{k}\mu_{k} - \frac{1}{2}t'A_{k}\Sigma_{k}A_{k}'t)} =$$
+$$= e^{it'\sum_{k=1}^{m}A_{k}\mu_{k} - \frac{1}{2}t'\sum_{k=1}^{m}(A_{k}\Sigma_{k}A_{k})'t}$$
+\end{itemize}
+
+\subsubsection{[Complemento] El ``problema de Lévy-Cramér'' (teorema de Cramér)}
+\begin{itemize}
+\item Como consecuencia del resultado anterior, se tiene, en particular, el siguiente caso simple:
+
+Sean $X_{1}$ y $X_{2}$ vectores aleatorios $p$-dimensionales con
+$$X_{1} \sim N_{p}(\mu_{1}, \Sigma_{1}) \hspace{1cm} X_{2} \sim N_{p}(\mu_{2}, \Sigma_{2})$$
+e independientes. Entonces
+$$X_{1} + X_{2} \sim N_{p}(\mu_{1} + \mu_{2}, \Sigma_{1} + \Sigma_{2})$$
+
+\item En este caso (i.e. bajo normalidad), se tiene que el recíproco también es cierto:
+
+Sean $X_{1}$ y $X_{2}$ vectores aleatorios $p$-dimensionales independientes tales que $X_{1} + X_{2}$ tiene DNM. Entonces, $X_{1}$ y $X_{2}$ tiene también, cada uno, DNM.
+
+\item Históricamente, el resultado fue conjeturado por Paul Lévy, aunque no fue demostrado formalmente, por Harald Cramér, hasta 1936, mediante herramientas de la teoría de funciones analíticas, para el caso $p=1$ (4).
+
+\item (4) $X = X_{1} + X_{2}$ tiene una DNM $\overset{C-III}{\Rightarrow} \forall \alpha \in \mathbb{R}^{n}, \alpha'X$ tiene una DN u. \\
+$\alpha'X = \alpha'X_{1} + \alpha'X_{2}$ tiene DN u. \\
+$X_{1}$ y $X_{2}$ son independientes $\Rightarrow \alpha X_{1}$ y $\alpha X_{2}$ son independientes. \\
+$\Rightarrow \alpha'X_{1}$ y $\alpha'X_{2}$ tienen DN u. $\overset{C-III}{\Rightarrow} X_{1}$ y $X_{2}$ tienen DNM.
+
+\item No veremos aquí la demostración. No obstante, es fácil probar (por ejemplo, mediante la caracterización [C-III]) que, partiendo de que el resultado es cierto para $p=1$, lo es inmediatamente para cualquier $p$.
+\end{itemize}
+
+\subsection{Complemento: Distribuciones esféricas y elípticas}
+\subsubsection{Distribuciones esféricas}
+\begin{itemize}
+\item Definición: Se dice que un vector aleatorio $X = (X_{1}, \dots, X_{p})'$ tiene una distribución esférica si $X$ y $HX$ tienen la misma distribución, para toda matriz ortogonal $H$ de dimensión $p \times p$.
+
+\item Caracterización 1 (en términos de la densidad, si existe): Un vector aleatorio $X = (X_{1}, \dots, X_{p})'$ con distribución de tipo continuo tiene una distribución esférica si y sólo si su función de densidad puede expresarse como
+$$f_{X}(x) = g(x'x)$$
+para alguna función escalar $g: \mathbb{R}_{0}^{+} \to \mathbb{R}_{0}^{+}$.
+
+\item Caracterización 2 (en términos de la función característica): Un vector aleatorio \\ $X = (X_{1}, \dots, X_{p})'$ tiene una distribución esférica si y sólo si su función característica es de la forma
+$$\phi_{X}(t) = \xi(t't)$$
+para alguna función escalar $\xi: \mathbb{R}^{+}_{0} \to \mathbb{R}$.
+
+\item Ejemplo 1: $Z \sim N_{p}(0, \sigma^{2}I_{p})$ tiene una distribución esférica.
+
+(Observación: Bajo la caracterización 1 se requerirá que la distribución sea no degenerada, i.e. $\sigma^{2} > 0$) (1).
+
+\item (1) $Z \sim (0, \sigma^{2}I_{p})$ \\
+Opción 1:
+$$f_{Z}(z) = \frac{1}{(2\pi)^{\frac{p}{2}} |\sigma|^{p}} exp\{-\frac{1}{2}(z-\mu)'\Sigma^{-1}(z-\mu)\} = \frac{1}{(2\pi)^{\frac{p}{2}} |\sigma|^{p}} exp\{-\frac{1}{2\sigma^{2}}Z'Z\}$$
+$$Z'Z = Y$$
+$$g(Y) = \frac{1}{(2\pi)^{\frac{p}{2}} |\sigma|^{p}} exp\{-\frac{1}{2\sigma^{2}}Y\}, g: \mathbb{R}^{+}_{0} \to \mathbb{R}^{+}_{0}$$
+Opción 2:
+$$\phi_{Z}(t) = \exp\{it'\mu_{Z} - \frac{1}{2}t'\Sigma_{Z}t\} = exp\{it' \cdot 0 - \frac{1}{2}t'\sigma^{2}I_{p}t\} = exp\{-\frac{1}{2} \sigma^{2}t't\}$$
+$$\xi(t't) = \xi(s) = e^{-\frac{1}{2}\sigma^{2}s}, \xi: \mathbb{R}^{+}_{0} \to \mathbb{R}$$
+
+\item Ejemplo 2: Sea $X$ un vector aleatorio con distribución esférica y tal $P[X=0]=0$. Se define $U := \frac{X}{||X||}$, para $X \neq 0$, y con cualquier asignación cuando $X = 0$ (por ejemplo, en la propia esfera unidad, $\mathcal{S}_{p} \subset \mathbb{R}^{p}$). Entonces $U$ también tiene una distribución esférica (2).
+
+\item Resultado auxiliar: Sean $X$ e $Y$ vectores aleatorios $p$-dimensionales. Sea $g: \mathbb{R}^{p} \to \mathbb{R}^{q}$ una aplicación medible (Borel). Entonces:
+$$X \overset{d}{=} Y \Rightarrow g(X) \overset{d}{=} g(Y)$$
+
+\item Ejemplo 3: Más generalmente, si $X = (X_{1}, \dots, X_{p})'$ es un vector aleatorio $p$-dimensional con distribución esférica, se tiene entonces que, dada cualquier transformación radial ``isotrópica'' Borel-medible $h: \mathbb{R}^{p} \to \mathbb{R}^{p}$, de la forma
+$$h(x) = g(||x||)x, \hspace{1cm} \text{con } g: \mathbb{R}_{0}^{+} \to \mathbb{R}_{0}^{+} \text{ Borel-medible}$$
+el vector aleatorio transformado $h(X) = (h_{1}(X), \dots, h_{p}(X))'$ también tendrá una distribución esférica.
+
+\item Resultado (extensión de un resultado visto anteriormente):
+
+Si $X$ tiene una distribución esférica con $P[X=0]=0$, y se definen
+$$R = ||X|| = (X'X)^{\frac{1}{2}}$$
+$$U = \frac{X}{(X'X)^{\frac{1}{2}}} = R^{-1}X, \hspace{1cm} \text{para } X \neq 0$$
+(con cualquier asignación para $U$ cuando $X = 0$; por ejemplo, en la propia esfera unicidad $\mathcal{S}_{p} \subset \mathbb{R}^{p}$), entonces $U$ tiene también una distribución esférica, y $R$ y $U$ son independientes.
+
+\item Este resultado significa que la distribución de $X$, en el caso de una distribución esférica, viene en realidad determinada por la distribución de la variable aleatorio $R$.
+\end{itemize}
+
+\subsubsection{Definiciones elípticas}
+\begin{itemize}
+\item Definición: Se dice que un vector aleatorio $X = (X_{1}, \dots, X_{p})'$ tiene una distribución elíptica, con parámetros dados por un vecor $p$-dimensional $\mu$ y una matriz ($p \times p$)-dimensional $V$ simétrica y definida positiva, si se puede expresar de la forma
+$$X = AZ + \mu$$
+con $V = AA'$, $A$ matriz $p \times p$ no singular, $Z$ vector aleatorio con distribución esférica.
+
+Se denotará, en este caso, $X \sim E_{p}(\mu, V)$.
+
+\item Caracterización 1 (en términos de la densidad, si existe): Un vector aleatorio $X = (X_{1}, \dots, X_{p})'$ con distribución de tipo continuo tiene una distribución elíptica si y solo si su función de densidad puede expresarse como
+$$f_{X}(x) = |V|^{-\frac{1}{2}}g((x-\mu)'V^{-1}(x-\mu))$$
+para alguna función escalar $g: \mathbb{R}_{0}^{+} \to \mathbb{R}_{0}^{+}$.
+
+\item Caracterización 2 (en términos de la función característica): Un vector aleatorio \\ $X = (X_{1}, \dots, X_{p})'$ tiene una distribución elíptica su y sólo si su función característica es de la forma
+$$\phi_{X}(t) = e^{it'\mu}\xi(t'Vt)$$
+para alguna función escalar $\xi: \mathbb{R}_{0}^{+} \to \mathbb{R}$.
+
+\item Ejemplo: $X \sim N_{p}(\mu, \Sigma)$, ($\Sigma > 0$) tiene una distribución elíptica, $X \sim E_{p}(\mu, \Sigma)$. En este caso, por tanto, se tiene que $V = \Sigma$.
+
+\item Observaciones:
+\begin{itemize}
+\item Si $X \sim E_{p}(0, \sigma^{2}I_{p})$, con $\sigma^{2} > 0$, entonces $X$ tiene una distribución esférica (y recíprocamente).
+
+\item Si para $X \sim E_{p}(\mu, V)$ existen los momentos $E[X]$ y $Cov(X)$, entonces se tiene que
+$$E[X] = \mu$$
+$$Cov(X) = \alpha V, \hspace{1cm} \text{con } \alpha = -2\xi'(0)$$
+
+\item Las distribuciones marginales de distribuciones elípticas son elípticas.
+
+\item Las distribuciones condicionadas de distribuciones elípticas son elípticas.
+
+\item Independencia y normalidad: Sea $X \sim E_{p}(\mu, V)$, con $V$ una matriz diagonal. Si $X_{1}, \dots, X_{p}$ son (mutuamente) independientes, entonces $X \sim N_{p}(\mu, V)$.
+\end{itemize}
+\end{itemize}
+
+\subsection{Formas cuadráticas basadas en vectores aleatorios con DNM}
+
+\subsubsection{Motivación}
+\begin{itemize}
+\item Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio y sea $A$ una matriz (cte.) ($p \times p$)-dimensional. Se considera la variable aleatoria dada por la forma cuadrática
+$$X'AX$$
+Se plantea, en general, el problema de estudiar la distribución de $X'AX$ a partir del conocimiento de la distribución de $X$.
+
+(Como extensión, si $X$ se reemplaza por una matriz aleatoria de dimensión $p \times q$, la forma cuadrática resultante constituirá una matriz aleatoria de dimensión $q \times q$).
+
+\item En particular, se considera el caso en que $X \sim N_{p}(\mu, \Sigma)$, que conduce a la distribución $\chi^{2}$ no centrada.
+
+La distribución $\chi^{2}$ no centrada y, definida a partir de ésta, la distribución $F$ no centrada, son fundamentales, como distribuciones de diversos estadísticos de interés, en relación con la inferencia basada en la DNM.
+\end{itemize}
+
+\subsubsection{Distribuciones \texorpdfstring{$\chi^{2}$}) y \texorpdfstring{$F$}) no centradas}
+DISTRIBUCIÓN $\chi^{2}$ CENTRADA.
+\begin{itemize}
+\item Recordemos que la distribución $\chi^{2}$ centrada con $n$ grados de libertad se define como la distribución de la suma de cuadrados de $n$ variables aleatorias independientes con distribución normal estándar:
+$$Z = (Z_{1}, \dots, Z_{n})' \sim N_{n}(0, I_{n}) \rightarrow Y = Z'Z = \sum_{i=1}^{n} Z_{i}^{2} \sim \chi_{n}^{2}$$
+
+Función de densidad: $f_{Y}(y) = \frac{1}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})}y^{\frac{n}{2}-1}e^{-\frac{y}{2}}, y > 0$.
+
+Función de distribución: $F_{Y}(y) = \frac{\gamma(\frac{n}{2}, \frac{y}{2})}{\Gamma(\frac{n}{2})}, y > 0$.
+
+\item Nota: Se definen, $\forall z \in \mathbb{C}, \mathcal{R}(z) > 0$,
+\begin{itemize}
+\item Función gamma: $\Gamma(z) = \int_{0}^{\infty} t^{z-1}e^{-t} dt$.
+\item Funciones gamma incompletas: para $v > 0$,
+$$\Gamma(z, v) = \int_{v}^{\infty} t^{z-1}e^{-t}dt, \hspace{1cm} \gamma(z, v) = \int_{0}^{v} t^{z-1}e^{-t}dt$$
+\end{itemize}
+
+Función característica: $\phi_{Y}(t) = (1 - 2it)^{-\frac{n}{2}}, \forall t \in \mathbb{R}$, de donde se obtienen, en particular, los momentos
+$$E[Y] = n$$
+$$Var(Y) = 2n$$
+\end{itemize}
+
+DISTRIBUCIÓN $\chi^{2}$ NO CENTRADA.
+\begin{itemize}
+\item Definición (resultado): Sea $X = (X_{1}, \dots, X_{n})' \sim N_{n}(\mu, I_{n})$. Entonces, la variable aleatoria $Y = X'X$ tiene función de densidad
+$$f_{Y}(y) = e^{-\frac{\delta}{2}}{}_{0}F_{1}(;\frac{1}{2}n; \frac{1}{4}\delta y) \frac{1}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})}e^{-\frac{y}{2}}y^{\frac{n}{2}-1}, \text{ para } y > 0$$
+siendo $\delta = \mu'\mu$. Se dice que la variable $Y$ tiene distribución $\chi^{2}$ no centrada con $n$ grados de libertad y parámetro de no centralidad $\delta$, denotándose $\chi_{n}^{2}(\delta)$.
+
+\item Nota: En la expresión anterior, ${}_{0}F_{1}$ representa la `función hipergeométrica generalizada' de órdenes 0 y 1, también llamada función hipergeométrica confluente límite.
+
+(Cuando $\mu=0$, se tiene la distribución $\chi_{n}^{2}$ centrada)
+
+Función característica: $\phi_{Y}(t) = (1 - 2it)^{-\frac{n}{2}}e^{\frac{it\delta}{1-2it}}, \forall t \in \mathbb{R}$, de donde se obtienen, en particular, los momentos
+$$\begin{cases}
+E[Y] = n + \delta \\
+Var(Y) = 2n + 4\delta
+\end{cases} (1)$$
+
+\item (1) $$\Phi_{Y}(t) = (1 - 2it)^{\frac{n}{2}} e^{\frac{it\delta}{1-2it}}$$
+$$iE[Y] = \frac{\delta}{\delta t} \Phi_{Y}(t) \mid_{t=0} =$$
+$$=-\frac{n}{2}(1-2it)^{-\frac{n}{2}-1}(-2i)e^{\frac{it\delta}{1-2it}} + (1-2i)^{-\frac{n}{2}} \frac{i\delta(1-2it)+2i(it\delta)}{(1-2it)^{2}}e^{\frac{it\delta}{1-2it}} \mid_{t=0} = i(n+\delta) \Rightarrow$$
+$$\Rightarrow E[Y] = n + \delta$$
+
+$$i^{2}E[Y^{2}] = \frac{\delta^{2}}{\delta t^{2}} \Phi_{Y}(t) \mid_{t=0} = \frac{\delta}{\delta t}[ni(1 - 2it)^{-\frac{n}{2}-1} e^{\frac{it\delta}{1-2it}} + (1-2it)^{-\frac{n}{2}-2} i\delta e^{\frac{it\delta}{1-2it}}] \mid_{t=0} =$$
+$$= \frac{\delta}{\delta t}[(ni(1-2it)^{-1} + \delta i(1-2it)^{-2})\Phi_{y}(t)] \mit_{t=0} = [....] = -2n -4\delta + i^{2}(n+\delta)^{2} =$$
+$$= - (n^{2}+2n+2n\delta+4\delta+\delta^{2}) \Rightarrow E[Y^{2}] = n^{2}+2n+2n\delta$$
+$$Var[Y] = E[Y^{2}] - E[Y]^{2} = n^{2}+2n+2n\delta + 4\delta+\delta^{2}-(n+\delta)^{2} = 2n+4\delta$$
+
+\item Nota: $X \sim N(\mu, \sigma^{2}) \Rightarrow \phi_{X^{2}}(t) = \frac{1}{(1-2i\sigma^{2}t)} exp\{\frac{it\mu}{1-2i\sigma^{2}t}\}$.
+
+\item Un resultado de interés: Si $Y_{1}$ y $Y_{2}$ son variables aleatorias independientes con
+$$Y_{1} \sim \chi_{n_{1}}^{2}(\delta_{1}), \hspace{1cm} Y_{2} \sim \chi_{n_{2}}^{2}(\delta_{2})$$
+entonces se tiene que
+$$Y_{1} + Y_{2} \sim \chi_{n_{1}+n_{2}}^{2}(\delta_{1} + \delta_{2}) \hspace{1cm} (2)$$
+
+\item (2) $Y = Y_{1} + Y_{2}$.
+$$\Phi_{Y}(t) = E[e^{it(Y_{1}+Y_{2})}] = E[E^{itY_{1} + itY_{2}}] \overset{Y_{1}, Y_{2} \text{ ind}}{=} E[e^{itY_{1}}]E[e^{itY_{2}}] = \Phi_{Y_{1}}(t) \Phi_{Y_{2}}(t)$$
+$$Y_{1} \sim \chi^{2}_{n_{1}}(\sigma_{1}), Y_{2} \sim \chi^{2}_{n_{2}}(\sigma_{2})$$
+$$Y_{1} + Y_{2} \sim \chi_{n_{1}+n_{2}}^{2}(\sigma{1} + \sigma{2})$$
+\end{itemize}
+
+DISTRIBUCIÓN $F$ CENTRADA
+\begin{itemize}
+\item Recordemos que la distribución $F$ centrada con $(n_{1}, n_{2})$ grados de libertad se define como la distribución del cociente:
+$$F = \frac{\frac{Y_{1}}{n_{1}}}{\frac{Y_{2}}{n_{2}}}$$
+con $Y_{1} \sim \chi_{n_{1}}^{2}$ e $Y_{2} \sim \chi_{n_{2}}^{2}$ (ambas centradas), independientes. Se denota $F_{n_{1}, n_{2}}$.
+
+Puede verse como la distribución del cociente
+$$\frac{\frac{1}{n_{1}}Z_{(1)}'Z_{(1)}}{\frac{1}{n_{2}}Z_{(2)}'Z_{(2)}} = \frac{\frac{1}{n_{1}} \sum_{k=1}^{n_{1}} Z_{1k}^{2}}{\frac{1}{n_{2}} \sum_{l=1}^{n_{2}} Z_{2k}^{2}}$$
+con: $Z_{(1)} = (Z_{11}, \dots, Z_{1n_{1}})' \sim N_{n_{1}}(0, I_{n_{1}})$, $Z_{(2)} = (Z_{21}, \dots, Z_{2n_{1}})' \sim N_{n_{2}}(0, I_{n_{2}})$, $Z_{(1)}$ y $Z_{(2)}$ independientes; equivalentemente,
+$$Z = \begin{pmatrix} Z_{(1)} \\ Z_{(2)} \end{pmatrix} \sim N_{n_{1} + n_{2}}(0, U_{n_{1} + n_{2}})$$
+
+Función de densidad: con $n_{1}, n_{2} \in \mathbb{N} \setminus \{0\}$,
+$$g_{F}(f) = \frac{1}{fB(\frac{n_{1}}{2}, \frac{n_{2}}{2})} (\frac{n_{1}f}{n_{1}f + n_{2}})^{\frac{n_{1}}{2}} (1 - \frac{n_{1}f}{n_{1}f+n_{2}})^{\frac{n_{2}}{2}}$$
+
+Función de distribución: $G_{F}(f) = I_{\frac{n_{1}f}{n_{1}f+n_{2}}} (\frac{n_{1}}{2}, \frac{n_{2}}{2}), f \geq 0$.
+
+\item Nota: Se definen, $\forall a, b \in \mathbb{C}$, con $\mathcal{R}(a), \mathbb{R}(b) > 0$,
+\begin{itemize}
+\item Función beta: $B(a,b) = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)} = \int_{0}^{1} t^{a-1} (1-t)^{b-1} dt$.
+
+\item Función beta incompleta: para $x \in [0,1]$, $B(x;a,b) = \int_{0}^{x} t^{a-1} (1-t)^{b-1} dt$, (para $x = 1$ se tiene la función beta completa).
+
+\item Función beta incompleta regularizada: $I_{x}(a,b) = \frac{B(x;a,b)}{B(a,b)}$.
+\end{itemize}
+
+Función característica (versión corregida de Philips (1982)):
+$$\phi_{F}(t) = \frac{\Gamma(\frac{n_{1} + n_{2}}{2})}{\Gamma(\frac{n_{2}}{2})} U(\frac{n_{1}}{2}, 1 - \frac{n_{2}}{2}; -\frac{n_{2}}{n_{1}}it)$$
+
+\item Nota: En la expresión anterior, $U$ representa la función hipergeométrica confluente de segunda especie,
+$$U(a,b;z) = \frac{\Gamma(1-b)}{\Gamma(a+1-b)}{}_{1}F_{1}(a;b;z) + \frac{\Gamma(b-1)}{\Gamma(a)}z^{1-b} {}_{1}F_{1}(a+1-b; 2-b, z)$$
+con ${}_{1}F_{1}$ la `función hipergeométrica generalizada de órdenes 1 y 1', también llamada función de Kimar de primera especie).
+
+Se obtienen, en particular, los momentos
+$$E[F] = \frac{n_{2}}{n_{2}-2}, \text{ para } n_{2} > 2 (= \infty \text{ si } n_{2} \in (0, 2])$$
+$$Var(F) = \frac{2n_{2}^{2}(n_{1}+n_{2}-2)}{n_{1}(n_{2}-2)^{2}(n_{2}-4)}, \text{ para } n_{2} > 4 (=\infty \text{ si } n_{2} \in (2, 4])$$
+\end{itemize}
+
+DISTRIBUCIÓN $F$ NO CENTRADA
+\begin{itemize}
+\item Definición (resultado): Sean $Y_{1} \sim \chi_{n_{1}}^{2}(\delta)$ e $Y_{2} \sim \chi_{n_{2}}^{2}$, independientes. Entonces, la variable
+$$F = \frac{\frac{Y_{1}}{n_{1}}}{\frac{Y_{2}}{n_{2}}}$$
+tiene función de densidad
+$$\begin{aligned}
+g_{F}(f) =  & e^{-\frac{\delta}{2}}{}_{1}F_{1}(\frac{1}{2}(n_{1}+n_{2}); \frac{1}{2}n_{1}; \frac{-\frac{1}{2} \frac{n_{1}}{n_{2}} \delta f}{1 + \frac{n_{1}}{n_{2}}f}) & \\
+& \times \frac{\Gamma(\frac{1}{2}(n_{1} + n_{2}))}{\Gamma(\frac{1}{2}n_{1}) \Gamma(\frac{1}{2}n_{2})} \frac{f^{\frac{n_{1}}{2}-1}(\frac{n_{1}}{n_{2}})^{\frac{n_{1}}{2}}}{(1 + \frac{n_{1}}{n_{2}}f) \frac{(n_{1}+n_{2})}{2}}, & \text{ para } f > 0
+\end{aligned}$$
+
+Se dice que $F$ tiene distribución $F$ no centrada con $n_{1}$ y $n_{2}$ grados de libertad y parámetro de no centralidad $\sigma$, denotándose $F_{n_{1}, n_{2}}(\delta)$.
+
+Función característica (versión corregida de Philips (1982)):
+$$\phi_{F}(t) = \frac{e^{-\frac{1}{2}\delta}}{\Gamma(\frac{1}{2}n_{2})} \sum_{j=0}^{\infty} \frac{(\frac{\delta}{2})^{j}}{j!} \Gamma(\frac{1}{2}n_{1} + \frac{1}{2}n_{2} + j) U(\frac{n_{1}}{2} + j, 1 - \frac{n_{2}}{2}; -\frac{n_{1}}{n_{2}}it)$$
+
+Se obtienen, en particular, los momentos
+$$E[F] = \frac{n_{2}(n_{1}+\delta)}{n_{1}(n_{2}-2)}, \text{ para } n_{2} > 2 (=\infty \text{ si } n_{2} \in (0,2])$$
+$$Var(F) = 2 (\frac{n_{2}}{n_{1}})^{2} \frac{(n_{1}+\delta)^{2} + (n_{1}+2\delta) (n_{2}-2)}{(n_{2}-2)^{2} (n_{2}-4)}, \text{ para } n_{2} > 4 (=\infty \text{ si } n_{2} \in (2,4])$$
+\end{itemize}
+
+\subsubsection{Formas cuadráticas \texorpdfstring{$X'AX$}), con \texorpdfstring{$X \sim N_{p}(\mu, \Sigma)$}) (\texorpdfstring{$\Sigma > 0$}))}
+A continuación veremos algunos resultados relativos a la distribución de formas cuadráticas del tipo
+$$X'AX$$
+con $X \sim N_{p}(\mu, \Sigma)$ ($\Sigma > 0$) y $A$ una matriz (cte.) ($p \times p$)-dimensional simétrica.
+
+\begin{itemize}
+\item De forma preliminar, se puede hacer un estudio directo de los momentos de primer y segundo orden:
+
+Sea $X \sim N_{p}(\mu,\Sigma)$ ($\Sigma > 0$) y $A$ una matriz (cte.) ($p \times p$)-dimensional simétrica. Entonces,
+\begin{itemize}
+\item[(a)] $E[X'AX] = tr(A\Sigma) + \mu'A\mu \hspace{1cm} (3)$.
+\item[(b)] $Var(X'AX) = 2tr((A\Sigma)^{2}) + 4 \sigma'A\Sigma A\mu$.
+\end{itemize}
+(Observación: El resultado (a) no requiere la hipótesis de normalidad, solo la existencia de la esperanza)
+
+\item (3) $(X \sim N_{p}(\mu, \Sigma) \Rightarrow E[X'AX] = tr(A\Sigma) + \mu'A\mu$.
+$$E[X'AX] = E[tr(X'AX)] = E[tr(AXX')] = tr(E[AXX']) = tr(A E[XX'])$$
+donde hemos usado que $X'AX$ es de dim 1 y que $tr(CB) = tr(BC)$.
+
+Usaremos ahora que:
+$$E[XX'] = \Sigma + \mu\mu'$$
+ya que:
+$$\Sigma = E[(X-\mu)(X-\mu)'] = E[XX'] - E[X\mu'] - E[\mu X'] + E[\mu\mu'] =$$
+$$= E[XX'] - \mu'E[X] - \mu E[X'] + \mu\mu' = E[XX'] - \mu'\mu - \mu\mu' + \mu\mu' = E[XX'] - \mu\mu'$$
+
+Entonces:
+$$E[X'AX] = tr(A E[XX']) = tr(A(\Sigma+\mu\mu')) = tr(A\Sigma + A\mu\mu') =$$
+$$= tr(A\Sigma) + tr(A\mu\mu') = tr(A\Sigma) + tr(\mu'A\mu) = tr(A\Sigma) + \mu'A\mu$$
+
+\item Resultado 1: \\
+Sea $X \sim N_{p}(\mu, \Sigma)$ ($\Sigma > 0$). Entonces:
+\begin{itemize}
+\item[1.] $(X - \mu)' \Sigma^{-1} (X - \mu) \sim \chi_{p}^{2} \hspace{1cm} (4)$.
+\item[2.] $X'\Sigma^{-1}X \sim \chi_{p}^{2}(\delta)$, con $\delta = \mu'\Sigma^{-1}\mu \hspace{1cm} (5)$.
+\end{itemize}
+
+\item (4) $X \sim N_{p}(\mu, \Sigma), \Sigma > 0, \Sigma = CC'$. \\
+Hacemos el cambio $Y = C^{-1}(X - \mu) \sim N_{p}(0, I_{p})$.
+$$(X-\mu)'\Sigma^{-1}(X-\mu) = (X-\mu)(CC')^{-1}(X-\mu) = (X-\mu)(C^{-1})'C^{-1}(X-\mu) = Y'Y$$
+Como $Y \sim N_{p}(0, I_{p}) \Rightarrow YY' \sim \chi^{2}_{p}$.
+
+\item (5) $V = C^{-1}X \sim N_{p}(C^{-1}\mu, C^{-1}\Sigma(C^{-1})') \equiv N_{p}(C^{-1}\mu, C^{-1}CC'(C^{-1})') \equiv N_{p}(C^{-1}\mu, I_{p})$.
+$$X'\Sigma^{-1}X = X'(CC')^{-1}X = [...] = V'V$$
+Como $V \sim N_{p}(C^{-1}\mu, I_{p}) \Rightarrow V'V \sim \chi_{p}^{2}((C^{-1}\mu)'(C^{-1}\mu)) \equiv \chi_{p}^{2}(\mu\Sigma^{-1}\mu)$, donde hemos usado:
+$$(C^{-1}\mu)'(C^{-1}\mu) = \mu'(C^{-1})'C^{-1}\mu = \mu'(CC')^{-1}\mu = \mu'\Sigma^{-1}\mu$$
+
+\item Resultado 2: \\
+Sea $X \sim N_{p}(\mu, I_{p})$ y sea $B$ una matriz (cte.) ($p \times p$)-dimensional simétrica. Entonces, $X'BX$ tiene una distribución $\chi^{2}$ no centrada si y sólo si $B$ es idempotente (i.e. $B^{2}=B$), en cuyo caso los grados de libertad y el parámetro de no centralidad son, respectivamente, $k = rango(B) = tr(B)$ y $\delta = \mu'B\mu$ \hspace{1cm} (6).
+
+\item (6) \begin{itemize}
+\item[$\Rightarrow$] Supongamos $X'BX \sim \chi^{2}_{k}(\delta)$. Sea $r = rango(B)$. \\
+Por ser $B$ simétrica podemos escribir la diagonalización
+$$H'BH = D \hspace{1cm} (\iff B = HDH')$$
+siendo $H$ matriz $p \times p$ ortogonal y $D$ una matriz $p \times p$ diagonal.
+$$D = \begin{pmatrix}
+\lambda_{1} & \dots & 0 & 0 & \dots & 0 \\
+\vdots & \ddots & \vdots & \vdots & \dots & \vdots \\
+0 & \dots & \lambda_{r} & 0 & \dots & 0 \\
+0 & \dots & 0 & 0 & \dots & 0 \\
+\vdots & \dots & \vdots & \vdots & \dots & \vdots \\
+0 & \dots & 0 & 0 & \dots & 0
+\end{pmatrix}$$
+siendo $\lambda_{1}, \dots, \lambda_{r} \neq 0$. \\
+Transformamos $X$ mediante $H$, $V = H'X$, siendo entonces
+$$V \sim N_{p} (H'\mu, H' \Sigma H) \equiv N_{p}(H'\mu, I_{p}) \equiv N_{p}(\mathcal{V}, I_{p})$$
+Podemos escribir:
+$$X'BX = X'HDH'X = V'DV = \sum_{j=1}^{r} \lambda_{j} V_{j}^{2}$$
+Cada $V_{j}^{2}$ tiene distribución $V_{j}^{2} \sim \chi_{1}^{2}$ ($\mathcal{V}_{j}^{2}$), siendo $V_{1}^{2}, \dots, V_{r}^{2}$ independientes.
+
+La función característica de $X'BX$ se obtienen como:
+$$\Phi_{X'BX}(t) = \Phi_{\sum_{j=1}^{r}\lambda_{j}V_{j}^{2}}(t) = \prod_{j=1}^{r} \Phi_{\lambda_{j}V_{j}^{2}}(t) = \prod_{j=1}^{r} \Phi_{V_{j}^{2}}(\lambda_{j}t)$$
+Cada función característica individual $\Phi_{V_{j}^{2}}(\cdot)$ es de la forma:
+$$\Phi_{\chi_{1}^{2}(\delta)}(s) = (1 - 2is)^{-\frac{1}{2}} exp\{\frac{is\delta}{1-2is}\}$$
+con $\delta = \mathcal{V}_{j}^{2}$. \\
+Luego, conjuntamente, se tiene:
+$$\Phi_{X'BX}(t) = \prod_{j=1}^{r} (1-2i\lambda_{j}t)^{-\frac{1}{2}} exp\{\frac{i\lambda_{j}t\mathcal{V}_{j}^{2}}{1-2i\lambda_{j}t}\} =$$
+$$= (\prod_{j=1}^{r}(1-2i\lambda_{j}t)^{-\frac{1}{2}}) exp\{it \sum_{j=1}^{r} \frac{\lambda_{j}\mathcal{V}_{j}^{2}}{1-2i\lambda_{j}t}\}$$
+Por otra parte, al ser $X'BX \sim \chi_{k}^{2}(\delta)$, se tiene que:
+$$\Phi_{X'BX}(t) = (1-2it)^{-\frac{k}{2}} exp\{\frac{it\delta}{1-2it}\}$$ 
+
+Igualando las dos expresiones (para todo $t \in \mathbb{R}$), han de ser:
+\begin{itemize}
+\item $\lambda_{j} = 1 \hspace{1cm} j=1, \dots, r$.
+\item $\delta = \sum_{j=1}^{r} \lambda_{j}\mathcal{V}_{j}^{2} = \sum_{j=1}^{r} \mathcal{V}_{j}$.
+\item $r = k$.
+\end{itemize}
+En consecuencia
+$$H'BH = D = \begin{pmatrix}
+1 & \dots & 0 & 0 & \dots & 0 \\
+\vdots & \ddots & \vdots & \vdots & \dots & \vdots \\
+0 & \dots & 1 & 0 & \dots & 0 \\
+0 & \dots & 0 & 0 & \dots & 0 \\
+\vdots & \dots & \vdots & \vdots & \dots & \vdots \\
+0 & \dots & 0 & 0 & \dots & 0
+\end{pmatrix} = \begin{pmatrix}
+I_{k} & 0 \\
+0 & 0
+\end{pmatrix}$$
+que es una matriz idempotente, es decir, $(H'BH)(H'BH) = H'BH$. Entonces:
+$$(H'BH)(H'BH) = H'B^{2}H = H'BH \Rightarrow B^{2} = B$$
+por lo que $B$ es idempotente. Además:
+$$\delta = \sum_{j=1}^{r} \mathcal{V}_{j}^{2} = \mathcal{V}'D\mathcal{V} = (H'\mu)'D(H'\mu) = \mu'HDH'\mu = \mu'B\mu$$
+
+\item[$\Leftarrow$] Supongamos $B$ (simétrica) es idempotente y de rango $k$. Podemos escribir:
+$$H'BH = \begin{pmatrix}
+I_{k} & 0 \\
+0 & 0
+\end{pmatrix}$$
+para alguna matriz ortogonal $H$.
+
+Definimos el vector:
+$$V = H'X \sim N_{p}(H'\mu, H'I_{p}H) \equiv N_{p}(H'\mu, I_{p})$$
+Por tanto, dado que podemos escribir:
+$$X'BX = X'H\begin{pmatrix}
+I_{k} & 0 \\
+0 & 0
+\end{pmatrix}H'X = V'\begin{pmatrix}
+I_{k} & 0 \\
+0 & 0
+\end{pmatrix} V = \sum_{i=1}^{k} V_{j}^{2}$$
+y, puesto que las variables $V_{1}, \dots, V_{k}$ son independientes, se tiene que:
+$$X'BX \sim \chi_{k}^{2}(\delta)$$
+con parámetro de no centralidad:
+$$\delta = E[V'] \begin{pmatrix}
+I_{k} & 0 \\
+0 & 0
+\end{pmatrix} E[V]$$
+donde $E[V] = H'\mu$, así que tenemos:
+$$\delta = (H'\mu)' \begin{pmatrix}
+I_{k} & 0 \\
+0 & 0
+\end{pmatrix} (H'\mu) = \mu'H \begin{pmatrix}
+I_{k} & 0 \\
+0 & 0
+\end{pmatrix} H'\mu = \mu' B \mu$$
+\end{itemize}
+
+\item Resultados auxiliares:
+\begin{itemize}
+\item Una matriz simétrica es idempotente si y sólo si sus autovalores son 0 o 1.
+
+A parir de esto, si $B$ simétrica idempotente, entonces:
+$$rango(B) = tr(B)$$
+\item (Lema 10.1.2 Harville, p. 134) Sea $A$ una matriz cuadrada. Entonces:
+\begin{enumerate}
+\item $A'$ es idempotente $\iff A$ es idempotente.
+\item $I - A$ es idempotente $\iff A$ es idempotente.
+\end{enumerate}
+\end{itemize}
+
+\item Resultado 3: \\
+Sea $X \sim N_{p}(\mu, \Sigma)$ ($\Sigma > 0$). Supongamos el particionamiento
+$$X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix}, \hspace{1cm} \mu = \begin{pmatrix} \mu_{(1)} \\ \mu_{(2)} \end{pmatrix}, \hspace{1cm} \Sigma = \begin{pmatrix}
+\Sigma_{(11)} & \Sigma_{(12)} \\
+\Sigma_{(21)} & \Sigma_{(22)}
+\end{pmatrix}$$
+con $X_{(1)}$ y $\mu_{(1)}$ subvectores $q$-dimensionales y $\Sigma_{(11)}$ submatriz ($q \times q$)-dimensional. Entonces,
+$$Q := (X-\mu)' \Sigma^{-1} (X-\mu) - (X_{(1)}-\mu_{(1)})' \Sigma_{(11)}^{-1} (X_{(1)}-\mu_{(1)}) \sim \chi_{p-1}^{2} \hspace{1cm} (7)$$
+
+\item (7) Como $X \sim N_{p}(\mu, \Sigma)$ con $\Sigma > 0$, se puede descomponer $\Sigma = CC'$. Ponemos $C = \begin{pmatrix} C_{(1)} \\ C_{(2)} \end{pmatrix}$, tal que $\Sigma = CC' = \begin{pmatrix}
+C_{(1)}C_{(1)}' & C_{(1)}C_{(2)}' \\
+C_{(2)}C_{(1)}' & C_{(2)}C_{(2)}'
+\end{pmatrix}$.
+
+Normalizamos, definiendo $Y = C^{-1}(X-\mu) \Rightarrow X = CY + \mu$, $Y \sim N_{p}(0, I_{p})$, luego $X_{(1)} = C_{(1)}Y + \mu_{(1)}$.
+$$Q = (CY')\Sigma^{-1}(CY) - Y'C_{(1)}'(C_{(1)}C_{(1)}')^{-1}C_{(1)}Y \Rightarrow$$
+$$\Rightarrow Q = Y'C'(CC')^{-1}CY - [...] = Y'[I_{p}-C_{(1)}'(C_{(1)}C_{(1)}')^{-1}C_{(1)}]Y$$
+
+$$[C_{(1)}'(C_{(1)}C_{(1)}')^{-1}C_{(1)}]^{2} = C_{(1)}'(C_{(1)}C_{(1)}')^{-1}C_{(1)}C_{(1)}'(C_{(1)}C_{(1)}')^{-1}C_{(1)} = C_{(1)}' I_{q} (C_{(1)}C_{(1)}')^{-1}C_{(1)}$$
+
+$\exists B$ tal que $B^{2} = B$ y $Q = YBY \sim \chi_{k}^{2}(\delta)$, $\delta = \mu'B\mu = 0'B0 = 0$, $k = rango(B) = tr(B) = tr(I_{p}) - tr(C_{(1)}'(C_{(1)}C_{(1)}')^{-1}C_{(1)}) = p - tr(\underset{=I_{q}}{C_{(1)}C_{(1)}'(C_{(1)}C_{(1)})^{-1}}) = p - q$.
+
+\item Resultado 4: \\
+Sea $X \sim N_{p}(\mu, \Sigma)$ ($\Sigma > 0$) y sea $B$ una matriz (cte.) ($p \times p$)-dimensional simétrica. Entonces, $X'BX$ tiene una distribución $\chi_{k}^{2}(\delta)$, con $k = rango(B)$ y $\delta = \mu'B\mu$, si y sólo si $B\Sigma$ es idempotente (i.e. $(B\Sigma)^{2} = B\Sigma$; equivalentemente, en este caso, $B\Sigma B = B$) \hspace{1cm} (8).
+
+\item (8) Sea $\Sigma = CC'$, con $C_{p \times p}$ no singular. Sea $Y = C^{-1}X$. \\
+Entonces $Y \sim N_{p}(C^{-1}\mu, C^{-1}\Sigma(C^{-1})') \equiv N_{p}(C^{-1}\mu, I_{p})$.
+
+Entonces $X'BX = (CY)'B(CY) = Y'C'BCY$. Por el Resultado 2 tenemos:
+$$X'BX \sim \chi_{k}^{2}(\delta) \iff C'B \text{ idempotente}$$
+
+Hay que probar entonces que $C'BC$ es idempotente $\iff B\Sigma$ es idempotente.
+$$B\Sigma \text{ idempotente} \iff (B\Sigma)(B\Sigma) = B\Sigma \iff (BCC')(BCC') = BCC' \iff$$
+$$\iff BCC'BCC'(C')^{-1} = BCC'(C')^{-1} \iff BCC'BC = BC \iff$$
+$$\iff (C')BCC'BC = (C')BC \iff (C'BC)'(C'BC) = C'BC \iff C'BC \text{ idempotente}$$
+
+Además, por el resultado 2: 
+$$k = rango (C'BC) = tr(C'BC) = tr(BCC') = tr(B\Sigma) = rango(B\Sigma) = rango(B)$$
+$$\delta = (C^{-1}\mu)'(C'BC)(C^{-1}\mu) = \mu'(C')^{-1}C'BCC^{-1}\mu = \mu'B\mu$$
+\end{itemize}
+
+\subsubsection{APÉNDICE: Funciones hipergeométricas generalizadas}
+\begin{itemize}
+\item Definición: Se denomina función hipergeométrica generalizada de órdenes $p$ y $a$ a
+$${}_{p}F_{q}(a_{1}, \dots, a_{p}; b_{1}, \dots, b_{q}; z) := \sum_{k=0}^{\infty} \frac{(a_{1})_{k} \dots (a_{p})_{k}}{(b_{1})_{k} \dots (b_{p})_{k}} \frac{z^{k}}{k!}$$
+donde $(a)_{k} = a(a+1) \dots (a+k-1)$, siendo $a_{1}, \dots, a_{p}, b_{1}, \dots, b_{q}$ parámetros (posiblemente complejos) y $z \in \mathbb{C}$ el argumento de la función.
+
+\item Algunas observaciones:
+\begin{itemize}
+\item Ningún parámetro $b_{j}$ puede ser 0 o un entero negativo (en este caso, uno de los denominadores de la serie sería 0 a partir de un cierto $k$).
+
+\item Si algún parámetro en el numerador es 0 o un entero negativo, los términos de la serie se anulan a partir de un cierto $k$ y queda un polinomio en $z$.
+
+\item La serie
+\begin{itemize}
+\item converge para todo $z$ finito si $p \leq q$.
+\item converge para $|z| < 1$ y diverge para $|z|>1$ si $p=q+1$.
+\item diverge para todo $z \neq 0$ si $p > q + 1$.
+\end{itemize}
+
+\item El término `generalizada' se refiere a que ${}_{p}F_{q}$ es una generalización de la función hipergeométrica cñásica (o gaussiana), $_{2}F_{1}$.
+
+\item $_{1}F_{1}$ se denomina función hipergeométrica confluente.
+
+\item $_{0}F_{1}$, definida como
+$${}_{0}F_{1}(;b;z) := \lim\limits_{a \to \infty} {}_{1}F_{1}(a;b;\frac{z}{a})$$
+se denomina función hipergeométrica confluente límite.
+\end{itemize}
+\end{itemize}
+
+\subsection{Temario examen}
+
+\begin{itemize}
+\item Fundamentación probabilística $\to$ No entra.
+
+\item Aspectos generales sobre vectores aleatorios:
+\begin{itemize}
+\item Propiedad 3 de Esperanza y covarianzas si entra.
+\item Normalización: $Z \sim (0_{p}, I_{p \times p})$ si entra.
+\item Propiedades $[...] = k$ si entra.
+\item Semidefinida positiva: Observación 2 si entra.
+\item Teorema $\alpha'X$ de función característica si entra.
+\item Caso lineal del teorema de cambio de variable si entra.
+\end{itemize}
+
+\item Caso $\Sigma > 0$ entra casi entero:
+\begin{itemize}
+\item Algunas propiedades: Caso (3) sobre el condicionamiento no entra.
+\item Caracterización en términos de la densidad esférica, el resultado sobre $U$ y $Z$ independientes no entra.
+\end{itemize}
+
+\item Caso $\Sigma \geq 0$ entra casi entero:
+\begin{itemize}
+\item Extensión de la caracterización C-I es importante que sepamos la diferencia con el caso no general.
+\item Discusión en relación con la posible no existencia de densidad en todo $\mathbb{R}^{p}$ si entra.
+\item Resultado sobre normalidad de combinaciones lineales de vectores aleatorios con DNM no entra.
+\item El Complemento del problema de Lévy-Crámer, la generalización asumiendo que es cierto para 1 si entra.
+\end{itemize}
+
+\item Distribuciones esféricas y elípticas.
+\begin{itemize}
+\item Los 3 ejemplos entran.
+\item El resultado de independencia no entra.
+\item Distribuciones elípticas entran sin demostraciones.
+\item El ejemplo de demostraciones elípticas de $V = \Sigma$ si entra.
+\end{itemize}
+
+\item Formas cuadráticas basadas en vectores aleatorios con DNM.
+\begin{itemize}
+\item No hay que aprenderse las funciones de densidad ni características.
+\item Saber calcular los momentos a partir de la característica si entra.
+\item Resultado sobre $\chi^{2}$ si entra.
+\item Si hay que saber como se definen las distribuciones.
+\item Formas cuadráticas $X'AX$ entra el resultado a).
+\item La prueba del resultado 2 no entra.
+\item El apéndice no entra.
+\end{itemize}
+
+\item Ejercicios: no va a haber ejercicios de tipo numérico, como los 7, 8 y 9 de la relación.\item Los ejercicios extra son interesantes.
+
+2 preguntas de teoría y 2 problemas. Entre las preguntas de teoría podemos tener varias opciones entre las cuales elegimos 2.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,49 @@
+\babel@toc {spanish}{}
+\contentsline {section}{\numberline {1}Distribución Normal Multivariante}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Motivación sobre la DNM}{3}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}General}{3}{subsubsection.1.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.2}Aspectos específicos}{3}{subsubsection.1.1.2}%
+\contentsline {subsubsection}{\numberline {1.1.3}Algunas notas históricas}{3}{subsubsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.2}Fundamentación probablilística (recordatorio)}{4}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Elementos}{4}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Función de distribución}{4}{subsubsection.1.2.2}%
+\contentsline {subsubsection}{\numberline {1.2.3}Independencia}{4}{subsubsection.1.2.3}%
+\contentsline {subsubsection}{\numberline {1.2.4}Función característica}{5}{subsubsection.1.2.4}%
+\contentsline {subsubsection}{\numberline {1.2.5}Función característica e independencia}{5}{subsubsection.1.2.5}%
+\contentsline {subsubsection}{\numberline {1.2.6}Función característica y transformaciones lineales}{6}{subsubsection.1.2.6}%
+\contentsline {subsubsection}{\numberline {1.2.7}Función característica y función de densidad (caso continuo)}{6}{subsubsection.1.2.7}%
+\contentsline {subsubsection}{\numberline {1.2.8}Observaciones finales}{7}{subsubsection.1.2.8}%
+\contentsline {subsection}{\numberline {1.3}Aspectos generales sobre vectores aleatorios}{7}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Esperanza y covarianza (``operadores'')}{7}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Función característica}{11}{subsubsection.1.3.2}%
+\contentsline {subsubsection}{\numberline {1.3.3}Momentos y cumulantes}{11}{subsubsection.1.3.3}%
+\contentsline {subsubsection}{\numberline {1.3.4}Cambio de variables}{12}{subsubsection.1.3.4}%
+\contentsline {subsection}{\numberline {1.4}Descomposición Matriciales Diagonalización}{12}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Descomposición de Cholesky}{13}{subsubsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.5}Caso $\Sigma > 0$ definiciones, propiedades y caracterizaciones}{13}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Definición en términos de la densidad}{13}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Vector de medias y matriz de covarianzas}{14}{subsubsection.1.5.2}%
+\contentsline {subsubsection}{\numberline {1.5.3}Algunas propiedades (caso $\Sigma > 0$)}{14}{subsubsection.1.5.3}%
+\contentsline {subsubsection}{\numberline {1.5.4}Función característica de la DNM (caso $\Sigma > 0$)}{18}{subsubsection.1.5.4}%
+\contentsline {subsubsection}{\numberline {1.5.5}Marginalización (caso $\Sigma > 0$)}{20}{subsubsection.1.5.5}%
+\contentsline {subsubsection}{\numberline {1.5.6}Caracterización de la DNM en términos de normalidad de combinaciones lineales de las componentes (caso $\Sigma > 0$)}{20}{subsubsection.1.5.6}%
+\contentsline {subsubsection}{\numberline {1.5.7}Caracterización de la DNM en términos de la densidad esférica estándar (caso $\Sigma > 0$)}{20}{subsubsection.1.5.7}%
+\contentsline {subsection}{\numberline {1.6}Extensión al caso general, $\Sigma \geq 0$}{21}{subsection.1.6}%
+\contentsline {subsubsection}{\numberline {1.6.1}Introducción}{21}{subsubsection.1.6.1}%
+\contentsline {subsubsection}{\numberline {1.6.2}Sobre la descomposición espectral de la matriz de covarianzas, $\Sigma \geq 0$}{22}{subsubsection.1.6.2}%
+\contentsline {subsubsection}{\numberline {1.6.3}Función característica de la DNM (caso $\Sigma \geq 0$)}{22}{subsubsection.1.6.3}%
+\contentsline {subsubsection}{\numberline {1.6.4}Transformaciones lineales de rango no necesariamente máximo (caso $\Sigma \geq 0$)}{23}{subsubsection.1.6.4}%
+\contentsline {subsubsection}{\numberline {1.6.5}Extensión de la caracterización [C-I] (caso $\Sigma \geq 0$)}{23}{subsubsection.1.6.5}%
+\contentsline {subsubsection}{\numberline {1.6.6}Extensión de la caracterización [C-III] (caso $\Sigma \geq 0$)}{25}{subsubsection.1.6.6}%
+\contentsline {subsubsection}{\numberline {1.6.7}Discusión en relación con la posible no existencia de densidad en todo $\mathbb {R}^{p}$ (caso $\Sigma \geq 0$)}{26}{subsubsection.1.6.7}%
+\contentsline {subsubsection}{\numberline {1.6.8}Normalidad de combinaciones lineales de vectores aleatorios con DNM (versión general) independientes}{26}{subsubsection.1.6.8}%
+\contentsline {subsubsection}{\numberline {1.6.9}[Complemento] El ``problema de Lévy-Cramér'' (teorema de Cramér)}{26}{subsubsection.1.6.9}%
+\contentsline {subsection}{\numberline {1.7}Complemento: Distribuciones esféricas y elípticas}{27}{subsection.1.7}%
+\contentsline {subsubsection}{\numberline {1.7.1}Distribuciones esféricas}{27}{subsubsection.1.7.1}%
+\contentsline {subsubsection}{\numberline {1.7.2}Definiciones elípticas}{28}{subsubsection.1.7.2}%
+\contentsline {subsection}{\numberline {1.8}Formas cuadráticas basadas en vectores aleatorios con DNM}{29}{subsection.1.8}%
+\contentsline {subsubsection}{\numberline {1.8.1}Motivación}{29}{subsubsection.1.8.1}%
+\contentsline {subsubsection}{\numberline {1.8.2}Distribuciones $\chi ^{2}$ y $F$ no centradas}{29}{subsubsection.1.8.2}%
+\contentsline {subsubsection}{\numberline {1.8.3}Formas cuadráticas $X'AX$, con $X \sim N_{p}(\mu , \Sigma )$ ($\Sigma > 0$)}{32}{subsubsection.1.8.3}%
+\contentsline {subsubsection}{\numberline {1.8.4}APÉNDICE: Funciones hipergeométricas generalizadas}{36}{subsubsection.1.8.4}%
+\contentsline {subsection}{\numberline {1.9}Temario examen}{37}{subsection.1.9}%
