@@ -513,19 +513,19 @@ Se demuestra que $f_{X}$ está bien definida, es decir, que cumple las condicion
 \begin{enumerate}
 \item $f_{X}(x) \geq 0, \forall x \in \mathbb{R}^{p}$.
 \item $\int_{\mathbb{R}^{p}} f_{X}(x) dx = 1 \hspace{1cm} (1)$.
-\item[(1)] $\int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{\frac{1}{2}(X - \mu)' \Sigma^{-1} (X - \mu)\} dX$. \\
+\item[(1)] $\int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{-\frac{1}{2}(X - \mu)' \Sigma^{-1} (X - \mu)\} dX$. \\
 Al ser $\Sigma > 0$, tomamos una descomposición $\Sigma = CC'$, con $C$ matriz cuadrada $p \times p$ no singular. Hacemos el siguiente ``cambio de variable'':
 $$Z = C^{-1}(X - \mu)$$
 $$X = CZ + \mu$$
 Elegimos $C$ tal que $|C| > 0$. Supongamos que $|C| < 0$, tomamos $A$ tal que $\Sigma = (CA)(CA)' = CAA'C'$ con $AA' = A'A = I$ de forma que $|CA| > 0$, y tomamos $CA$ como C.
 
 El determinante del Jacobiano de la transformación:
-$$|C^{-1}| = |C|^{-1} \Rightarrow dZ = |C|^{-1} dZ \Rightarrow dZ = |C| dX$$
+$$|C^{-1}| = |C|^{-1} \Rightarrow dX = |C|^{-1} dZ \Rightarrow dZ = |C| dX$$
 $$\Sigma^{-1} = (CC')^{-1} = (C^{-1})'C^{-1}$$
 $$|\Sigma| = |C||C'| = |C|^{2} \Rightarrow |\Sigma|^{\frac{1}{2}} = |C|$$
 
 Con todo esto, nos queda:
-$$\int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{\frac{1}{2}(X - \mu)' \Sigma^{-1} (X - \mu)\} dX = \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|C|} exp\{-\frac{1}{2}Z'Z\} |C| dZ =$$
+$$\int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} exp\{-\frac{1}{2}(X - \mu)' \Sigma^{-1} (X - \mu)\} dX = \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}|C|} exp\{-\frac{1}{2}Z'Z\} |C| dZ =$$
 $$= \int_{\mathbb{R}^{p}} \frac{1}{(2\pi)^{\frac{p}{2}}} exp\{-\frac{1}{2} \sum_{j=1}^{p} z_{j}^{2}\} dZ = \prod_{j=1}^{p} \int_{\mathbb{R}} \frac{1}{(2\pi)^{\frac{1}{2}}} exp\{-\frac{1}{2} z_{j}^{2}\} dz_{j} = \prod_{j=1}^{p} 1 = 1$$
 \end{enumerate}
 
@@ -639,7 +639,7 @@ $$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
 $$X \sim N_{p}(\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
 Supongamos que las componentes de $X$ están ordenadas de tal modo que para la partición del vector
 $$X = \begin{pmatrix} X_{(1)} \\ X_{(2)} \end{pmatrix}$$
-con $X_{(1)} = (X_{1}, \dots, X_{1})', X_{(2)} = (X_{1+q}, \dots, X_{p})'$, se tiene
+con $X_{(1)} = (X_{1}, \dots, X_{q})', X_{(2)} = (X_{1+q}, \dots, X_{p})'$, se tiene
 $$\mu = \begin{pmatrix} \mu_{(1)} \\ \mu_{(2)} \end{pmatrix} \hspace{1cm} \Sigma = \begin{pmatrix}
 \Sigma_{(11)} & \Sigma_{(12)} \\
 \Sigma_{(21)} & \Sigma_{(22)}
@@ -1591,6 +1591,317 @@ se denomina función hipergeométrica confluente límite.
 \item Ejercicios: no va a haber ejercicios de tipo numérico, como los 7, 8 y 9 de la relación.\item Los ejercicios extra son interesantes.
 
 2 preguntas de teoría y 2 problemas. Entre las preguntas de teoría podemos tener varias opciones entre las cuales elegimos 2.
+\end{itemize}
+
+\newpage
+
+\section{Inferencia en la Distribución Normal Multivariante}
+\subsection{Introducción}
+\subsubsection{``Muestra aleatoria simple'' vectorial}
+\begin{itemize}
+\item Sea $X = (X_{1}, \dots, X_{p})'$ un vector aleatorio con DNM no singular,
+$$X \sim N_{p} (\mu, \Sigma) \hspace{1cm} (\Sigma > 0)$$
+(Por ejemplo, consideramos que las variables representan, en una situación práctica, $p$ magnitudes relativas a ``características'' de los ``individuos'' de una ``población'', con esa distribución de probabilidad conjunta).
+
+\item Se trata de realizar la inferencia (bajo distintas formas) sobre la distribución, supuestos desconocidos total o parcialmente a sus parámetros, a partir de una \emph{muestra aleatoria simple} obtenida de ésta (i.e., un conjunto de ``observaciones'' dadas en términos de \emph{variables aleatorias independientes e indénticamente distribuidas} con igual distribución de $X$), que denotaremos
+$$\{X_{\alpha}: \alpha = 1, \dots, N\} \hspace{1cm} (N = \text{ ``tamaño muestral''})$$
+siendo $X_{\alpha i}$ la componente $i-$ésima (correspondiente a la variable $X_{i}$) de la observación (vectorial) $\alpha-$ésima, $X_{\alpha}$.
+
+\item Se utilizará la misma notación pero en minúsculas cuando las variables de una muestra aleatoria simple tomen valores numéricos concretos, es decir, se tenga una realización de ésta:
+$$\{x_{\alpha}: \alpha = 1, \dots, N\} \hspace{1cm} (N = \text{ ``tamaño muestral''})$$
+
+\item A efectos algebraicos y computacionales, es frecuente disponer las variables componentes de la muestra en la forma de ``matriz de datos'' (aleatoria),
+$$X = \begin{pmatrix}
+X_{1}' \\ \vdots \\ X_{\alpha}' \\ \vdots \\ X_{p}'
+\end{pmatrix} = \begin{pmatrix}
+X_{11} & \dots & X_{1i} & \dots & X_{1p} \\
+\vdots & \ddots & \vdots & \ddots & \vdots \\
+X_{\alpha 1} & \dots & X_{\alpha i} & \dots & X_{\alpha p} \\
+\vdots & \ddots & \vdots & \ddots & \vdots \\
+X_{N1} & \dots & X_{Ni} & \dots & X_{Np}
+\end{pmatrix}$$
+(y análogamente, usando minúsculas, en el caso de las correspondientes realizaciones de la muestra).
+\end{itemize}
+
+\subsubsection{Medidas muestrales de primer y segundo orden}
+\begin{itemize}
+\item En primer lugar, como paso previo a otros aspectos de la inferencia, se abordará en el apartado siguiente la \emph{estimación puntual} de los parámetros $\mu$ y $\Sigma$. Se adoptará el criterio basado en la \emph{maximización de la función de verosimilitud}.
+
+Como se verá, los \emph{estimadores máximo-verosímiles} de $\mu$ y $\Sigma$ se expresarán en términos de medidas descriptivas de la muestra dadas por el \emph{vector de medias muestral} y la \emph{matriz de dispersiones muestral} (respecto del vector de medias muestral).
+
+\item VECTOR DE MEDIAS MUESTRALES (COMPLETAR).
+
+\item MATRIZ DE DISPERSIONES MUESTRAL ($p \times p$)
+$$A := \sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(X_{\alpha} - \bar{X})' =$$
+\begin{small}
+$$= \begin{pmatrix}
+\sum_{\alpha=1}^{N} (X_{\alpha 1} - X_{1})^{2} & \sum_{\alpha = 1}^{N} (X_{\alpha 1} - \bar{X})(X_{\alpha 2} - \bar{X}_{2}) & \dots & \sum_{\alpha = 1}^{N} (X_{\alpha 1} - \bar{X}_{1})(X_{\alpha p} - \bar{X}_{p}) \\
+\sum_{\alpha=1}^{N} (X_{\alpha 2} - \bar{X}_{2})(X_{\alpha 1} - \bar{X}_{1}) & \sum_{\alpha=1}^{N}(X_{\alpha 2} - \bar{X}_{2})^{2} & \dots & \sum_{\alpha = 1}^{N} (X_{\alpha 2} - \bar{X}_{2})(X_{\alpha p} - \bar{X}_{p}) \\
+\vdots & \vdots & \ddots & \vdots \\
+\sum_{\alpha = 1}^{N}(X_{\alpha p} - \bar{X}_{p})(X_{\alpha 1} - \bar{X}_{1}) & \sum_{\alpha = 1}^{N} (X_{\alpha p} - \bar{X}_{p})(X_{\alpha 2} - \bar{X}_{2}) & \dots & \sum_{\alpha=1}^{N} (X_{\alpha p} - \bar{X}_{p})^{2}
+\end{pmatrix}$$
+\end{small}
+A partir de la matriz de dispersiones muestral, se definen:
+\begin{itemize}
+\item MATRIZ DE COVARIANZAS MUESTRAL: $S_{N} = \frac{A}{N} = (s_{ij})_{i,j = 1,\dots,p}$.
+\item MATRIZ DE CUASI-COVARIANZAS MUESTRAL: $S_{N-1} = \frac{A}{N-1}$.
+\item MATRIZ DE CORRELACIONES MUESTRAL: $R = (\frac{s_{ij}}{s_{ii}^{\frac{1}{2}}s_{jj}^{\frac{1}{2}}})_{i,j = 1,\dots,p}$ \\
+(puede escribirse como $R = D^{-\frac{1}{2}}S_{N}D^{-\frac{1}{2}}$ con $D = \operatorname{dia}(s_{11}, \dots, s_{pp})$).
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Fórmula de momentos multivariante muestral}
+\begin{itemize}
+\item LEMA: Sea $\{X_{\alpha}: \alpha=1,\dots,N\}$ una muestra aleatoria de una distribución $p$-dimensional, y sea $\bar{X}$ el vector de medias muestral. Entonces, para cualquier vector $b \in \mathbb{R}^{p}$, se verifica que
+$$\sum_{\alpha=1}^{N}(X_{\alpha}-b)(X_{\alpha}-b)' = \sum_{\alpha=1}^{N}(X_{\alpha}-\bar{X})(X_{\alpha}-\bar{X})'+N(\bar{X}-b)(\bar{X}-b)'=$$
+$$=A+N(\bar{X}-b)(\bar{X}-b)' \hspace{1cm} (1)$$
+En particular, se tiene:
+\begin{itemize}
+\item Con $b = \mu$ (vector de medias poblacional, si existe)
+$$\sum_{\alpha=1}^{N}(X_{\alpha}-\mu)(X_{\alpha}-\mu)'=A+N(\bar{X}-\mu)(\bar{X}-\mu)'$$
+\item Con $b = 0$
+$$\sum_{\alpha=1}^{N} X_{\alpha}X_{\alpha}' = A + N\bar{X}\bar{X}'$$
+(`fórmula de momentos multivariante muestral')
+\end{itemize}
+
+\item (1) 
+$$\sum_{\alpha=1}^{N} (X_{\alpha} - b) (X_{\alpha} - b)' = \sum_{\alpha=1}^{N} [(X_{\alpha} - \bar{X}) + (\bar{X} - b)][(X_{\alpha} - \bar{X}) + (\bar{X} - b)]' =$$
+$$= \sum_{\alpha=1}^{n} [(X_{\alpha} - \bar{X}) + (\bar{X} - b)][(X_{\alpha} - \bar{X})' + (\bar{X} - b)'] =$$
+\begin{small}
+$$= \underset{A}{\sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(X_{\alpha} - \bar{X})'} + \underset{B}{\sum_{\alpha=1}^{N}(\bar{X} - b)(\bar{X} - b)'} + \underset{C}{\sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(\bar{X} - b)'} + \underset{D}{\sum_{\alpha=1}^{N} (\bar{X} - b)(X_{\alpha} - \bar{X})'} = \star$$
+\end{small}
+
+$$B \Rightarrow \sum_{\alpha=1}^{N}(\bar{X} - b)(\bar{X} - b)' = N (\bar{X} - b)(\bar{X} - b)'$$
+$$C \Rightarrow \sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(\bar{X} - b)' = \sum_{\alpha=1}^{N}X_{\alpha}\bar{X}' - \sum_{\alpha=1}^{N}X_{\alpha}b' - \sum_{\alpha=1}^{N}\bar{X}\bar{X}' + \sum_{\alpha=1}^{N}\bar{X}b' =$$
+$$= N\bar{X}\bar{X}^{-1} - N\bar{X}b' - N\bar{X}\bar{X}^{-1} + N\bar{X}b^{-1} = 0$$
+$$D \Rightarrow \sum_{\alpha=1}^{N} (\bar{X} - b)(X_{\alpha} - \bar{X})' = \sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(\bar{X} - b)' = 0$$
+
+$$\star = A + N(\bar{X}-b)(\bar{X}-b)'$$
+\end{itemize}
+
+\subsection{Inferencia en la DNM}
+\subsubsection{Función de verosimilitud}
+\begin{itemize}
+\item Sea $X \sim N_{p}(\mu,\Sigma)$ ($\Sigma>0$), y sea $\{X_{\alpha}: \alpha=1,\dots,N\}$ una muestra aleatoria simple de dicha distribución.
+
+Para una realización dada de la muestra $\{x_{\alpha}: \alpha=1,\dots,N\}$, la \emph{función de verosimilitud} se expresa como la función (de argumentos $\mu$ y $\Sigma$).
+$$L(\mu,\Sigma;x_{1},\dots,x_{N}) := f_{\mu,\Sigma}(x_{1},\dots,x_{N}) = \prod_{\alpha=1}^{N}f_{\mu,\Sigma}(x_{\alpha}) =$$
+$$= \prod_{\alpha=1}^{N} \frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}} \operatorname{exp}\{-\frac{1}{2}(x_{\alpha}-\mu)'\Sigma^{-1}(x_{\alpha}-\mu)\} =$$
+$$= \frac{1}{(2\pi)^{\frac{pN}{2}}|\Sigma|^{\frac{N}{2}}} \operatorname{exp}\{-\frac{1}{2}\sum_{\alpha=1}^{N}(x_{\alpha}-\mu)'\Sigma^{-1}(x_{\alpha}-\mu)\}$$
+De forma abreviada, se denotará simplemente $L(\mu, \Sigma)$, sobreentendiéndose implícita la realización muestral de referencia.
+
+\item Mediante operaciones algebraicas, y usando la fórmula de momentos multivariante generalizada (caso $b=\mu$), se comprueba que la función de verosimilitud puede expresarse de la forma
+$$L(\mu,\Sigma) = \frac{1}{(2\pi)^{\frac{pN}{2}}|\Sigma|^{\frac{N}{2}}} \operatorname{exp}\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}\bar{A}) - \frac{N}{2} (\bar{x}-\mu)'\Sigma^{-1}(\bar{x}-\mu)\}$$
+con $\bar{A} = \sum_{\alpha=1}^{N}(x_{\alpha}-\bar{x})(x_{\alpha}-\bar{x})'$ (es decir, la matriz de dispersiones muestral evaluada en la realización dada de la muestra, $\{x_{\alpha}: \alpha=1, \dots, N\}$) (1).
+
+Más convenientemente, a efectos de maximización, se suele usar la transformación
+$$\ln(L(\mu,\Sigma)) = -\frac{pN}{2}\ln(2\pi) -\frac{N}{2}\ln(|\Sigma|) -\frac{1}{2}\operatorname{tr}(\Sigma^{-1}\bar{A}) -\frac{N}{2}(\bar{x}-\mu)'\Sigma^{-1}(\bar{x}-\mu)$$
+(Es habitual proceder, equivalentemente, a la minimización de la función $-\ln(L(\mu,\Sigma))$, no negativa).
+
+\item (1) $$L(\mu, \Sigma; x_{1}, \dots, x_{n}) = \frac{1}{(2\pi)^{\frac{pN}{2}}|\Sigma|^{\frac{N}{2}}} \operatorname{exp}\{-\frac{1}{2} \sum_{\alpha=1}^{N}(x_{\alpha}-\mu)'\Sigma^{-1}(x_{\alpha}-\mu)\}$$
+
+$$\sum_{\alpha=1}^{N} (x_{\alpha}-\mu)' \Sigma^{-1} (x_{\alpha}-\mu) = \sum_{\alpha=1}^{N}[(x_{\alpha}-\bar{x}) + (\bar{X}-\mu)]' \Sigma^{-1} [(x_{\alpha}-\bar{x}) + (\bar{x} - \mu)] =$$
+$$= \sum_{\alpha=1}^{N} [(x_{\alpha} - \bar{x})' + (\bar{X}-\mu)'] \Sigma^{-1} [(x_{\alpha} - \bar{x}) + (\bar{x} - \mu)] =$$
+$$= \sum_{\alpha=1}^{N} (x_{\alpha} - \bar{X})' \Sigma^{-1} (x_{\alpha} - \mu) + \sum_{\alpha=1}^{N}(x_{\alpha}-\bar{x})' \Sigma^{-1}(\bar{x}-\mu) +$$
+$$+ \sum_{\alpha=1}^{N} (\bar{x}-\mu) \Sigma^{-1} (x_{\alpha} - \bar{x}) + \sum_{\alpha=1}^{N} (\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \sum_{\alpha=1}^{N} \operatorname{traza}(x_{\alpha} - \bar{x})' \Sigma^{-1} (x_{\alpha} - \mu) + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \sum_{\alpha=1}^{N} \operatorname{traza} [\Sigma^{-1}(x_{\alpha} - \mu)(x_{\alpha} - \bar{x})'] + N(\bar{x} - \mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \operatorname{traza}[\sum_{\alpha=1}^{N} \Sigma^{-1}(x_{\alpha} - \mu) (x_{\alpha} - \bar{x}'] + N(\bar{x} - \mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \operatorname{traza}[\Sigma^{-1} \sum_{\alpha=1}^{N} (x_{\alpha} - \mu)(x_{\alpha} - \bar{x})'] + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \operatorname{traza}(\Sigma^{-1}\bar{A}) + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu)$$
+
+$$L(\mu, \Sigma; x_{1}, \dots, x_{n}) = \frac{1}{(2\pi)^{\frac{pN}{2}}|\Sigma|^{\frac{N}{2}}} \operatorname{exp}\{-\frac{1}{2} \operatorname{traza}(\Sigma^{-1}\bar{A}) - \frac{N}{2}(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu)\}$$
+ 
+\end{itemize}
+
+\subsubsection{Estimadores máximo-verosímiles de \texorpdfstring{$\mu$}) y \texorpdfstring{$\Sigma$})}
+\begin{itemize}
+\item RESULTADO: Sea $X \sim N_{p}(\mu, \Sigma)$ ($\Sigma > 0$), y sea $\{X_{\alpha}: \alpha=1,\dots,N\}$ una muestra aleatoria simple de dicha distribución. Entonces, los \emph{estimadores máximo-verosímiles} (EMV) de $\mu$ y $\Sigma$ son, respectivamente,
+$$\bar{X} \hspace{1cm} \text{y} \hspace{1cm} \frac{A}{N} = S_{N}$$
+este último bajo la condición de ser $A$ definida positiva $(*)$.
+
+[$(*)$ Este aspecto se discutirá más adelante, tras la demostración, en relación con el `Teorema de Dykstra']
+
+\item El problema de optimización se podría abordar de forma directa mediante derivación matricial. No obstante, es interesante probar el resultado por el procedimiento que se expondrá a continuación.
+
+\item Para la demostración, se utilizará el siguiente resultado auxiliar en la parte relativa al estimador del parámetro $\Sigma$: \\
+LEMA (Watson): Sea
+$$f(G) = -N\ln(|G|) - \operatorname{tr}(G^{-1}D)$$
+con argumento de $G$ una matriz simétrica definida positiva, y siendo $D$ una matriz simétrica definida positiva dada, ambas $p \times p$. Entonces, existe (y es único) el máximo de $f$ respecto a $G$, y se alcanza en $G = \frac{1}{N}D$, siendo el valor máximo alcanzado
+$$f(\frac{1}{N}D) = pN\ln(N) - N\ln(|D|) - pN \hspace{1cm} (2)$$
+
+\item Demostración:
+\begin{itemize}
+\item Maximización de $\ln(L(\mu,\Sigma))$ en $\mu$: (Se puede hacer, en este caso, independientemente de $\Sigma$). \\
+De la forma obtenida para $\ln(L(\mu,\Sigma))$, se desprende que, independientemente del valor de $\Sigma$, el máximo se alcanzará donde se minimice la forma cuadrática
+$$(\bar{x} - \mu)' \Sigma^{-1} (\bar{x} - \mu)$$
+Ahora bien, dado que $\Sigma^{-1}$ es definida positiva (por serlo $\Sigma$), la forma cuadrática alcanza el valor mínimo 0 para (y sólo para) $\bar{x} - \mu = 0$, es decir, $\mu = \bar{x}$. Por tanto, el estadístico definido por:
+$$\hat{\mu} := \bar{X} \hspace{1cm} \text{(el vector de medias muestral)}$$
+es el EMV (único, c.s.) de $\mu$.
+
+\item Maximización de $\ln(L(\bar{x}, \Sigma))$ en $\Sigma$: \\
+Dado que tratamos de maximizar la función
+$$\ln(L(\bar{x},\Sigma)) = -\frac{pN}{2} \ln(2\pi) - \frac{N}{2}\ln(|\Sigma|) - \frac{1}{2} \operatorname{tr}(\Sigma^{-1}\bar{A})$$
+(donde ya ha desaparecido el término correspondiente a la forma cuadrática), identificamos, en la notación del `lema de Watson',
+$$G := \Sigma \hspace{1cm} D := \bar{A}$$
+$$f(\Sigma) := 2[\ln L(\bar{x}, \Sigma) + \frac{pN}{2}\ln(2\pi)] = pN\ln(2\pi) + 2\ln(L(\bar{x}, \Sigma)) = -N\ln(|\Sigma|) - \operatorname{tr}(\Sigma^{-1}\bar{A})$$
+por lo que el máximo de $f$ en $\Sigma$ (igualmente, entonces, el máximo de $L(\bar{x}, \Sigma)$ en $\Sigma$) se alcanza para (y sólo para) $\Sigma = \frac{\bar{A}}{N} =: \bar{S}_{N}$. Por tanto, el estadístico definido por
+$$\hat{\Sigma} := \frac{A}{N} = S_{N} \hspace{1cm} (\text{la matriz de covarianzas muestral})$$
+es el EMV (único, c.s.) de $\Sigma$.
+\end{itemize}
+
+\item Se comprueba que el valor máximo alcanzado por la función de verosimilitud en el punto $(\mu, \Sigma) = (\bar{x}, \bar{S}_{N})$ del espacio paramétrico es:
+$$L(\mu, \Sigma) = \frac{1}{(2\pi e)^{\frac{pN}{2}}|\bar{S}_{N}|^{\frac{N}{2}}} = [\frac{N}{(2\pi e)|\bar{A}|^{\frac{1}{p}}}]^{\frac{pN}{2}} \hspace{1cm} (3)$$
+\end{itemize}
+
+\subsubsection{Teorema de Dykstra}
+\begin{itemize}
+\item En relación con el resultado anterior sobre el EMV del par paramétrico ($\mu, \Sigma$), se plantea la cuestión siguiente:
+
+Formalmente, puede ocurrir que para una realización concreta de la muestra aleatoria la matriz $\bar{A}$ resulte ser singular (es decir, semidefinada positiva). Ahora bien, ¿con qué probabilidad puede darse este caso?
+
+\item La respuesta viene dada por el `teorema de Dykstra' (1970): \\
+TEOREMA (Dykstra): Sea $X \sim N_{p}(\mu, \Sigma)$ ($\Sigma > 0$). Sea $\{X_{\alpha}: \alpha=1,\dots,N\}$ una muestra aleatoria simple de dicha distribución y sea $A = \sum_{\alpha=1}^{N}(X_{\alpha} - \bar{X})(X_{\alpha}-\bar{X})'$ la correspondiente matriz de dispersiones muestral. Entonces, $A$ es definida positiva, con probabilidad 1, si y sólo si $N > p$.
+
+\item Para la demostración del teorema, se establecen algunos resultados previos: \\
+LEMA 1: Sean $\{X_{\alpha}: \alpha=1,\dots,N\}$ vectores (aleatorios o no) de dimensión $p$. Sea $C = (c_{\alpha\beta})_{\alpha,\beta=1,\dots,N}$ una matriz ortogonal de dimensión $N \times N$. Entonces, definiendo
+$$Y_{\alpha} = \sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta}, \hspace{1cm} \alpha=1,\dots,N$$
+se tiene que
+$$\sum_{\alpha=1}^{n}X_{\alpha}X_{\alpha}' = \sum_{\alpha=1}^{N}Y_{\alpha}Y_{\alpha}' \hspace{1cm} (4)$$
+
+\item LEMA 2: Sean $\{X_{\alpha}: \alpha=1,\dots,N\}$ vectores aleatorios de dimensión $p$, con $X_{\alpha} \sim N_{p}(\mu_{\alpha}, \Sigma), \alpha = 1,\dots,N$ (es decir, tienen la misma matriz de covarianzas, aunque posiblemente distinto vector de medias), independientes. Sea $C = (c_{\alpha\beta})_{\alpha, \beta = 1,\dots,N}$ una matriz ortogonal de dimensión $N \times N$. Entonces, definiendo
+$$Y_{\alpha} = \sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta}, \hspace{1cm} \alpha=1,\dots,N$$
+se tiene
+\begin{itemize}
+\item $Y_{\alpha} \sim N_{p}(\mathcal{V}_{\alpha}, \Sigma)$, con $\mathcal{V}_{\alpha} = \sum_{\beta=1}^{N}c_{\alpha\beta}\mu_{\beta}, \alpha = 1, \dots, N$.
+\item Los vectores $\{Y_{\alpha}: \alpha=1,\dots,N\}$ son independientes (5).
+\end{itemize}
+
+\item Demostración (esquema): Consideremos, en nuestro caso, una matriz $B = (b_{\alpha\beta})_{\alpha, \beta = 1, \dots, N}$ de dimensión $N \times N$, ortogonal, cuya última fila sea $(\frac{1}{\sqrt{N}}, \dots, \frac{1}{\sqrt{N}})$. Es decir, el resto de filas han de ser vectores ortogonales con éste y entre sí, con norma igual a 1. Definimos el vector:
+$$Z_{\alpha} = \sum_{\beta=1}^{N} b_{\alpha\beta} X_{\beta}, \hspace{1cm} \alpha = 1, \dots, N$$
+Por los resultados anteriores (lemas 1 y 2), tenemos que:
+\begin{itemize}
+\item $Z_{\alpha} \sim N_{p}(\mathcal{V}_{\alpha}, \Sigma)$, con:
+$$\mathcal{V}_{\alpha} = \sum_{\beta=1}^{N}b_{\alpha\beta}\mu = (\sum_{\beta=1}^{N} b_{\alpha\beta}) \mu = \begin{cases}
+0, & \text{ si } \alpha = 1, \dots, N-1, \\
+\frac{N}{\sqrt{N}}\mu = \sqrt{N}\mu, & \text{ si } \alpha = N
+\end{cases}$$
+
+\item Los vectores $\{Z_{\alpha}: \alpha = 1, \dots, N\}$ son independientes.
+
+\item $Z_{m} = \sum_{\beta=1}^{N} \frac{1}{\sqrt{N}}X_{\beta} = \sqrt{N}(\frac{1}{N} \sum_{\beta=1}^{N} X_{\beta}) = \sqrt{N}\bar{X}$. \\
+(es decir, $\bar{X} = \frac{1}{\sqrt{N}}Z_{N})$.
+
+\item $A = \sum_{\alpha=1}^{N}(X_{\alpha} - \bar{X})(X_{\alpha} - \bar{X})' = \sum_{\alpha=1}^{N} X_{\alpha}X_{\alpha}' - N\bar{X}\bar{X}' =$ \\ $= \sum_{\alpha=1}^{N} Z_{\alpha}Z_{\alpha}' - Z_{N}Z_{N}' = \sum_{\alpha=1}^{N-1}Z_{\alpha}Z_{\alpha}'$.
+
+\item Como consecuencia, $\bar{X}$ y $A$ son independientes.
+\end{itemize}
+Por último, observamos que podemos escribir
+$$A = Z'Z$$
+con $Z = \begin{pmatrix} Z_{1}' \\ \vdots \\ Z_{N-1}' \end{pmatrix}$, matriz $(N-1) \times p$, $Z' = \begin{pmatrix} Z_{1} & \dots & Z_{N-1} \end{pmatrix}$, matriz $p \times (N-1)$.
+
+Esto equivale a que la matriz $A$ es definida no negativa.
+
+Por otra parte, se cumple que
+$$\operatorname{rango}(Z) = \operatorname{rango}(Z') = \operatorname{rango}(Z'Z) = \operatorname{rango}(A)$$
+Por tanto, la demostración quedará concluida probando que $\operatorname{rango}(Z) = p$ con probabilidad 1 si y sólo si $N > p$ (6).
+\end{itemize}
+
+\subsubsection{Teorema de Fisher multivariante}
+De la demostración del teorema de Dykstra, se tiene también la prueba del siguiente resultado, conocido como `teorema de Fisher multivariante':
+
+TEOREMA (Fihser): Dada una muestra aleatoria simple $X_{1}, \dots, X_{N}$ de distribución $N_{p}(\mu, \Sigma)$, el vector de medias muestral $\bar{X}$ se distribuye según una $N_{p}(\mu, \frac{\Sigma}{N})$, y la matriz de dispersiones muestral de igual modo que $\sum_{\alpha=1}^{N-1}Z_{\alpha}Z_{\alpha}'$, con $Z_{1}, \dots, Z_{N-1}$ vectores aleatorios independientes e idénticamente distribuidos según una $N_{p}(0, \Sigma)$, siendo el vector $\bar{X}$ y la matriz $A$ independientes.
+
+\subsubsection{Propiedades de los EMV \texorpdfstring{$\hat{\mu}$}) y \texorpdfstring{$\hat{\Sigma}$})}
+En este apartado se trata, a continuación, sobre el posible cumplimiento de algunas propiedades importantes por los EMV $\hat{\mu} = \hat{X}$ y $\hat{\Sigma} = S_{N}$. Concretamente:
+\begin{itemize}
+\item Insesgadez.
+\item Consistencia (fuerte, débil).
+\item Eficiencia.
+\end{itemize}
+
+\subsubsection{Propiedades de los EMV \texorpdfstring{$\hat{\mu}$}) y \texorpdfstring{$\hat{\Sigma}$}) Sobre INSESGADEZ}
+DEFINICIÓN: Sea $\{X_{\alpha}: \alpha=1, \ldots, N\}$ una muestra aleatoria simple de una distribución dependiente de un parámetro (en general, multidimensional), $\theta = (\theta_{1}, \ldots, \theta_{k})' \in \Theta \subseteq \mathbb{R}^{k}$. Un estimador $\hat{\theta}$ (i. e., función medible de la muestra, $\hat{\theta} = T(X)$) del parámetro $\theta$ se dice insesgado si
+
+$$E_{\theta}[\hat{\theta}-\theta]=0, \quad \forall \theta \in \Theta \quad \text { (es decir, } E_{\theta}[\hat{\theta}]=\theta, \quad \forall \theta \in \Theta)$$
+
+Sea $\mathbf{X} \sim N_{p}(\mu, \Sigma) \quad(\Sigma>0)$
+
+\begin{itemize}
+\item VECTOR DE MEDIAS MUESTRAL: \\
+$\hat{\mu}:=\bar{X}$ es un estimador insesgado de $\mu$
+
+(En realidad, en este caso no hace falta suponer normalidad, solo la existencia de $\mu$ )
+
+\item MATRIZ DE COVARIANZAS MUESTRAL:
+$\hat{\Sigma}:=S_{N}$ no es un estimador insesgado de $\Sigma$
+
+(Tener en cuenta, por el teorema de Fisher, que $A \stackrel{d}{=} \sum_{\alpha=1}^{N-1} Z_{\alpha} Z_{\alpha}'$, con $Z_{\alpha} \sim N_{p}(0, \Sigma), \alpha=1, \ldots, N-1$, independientes)
+
+Se tiene, en este caso, que: \\
+$S_{N-1}=\frac{N}{N-1} S_{N}$ sí es un esimador insesgado de $\Sigma$
+\end{itemize}
+
+\subsubsection{Propiedades de los EMV \texorpdfstring{$\hat{\mu}$}) y \texorpdfstring{$\hat{\Sigma}$}): Sobre CONSISTENCIA}
+DEFINICIÓN: Sea $\{X_{\alpha}: \alpha=1, \ldots, N\}$ una muestra aleatoria simple (de tamaño $N$, considerado variable) de una distribución dependiente de un parámetro (en general, multidimensional), $\theta(\theta_{1}, \ldots, \theta_{k})' \in \Theta \subseteq \mathbb{R}^{k}$. Un estimador $\hat{\theta}_{N}$ i. e., función medible de la muestra, $\hat{\theta}_{N}=T_{N}(X))$ del parámetro $\theta$ se dice
+\begin{enumerate}[label=(\alph*)]
+\item débilmente consistente si $\hat{\theta}_{N}$ converge en probabilidad a $\theta$, es decir,
+$$\forall \epsilon>0, \quad \lim\limits_{N \to \infty} P_{\theta} [\|\hat{\theta}_{N}-\theta\|<\epsilon]=1$$
+
+\item fuertemente consistente si $\hat{\theta}_{N}$ converge casi seguramente a $\theta$, es decir,
+$$P_{\theta} [\lim\limits_{N \to \infty} \hat{\theta}_{N}=\theta]=1$$
+\end{enumerate}
+
+Sea $X \sim N_{p}(\mu, \Sigma) \quad(\Sigma>0)$. Se demuestra que: \\
+$\hat{\mu}:=\bar{X}$ $\hat{\Sigma}:=S_{N}$ son estimadores fuertemente consistentes de $\boldsymbol{\mu}$ y $\Sigma$, respectivamente.
+
+(En el caso de $\hat{\boldsymbol{\mu}}:=\overline{X}$, no se requiere normalidad. $S_{N-1}$ también es un estimador fuertemente consistente de $\Sigma$) [Se omite la demostración]
+
+\subsubsection{Propiedades de los EMV \texorpdfstring{$\hat{\mu}$}) y \texorpdfstring{$\hat{\Sigma}$}): Sobre EFICIENCIA}
+(Para estimadores insesgados)
+
+DEFINICIÓN: Sea $T=(T_{1}, \ldots, T_{k})'$ un estimador insesgado de un parámetro (en general, multidimensional) $\theta=(\theta_{1}, \ldots, \theta_{k})' \in \bar{\Theta}$, siendo $\Theta=\mathbb{R}^{k}$ o un 'rectángulo' en $\mathbb{R}^{k}$. Se dice que $T$ es eficiente para $\theta=(\theta_{1}, \ldots, \theta_{k})'$ si, para cualquier otro estimador insesgado $U$ de $\theta$, se verifica que la diferencia de matrices de covarianzas $\overline{\operatorname{Cov}_{\theta}(U)}-\operatorname{Cov}_{\theta}(T)$, para todo $\theta \in \Theta$, es una matriz definida no negativa [se suele denotar $\operatorname{Cov}_{\theta}(U) \geq \operatorname{Cov}_{\theta}(T)$ ]
+
+Sea $X \sim N_{p}(\mu, \Sigma) \quad(\Sigma>0)$. Se demuestra que:
+\begin{itemize}
+\item $\bar{X}$ es un estimador eficiente de $\mu$ en el espacio $\mathbb{R}^{p}$
+\item $S_{N-1}$ es un estimador eficiente de $\Sigma$ en el espacio de matrices simétricas definidas positivas de dimensión $p \times p$.
+\end{itemize}
+
+\subsubsection{Teorema de Zehna: INVARIANCIA de los estimadores MV}
+TEOREMA (Zehna, 1966): Sea $\mathcal{P}=\{P_{\theta}: \theta \in \Theta\}$ una familia de distribuciones de probabilidad sobre el espacio $(\mathbb{R}^{p}, \mathcal{B}^{p})$. Sea $g: \Theta \rightarrow \Lambda$ una función arbitraria dada. Si $\hat{\theta}$ es un estimador máximo-verosímil de $\theta$, entonces $g(\hat{\theta})$ es un estimador máximo-verosímil de $g(\theta)$
+
+[OBSERVACIÓN: Este teorema hace uso del concepto de 'función de verosimilitud inducida por $g$ : Para cada $\lambda \in g(\Theta) \subseteq \Lambda$, se define
+
+$$M(\lambda)=\sup\limits_{\theta \in \Theta_{\lambda}} L(\theta), \quad \text{ con } \Theta_{\lambda}=\{\theta \in \Theta: g(\theta)=\lambda\}$$
+
+Se entiende entonces que `$g(\hat{\theta})$ es un EMV de $g(\theta)$' en el sentido de que $g(\hat{\theta})$ es un máximo para $M$
+
+En el contexto de la inferencia sobre la DNM, se tiene que para distintos coeficientes que dependen funcionalmente de $\mu$ y $\Sigma$ (por ejemplo, coeficientes de correlación, regresión, etc.) los correspondientes estimadores máximo-verosímiles se obtienen mediante sustitución de $\mu$ y $\Sigma$ por $\overline{X}$ y $S_{N}$, respectivamente, en las expresiones que definen dichos coeficientes
+
+\subsubsection{[Complemento] Distribuciones asintóticas de \texorpdfstring{$\hat{\mu}$}) y \texorpdfstring{$\hat{\Sigma}$}), con distribución de referencia no necesariamente normal}
+\begin{itemize}
+\item MOTIVACIÓN (referida al vector de medias muestral):
+
+Recordemos que, al enunciar y probar el teorema de Fisher, se ha obtenido que para una muestra aleatoria simple $X_{1}, \ldots, X_{N}$ de una distribución $N_{p}(\mu, \Sigma)$ se tiene que
+$$\overline{X} \sim N_{p}(\mu, \frac{\Sigma}{N});$$
+es decir, normalizando en media y tamaño muestral,
+$$N^{\frac{1}{2}}(\overline{X}-\mu)=N^{-\frac{1}{2}} \sum_{\alpha=1}^{N}(X_{\alpha}-\mu) \sim N_{p}(0, \Sigma)$$
+(la distribución límite ya no depende de $N$ ).
+
+\item ¿Qué puede afirmarse, al menos como aproximación límite (para $N \rightarrow \infty)$, cuando la distribución de origen no es necesariamente una DNM?
+
+\item Distribución asintótica del vector de medias muestral, $\overline{X}$.
+
+RESULTADO: Sea $X_{1}, \ldots, X_{N}, \ldots$ una sucesión de vectores aleatorios $p$-dimensionales independientes e idénticamente distribuidos, con vector de medias $\mu$ y matriz de covarianzas $\Sigma$ (i. e., $X_{\alpha} \sim(\mu, \Sigma), \alpha=1, \ldots, N, \ldots$ ). Sea $\overline{X}_{N}=\frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha}$, $\forall N \geq 1$. Entonces, cuando $N \to \infty$, se tiene la distribución asintótica
+$$N^{\frac{1}{2}}(\overline{X}_{N}-\mu)=N^{-\frac{1}{2}} \sum_{\alpha=1}^{N}(X_{\alpha}-\mu) \underset{N \to \infty}{\sim} N_{p}(0, \Sigma)$$
+(Se trata de una versión del Teorema Central del Límite, para vectores i.i.d. $\sim(\mu, \Sigma))$
+
+\item Distribución asintótica de la matriz de dispersiones muestral, $A$. \\
+RESULTADO: Sea $X_{1}, \dots, X_{N}, \dots$ una sucesión de vectores aleatorios $p$-dimensionales indpendientes e idénticamente distribuidos, con vector de medias $\mu$ y matriz de covarianzas $\Sigma$ (i.e., $X_{\alpha} \sim (\mu, \Sigma), \alpha = 1, \dots, N, \dots, N)$, u con momentos de orden cuatro finitos. Sean $\bar{X}_{N} = \frac{1}{N}\sum_{\alpha=1}^{N} X_{\alpha}$ y $A_{n} = \sum_{\alpha=1}^{N}(X_{\alpha} - \bar{X}_{N})(X_{\alpha} - \bar{X}_{N})', \forall N \geq 1$. Entonces, cuando $N \to \infty$, se tiene la distribución asintótica
+$$N^{-\frac{1}{2}}(A_{N} - N\Sigma) \underset{N \to \infty}{\sim} N_{p^{2}}(0, V)$$
+(en el sentido de que $N^{-\frac{1}{2}}(\operatorname{Vec}(A_{N} - N\operatorname{Vec}(\Sigma)) \underset{N \to \infty}{\sim} N_{p^{2}}(0, V))$, con $V = \operatorname{Cov}(\operatorname{Vec}((X_{\alpha} - \mu)(X_{\alpha} - \mu)'))$.
+(OBSERVACIÓN: La matriz $V$ será necesariamente singular, por lo que la distribución límite se refiere al caso general de la DNM)
 \end{itemize}
 
 \end{document}
