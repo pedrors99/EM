@@ -13,6 +13,7 @@
 \usepackage{upgreek}
 \usepackage{enumitem}
 \usepackage{dsfont}
+\usepackage{xfrac}
 
 
 \usepackage[bookmarks=true,
@@ -323,4 +324,47 @@ En materiales y métodos, si tratamos con personas tiene sentido poner la media 
 
 En la sección de resultados tenemos que aportar resultados de forma objetiva, sin ninguna opinión, y en la discusión asociamos estos resultados a los datos.
 
+\newpage
+
+\section{Análisis Discriminante}
+
+$Y = \{1, \dots, k\}$ cualitativa, $X_{1}, \dots, X_{n}$ continuas. \\
+Clasificar en los niveles de $Y$ según los valores $(X_{1}, \dots, X_{n})$.
+$$P(\sfrac{Y=j}{X=x}) = a_{1}X_{1} + a_{2}X_{2} + \dots + a_{n}X_{n}$$
+
+Utilizamos el Teorema de Bayes: Sean A y B dos sucesos.
+$$P(\sfrac{A}{B}) = \frac{P(\sfrac{A}{B}) \cdot P(B)}{P(A)} = \frac{\frac{P(A \cap B)}{P(B)} \cdot P(B)}{P(A)} = \frac{P(A \cap B)}{P(A)}$$
+
+ADL con un sólo regresor:
+$$P[\sfrac{Y=K}{X=x}] = \frac{P[\sfrac{X=x}{Y=k}] \cdot P[Y=k]}{P[X=x]}$$
+Llamamos $\pi_{k} = P[Y=k]$.
+$$P[\sfrac{Y=k}{X=x}] = \frac{P[\sfrac{X=x}{Y=k}] \cdot \pi_{k}}{P[X=x]} = \frac{P[\sfrac{X=x}{Y=k}]\pi_{k}}{\sum_{j=1}^{K} \pi_{j} P[\sfrac{X=x}{Y=j}]}$$
+
+Asumimos que $\sfrac{X}{Y=k} \sim N(\mu_{k}, \sigma_{k}) \Rightarrow$
+$$\Rightarrow f_{\sfrac{X}{Y=k}}(x) = \frac{1}{\sqrt{2\pi\sigma_{k}}} \exp\{-\frac{(x-\mu_{k})^{2}}{2\sigma_{k}^{2}}\}$$
+Supongamos además ahora homogeneidad de varianzas:
+$$\sigma_{1} = \dots = \sigma_{k} = \sigma$$
+
+Supongo que $Y = \{1, 2\}$. Calcular $\log(\frac{P[\sfrac{Y=1}{X=x}]}{P[\sfrac{Y=2}{X=x}]})$.
+
+Si la expresión anterior es mayor que 0, es decir, si $\frac{P[\sfrac{Y=1}{X=x}]}{P[\sfrac{Y=2}{X=x}]}$ es mayor que 1, entonces clasificamos $Y=1$, y si no, $Y=2$.
+
+Nota: Como $\frac{P[\sfrac{Y=1}{X=x}]}{P[\sfrac{Y=2}{X=x}]}$ es la división de dos probabilidades, el valor no tiene que estar en $[0,1]$, por lo que no lo podemos llamar la probabilidad.
+
+Test de Normalidad Univariante:
+$$\begin{cases}
+H_{0} \equiv \text{ Los datos siguen una normal} \\
+H_{1} \equiv \text{ Los datos no siguen una normal}
+\end{cases}$$
+
+Test de Normalidad Multivariante:
+$$\begin{cases}
+H_{0} \equiv \text{ Hay normalidad multivariante} \\
+H_{1} \equiv \text{ No hay normalidad multivariante}
+\end{cases}$$
+Test de Mordia, H-Z, Royston...
+
+Para homogeneidad de varianzas, el test de Levene.
+
+Si nos falla algún contraste, continuamos pero con el cuadrático en lugar del lineal ya que es más robusto.
 \end{document}

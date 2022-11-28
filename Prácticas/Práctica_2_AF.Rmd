@@ -1,0 +1,229 @@
+---
+title: "Práctica 2. Análisis factorial (AF)"
+author: "Pedro Ramos Suárez"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: no
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+  word_document:
+    toc: yes
+    toc_depth: '3'
+  pdf_document: default
+---
+<style>
+.math {
+  font-size: 8.25pt;options(encoding = 'UTF-8')
+}
+</style>
+
+<div style="text-align: justify">
+---
+
+### 1. **Carga de los datos**
+
+En esta practica vamos a identificar las variables que corresponden a cada uno de los cinco aspectos de la personalidad de un individuo. Para ello cargamos el conjunto de datos bfi de la librería psyh. Este conjunto de datos contiene 2800 observaciones con 28 variables, con 25 Items de una prueba de personalidad (MBI: Maslach Burnout Inventory. Las cinco características que definen la personalidad de un individuo son:
+A - Amabilidad; C - Conciencia; E - Extraversión; N - Neuroticismo y Ap - Apertura
+Instalamos las librerías a utilizar si no están ya instaladas:
+```{r}
+#install.packages("psych")
+#install.packages("polycor")
+#install.packages("ggcorrplot")
+#install.packages("corrr")
+```
+
+Cargamos las librerías que vamos a utilizar:
+```{r}
+library(psych)
+library(polycor)
+library(ggcorrplot)
+library(corrplot)
+library(corrr)
+```
+
+Cargamos los datos mencionados anteriormente, en este caso nos quedamos con 200 observaciones de los 28 items:
+```{r}
+bfi_s <- bfi[1:200,1:25]
+```
+
+### 2. **¿Tiene sentido un AF?**
+
+Para responder a esta pregunta se comprueba si existe correlación entre las variables con la función "cor" del paquete base, que proporciona la matriz de correlaciones R. Hay muchos valores perdidos asi que arreglamos la base de datos primero:
+```{r}
+not_available<-function(data,na.rm=F){
+  data[is.na(data)]<-mean(data,na.rm=T)
+  data
+}
+bfi_s<-as.data.frame(apply(bfi_s,2,not_available))
+```
+
+Ahora calculamos la matriz de correlaciones para ver si están correlaciondas. Vamos a utilizar distintas representaciones de esta información. En primer lugar la matriz de correlaciones clásica:
+```{r}
+cor(bfi_s)
+```
+
+En segundo lugar podemos tener una representación visual de las correlaciones. Calculamos la matriz de correlaciones policárica. Las funciones hetcor y ggcorrplot están en los paquetes polycor y ggcoorplot
+```{r}
+poly_cor<-hetcor(bfi_s)$correlations
+ggcorrplot(poly_cor, type="lower",hc.order=T)
+```
+
+Otra representación visual interesante es la siguiente (de la librería "corrplot"):
+```{r}
+corrplot(cor(bfi_s), order = "hclust", tl.col='black', tl.cex=1)
+```
+
+O esta otra opción también es muy visual (de la librería "corrr"):
+```{r}
+bfi_s_correlaciones <- correlate(bfi_s)  #Cálculo de un objeto de correlaciones
+rplot(bfi_s_correlaciones, legend = TRUE, colours = c("firebrick1", "black","darkcyan"), print_cor = TRUE) 
+```
+
+Realizamos el tratamiento de outliers:
+```{r}
+datos_originales<-bfi_s
+
+# Gráficos de cajas de todas las variables.
+boxplot(bfi_s,main="Análisis exploratorio de datos",
+        xlab="Variables sobre personalidad",
+        ylab="z-values",
+        col=c(1:15))
+```
+
+La función que detecta outliers y los sustituye por la media de la varaible es:
+```{r}
+outlier<-function(data,na.rm=T){
+  H<-1.5*IQR(data)
+  data[data<quantile(data,0.25,na.rm = T)-H]<-NA
+  data[data>quantile(data,0.75, na.rm = T)+H]<-NA
+  data[is.na(data)]<-mean(data, na.rm = T)
+  H<-1.5*IQR(data)
+  if (TRUE %in% (data<quantile(data,0.25,na.rm = T)-H) | TRUE %in% (data>quantile(data,0.75,na.rm = T)+H))
+  outlier(data)
+  else
+   return(data)
+}
+```
+
+Llamamos a la función outlier para cada variable:
+```{r}
+bfi_s$A1<-outlier(bfi_s$A1)
+bfi_s$A2<-outlier(bfi_s$A2)
+bfi_s$A3<-outlier(bfi_s$A3)
+bfi_s$A4<-outlier(bfi_s$A4)
+bfi_s$A5<-outlier(bfi_s$A5)
+bfi_s$C1<-outlier(bfi_s$C1)
+bfi_s$C2<-outlier(bfi_s$C2)
+bfi_s$C3<-outlier(bfi_s$C3)
+bfi_s$C4<-outlier(bfi_s$C4)
+bfi_s$C5<-outlier(bfi_s$C5)
+bfi_s$E1<-outlier(bfi_s$E1)
+bfi_s$E2<-outlier(bfi_s$E2)
+bfi_s$E3<-outlier(bfi_s$E3)
+bfi_s$E4<-outlier(bfi_s$E4)
+bfi_s$E5<-outlier(bfi_s$E5)
+bfi_s$N1<-outlier(bfi_s$N1)
+bfi_s$N2<-outlier(bfi_s$N2)
+bfi_s$N3<-outlier(bfi_s$N3)
+bfi_s$N4<-outlier(bfi_s$N4)
+bfi_s$N5<-outlier(bfi_s$N5)
+bfi_s$O1<-outlier(bfi_s$O1)
+bfi_s$O2<-outlier(bfi_s$O2)
+bfi_s$O3<-outlier(bfi_s$O3)
+bfi_s$O4<-outlier(bfi_s$O4)
+bfi_s$O5<-outlier(bfi_s$O5)
+```
+
+Comparamos los datos originales y los arreglados con respectivos boxplots:
+```{r}
+par(mfrow=c(1,2))
+# Boxplot de los datos originales
+boxplot(datos_originales,main="Datos originales",
+        xlab="Variables de personalidad",
+        ylab="z-values",
+        col=c(1:15))
+
+# Boxplot de los datos corregidos.
+boxplot(bfi_s,main="Datos sin outliers",
+        xlab="Variables de personalidad",
+        ylab="z-values",
+        col=c(1:15))
+``` 
+
+El contraste de esfericidad de Bartlett permite comprobar si las correlaciones son distintas de 0 de modo significativo. La hipótesis nula es que det(R)=1. Se normalizan los datos:
+```{r}
+datos_normalizados<-scale(bfi_s)
+```
+
+Se hace el test de esfericidad:
+```{r}
+cortest.bartlett(cor(datos_normalizados))
+```
+
+### 3. **AF**
+
+Hay que escoger un método para extraer los factores, ACP, verosimilitud, etc. La función fa() implementa hasta 6 métodos distintos. Vamos a comparar las salidas con el método del factor principal y con el de máxima verosimilitud.
+
+Prueba de dos modelos con tres factores:
+```{r}
+modelo1<-fa(poly_cor,
+            nfactors = 3,
+            rotate = "none",
+            fm="mle") # modelo máxima verosimilitud
+
+modelo2<-fa(poly_cor,
+            nfactors = 3,
+            rotate = "none",
+            fm="minres") # modelo mínimo residuo
+```
+
+Comparando las comunalidades:
+```{r}
+sort(modelo1$communality,decreasing = T)->c1
+sort(modelo2$communality,decreasing = T)->c2
+head(cbind(c1,c2))
+```
+
+Comparación de las unicidades, es decir la proporción de varianza que no ha sido explicada por el factor (1-comunalidad):
+```{r}
+sort(modelo1$uniquenesses,decreasing = T)->u1
+sort(modelo2$uniquenesses,decreasing = T)->u2
+head(cbind(u1,u2))
+```
+
+Determinemos ahora el número óptimo de factores. Hay diferentes criterios, entre los que destacan el Scree plot (Cattel 1966) y el análisis paralelo (Horn 1965). Ejercicio: buscar sus interpretaciones.
+```{r}
+scree(poly_cor)
+fa.parallel(poly_cor,n.obs=200,fa="fa",fm="minres")
+```
+
+Se deduce que el número óptimo de Factores es 5.
+
+Estimamos el modelo factorial con 5 factores implementando una rotación tipo varimax para buscar una interpretación más simple.
+```{r}
+modelo_varimax<-fa(poly_cor,nfactors = 5,rotate = "varimax",
+                   fa="mle")
+```
+
+Mostramos la matriz de pesos factorial rotada:
+```{r}
+print(modelo_varimax$loadings,cut=0) 
+```
+
+
+Visualmente podríamos hacer el esfuerzo de ver con qué variables correlacionan cada uno de los factores, pero es muy tedioso de modo que utilizamos la siguiente representación:
+```{r}
+fa.diagram(modelo_varimax)
+```
+
+En este diagrama, entre otras cosas se ve que el primer factor esta asociado con los items E1, E2, E3, E4, E5 y N4, que son los items del cuestionario que tratan de identificar la cualidad de la extraversión.
+
+Otra forma de hacerlo, con test de hipótesis al final que contrasta si el numero de factores es suficiente:
+```{r}
+library(stats)
+factanal(bfi_s,factors=9, rotation="none")
+```

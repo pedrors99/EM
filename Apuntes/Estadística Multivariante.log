@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.4.2)  16 NOV 2022 08:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.4.2)  23 NOV 2022 08:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -573,7 +573,7 @@ l.50 ...ción Normal Multivariante}{39}{section.2}
  [2] [3] [4] [5]
 [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18] [19] [20] [21]
 [22] [23] [24] [25] [26] [27] [28] [29] [30] [31] [32] [33] [34] [35] [36]
-[37] [38] [39] [40] [41] [42] [43] [44] [45] [46] [47]
+[37] [38] [39] [40] [41] [42] [43] [44] [45] [46] [47] [48] [49] [50] [51]
 (./Estadística Multivariante.aux
 LaTeX Info: Redefining \. on input line 26.
 LaTeX Info: Redefining \% on input line 26.
@@ -583,8 +583,8 @@ hanged.
 (rerunfilecheck)             Checksum: FD7A7EBF2C437DE1992DA20B6A41DB9A;17862.
  ) 
 Here is how much of TeX's memory you used:
- 12839 strings out of 478994
- 186693 string characters out of 5858185
+ 12843 strings out of 478994
+ 186721 string characters out of 5858185
  536420 words of memory out of 5000000
  29986 multiletter control sequences out of 15000+600000
  420061 words of font info for 88 fonts, out of 8000000 for 9000
@@ -618,10 +618,10 @@ t/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2021/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2021/texmf-dist/
 fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2021/texmf-d
 ist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on "Estadística Multivariante.pdf" (48 pages, 537055 bytes).
+Output written on "Estadística Multivariante.pdf" (52 pages, 554449 bytes).
 PDF statistics:
- 698 PDF objects out of 1000 (max. 8388607)
- 612 compressed objects within 7 object streams
- 130 named destinations out of 1000 (max. 500000)
+ 716 PDF objects out of 1000 (max. 8388607)
+ 626 compressed objects within 7 object streams
+ 134 named destinations out of 1000 (max. 500000)
  518 words of extra memory for PDF output out of 10000 (max. 10000000)
 

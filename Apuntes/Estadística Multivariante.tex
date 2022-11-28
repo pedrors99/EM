@@ -1730,6 +1730,50 @@ $$f(G) = -N\ln(|G|) - \operatorname{tr}(G^{-1}D)$$
 con argumento de $G$ una matriz simétrica definida positiva, y siendo $D$ una matriz simétrica definida positiva dada, ambas $p \times p$. Entonces, existe (y es único) el máximo de $f$ respecto a $G$, y se alcanza en $G = \frac{1}{N}D$, siendo el valor máximo alcanzado
 $$f(\frac{1}{N}D) = pN\ln(N) - N\ln(|D|) - pN \hspace{1cm} (2)$$
 
+\item (2) (No examen) Por ser $D$ simétrica y definida positiva, podemos representar $D = EE'$ con $E$ matriz no singular. Sea $H = E'G^{-1}E \Rightarrow G^{-1} = (E')^{-1}HE^{-1} \Rightarrow G = EH^{-1}E'$. Se tiene que
+$$|G| = |EH^{-1}E'| = |E||H^{1}||E'| = |H^{-1}||EE'| = \frac{|D|}{|H|}$$
+$$\operatorname{traza}(G^{-1}D) = \operatorname{traza}(G^{-1}EE') = \operatorname{traza}(E'G^{-1}E) = \operatorname{traza}(H)$$
+Podemos escribir:
+$$f(G) = g(H) = -N\ln(|D|) + N\ln(|H|) - \operatorname{traza}(H)$$
+Con $H$ en el espacio de matrices simétricas y definidas positivas ($p \times p$).
+
+Consideramos la descomposición de Cholesky de $H$:
+$$H = T'T$$
+con $T$ matriz triangular superior con elementos diagonales estrictamente positivos. \\
+Escribimos
+$$f(G) = g(H) = h(T) = -N\ln(|D|) + N\ln(|T|^{2}) - \operatorname{traza}(T'T)$$
+Con $T$ en el espacio de matrices triangulares superiores con elementos diagonales estrictamente positivos.
+$$|T|^{2} = \sum_{i=1}^{p} t_{ii}^{2} \Rightarrow \ln(|T|^{2}) = \sum_{i=1}^{p} \ln(t_{ii}^{2}) \Rightarrow N\ln(|T|^{2}) = N\sum_{i=1}^{p}\ln(t_{ii}^{2}) = \sum_{i=1}^{p}N\ln(t_{ii}^{2})$$
+$$\operatorname{traza}(T'T) = \sum_{i=1}^{p} t_{ii}^{2} + \sum_{\underset{i<j}{i,j=1}}^{p}t_{ij}^{2}$$
+\begin{small}
+$$T'T = \begin{pmatrix}
+t_{11} & 0 & \dots & 0 \\
+t_{12} & t_{22} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+t_{1p} & t_{2p} & \dots & t_{pp}
+\end{pmatrix} \begin{pmatrix}
+t_{11} & t_{12} & \dots & t_{1p} \\
+0 & t_{22} & \dots & t_{2p} \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 &\dots & t_{pp}
+\end{pmatrix} = \begin{pmatrix}
+t_{11}^{2} & * & \dots & * \\
+* & t_{12}^{2} + t_{22}^{2} & \dots & * \\
+\vdots & \vdots & \ddots & \vdots \\
+* & * & \dots & t_{1p}^{2} + t_{2p}^{2} + \dots + t_{pp}^{2}
+\end{pmatrix}$$
+\end{small}
+Entonces:
+$$h(T) = -N\ln(|D|) + \sum_{i=1}^{p}[N\ln(t_{ii}^{2}) - t_{ii}^{2}] - \sum_{\underset{i<j}{i, j=1}}^{p} t_{ij}^{2}$$
+Alcanza el máximo para $t_{ij} = 0, \forall i < j \Rightarrow T$ diagonal.
+$$y = N\ln(x) - x \Rightarrow y' = \frac{N}{x} - 1 \Rightarrow \frac{N}{x} - 1 = 0 \Rightarrow x = N \Rightarrow y'' = \frac{-N}{x^{2}} < 0 \Rightarrow \text{máximo}$$
+Para que $h(T)$ alcance el máximo, elegimos $t_{ii}^{2} = N, \forall i \Rightarrow t_{ii} = \sqrt{N}$.
+
+Entonces tenemos:
+$$T = \sqrt{N}I_{p} \Rightarrow H = T'T = NI_{p}$$
+El máximo de $f(G)$ se obtiene para:
+$$G = E'H^{1}E' = E(NI_{p})^{-1}E' = \frac{1}{N}EI_{p}E' = \frac{1}{N}EE' = \frac{1}{N}D$$
+
 \item Demostración:
 \begin{itemize}
 \item Maximización de $\ln(L(\mu,\Sigma))$ en $\mu$: (Se puede hacer, en este caso, independientemente de $\Sigma$). \\
@@ -1752,6 +1796,7 @@ es el EMV (único, c.s.) de $\Sigma$.
 
 \item Se comprueba que el valor máximo alcanzado por la función de verosimilitud en el punto $(\mu, \Sigma) = (\bar{x}, \bar{S}_{N})$ del espacio paramétrico es:
 $$L(\mu, \Sigma) = \frac{1}{(2\pi e)^{\frac{pN}{2}}|\bar{S}_{N}|^{\frac{N}{2}}} = [\frac{N}{(2\pi e)|\bar{A}|^{\frac{1}{p}}}]^{\frac{pN}{2}} \hspace{1cm} (3)$$
+Como puede verse [...] % COMPLETAR
 \end{itemize}
 
 \subsubsection{Teorema de Dykstra}
@@ -1769,13 +1814,51 @@ $$Y_{\alpha} = \sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta}, \hspace{1cm} \alpha=
 se tiene que
 $$\sum_{\alpha=1}^{n}X_{\alpha}X_{\alpha}' = \sum_{\alpha=1}^{N}Y_{\alpha}Y_{\alpha}' \hspace{1cm} (4)$$
 
+\item (4) $$\sum_{\alpha=1}^{N} Y_{\alpha}Y_{\alpha}' = \sum_{\alpha=1}^{N} \sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta})(\sum_{\gamma=1}^{N} c_{\alpha\gamma}X_{\gamma})' = \sum_{\alpha=1}^{N} \sum_{\beta=1}^{N} \sum_{\gamma=1}^{N} c_{\alpha\beta} c_{\alpha\gamma} X_{\beta}X_{\gamma}' =$$
+$$= \sum_{\beta=1}^{N} \sum_{\gamma=1}^{N} X_{\beta} X_{\gamma}' (\sum_{\alpha=1}^{N} c_{\alpha\beta} c_{\alpha\gamma}) =$$
+Como tenemos $(\sum_{\alpha=1}^{N} c_{\alpha\beta} c_{\alpha\gamma}) = <c_{\beta}, c_{\gamma}> = \delta_{\beta\gamma} = \begin{cases}
+0 & \text{si } \beta \neq \gamma \\
+1 & \text{si } \beta = \gamma
+\end{cases}$, entonces:
+$$= \sum_{\beta=1}^{N} X_{\beta}X_{\beta}'$$
+
 \item LEMA 2: Sean $\{X_{\alpha}: \alpha=1,\dots,N\}$ vectores aleatorios de dimensión $p$, con $X_{\alpha} \sim N_{p}(\mu_{\alpha}, \Sigma), \alpha = 1,\dots,N$ (es decir, tienen la misma matriz de covarianzas, aunque posiblemente distinto vector de medias), independientes. Sea $C = (c_{\alpha\beta})_{\alpha, \beta = 1,\dots,N}$ una matriz ortogonal de dimensión $N \times N$. Entonces, definiendo
 $$Y_{\alpha} = \sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta}, \hspace{1cm} \alpha=1,\dots,N$$
 se tiene
 \begin{itemize}
-\item $Y_{\alpha} \sim N_{p}(\mathcal{V}_{\alpha}, \Sigma)$, con $\mathcal{V}_{\alpha} = \sum_{\beta=1}^{N}c_{\alpha\beta}\mu_{\beta}, \alpha = 1, \dots, N$.
-\item Los vectores $\{Y_{\alpha}: \alpha=1,\dots,N\}$ son independientes (5).
+\item $Y_{\alpha} \sim N_{p}(\mathcal{V}_{\alpha}, \Sigma)$, con $\mathcal{V}_{\alpha} = \sum_{\beta=1}^{N}c_{\alpha\beta}\mu_{\beta}, \alpha = 1, \dots, N \quad$ (5).
+\item Los vectores $\{Y_{\alpha}: \alpha=1,\dots,N\}$ son independientes (6).
 \end{itemize}
+
+\item (5) $$c_{\alpha\beta} X_{\beta} = C_{\alpha\beta} I_{p} X_{\beta} = \begin{pmatrix}
+c_{\alpha\beta} & 0 & \dots & 0 \\
+0 & c_{\alpha\beta} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & c_{\alpha\beta}
+\end{pmatrix} X_{\beta} = A_{\alpha\beta} X_{\beta}$$
+$$Y_{\alpha} = \sum_{\beta=1}^{N} A_{\alpha\beta} X_{\beta} \sim N_{p}(\sum_{\beta=1}^{N}(A_{\alpha\beta}\mu_{\beta}), \sum_{\beta=1}^{N} A_{\alpha\beta} \Sigma A_{\alpha\beta}') \equiv N_{p}(\sum_{\alpha=1}^{N}c_{\alpha\beta} \mu_{\beta}, \sum_{\beta=1}^{N}c_{\alpha\beta}^{2}\Sigma) \equiv N_{p}(\mathcal{V}_{\alpha}, \Sigma)$$
+donde hemos usado que $\sum_{\beta=1}^{N} c_{\alpha\beta} c_{\alpha\beta}^{2}=1$.
+
+Entonces
+$$\Phi_{Y_{\alpha}}(t) = e^{it'\mathcal{V}_{\alpha} - \frac{1}{2}t' \Sigma t}$$
+
+\item (6) Consideramos el vector $(pN) \times 1$:
+$$Y = \begin{pmatrix} Y_{1} \\ Y_{2} \\ \vdots \\ Y_{N} \end{pmatrix}$$
+Para cada $t \in \mathbb{R}^{pN}$, tenemos:
+$$t = \begin{pmatrix} t_{1} \\ t_{2} \\ \vdots \\ t_{N} \end{pmatrix}$$
+con $t_{\alpha} \in \mathbb{R}, \alpha = 1, \dots, N$. \\
+La función característica de $Y$ se calcula como:
+$$\Phi_{Y_{1}, \dots, Y_{N}}(t) = E[e^{it'Y}] = E[e^{i\sum_{\alpha=1}^{N}t_{\alpha}'Y_{\alpha}}] = E[e^{i\sum_{i=1}^{N}t_{\alpha}'(\sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta})}] =$$
+$$= E[e^{i\sum_{\beta=1}^{N} (\sum_{\alpha=1}^{N} t_{\alpha}'c_{\alpha\beta})X_{\beta})}] = E[\prod_{\beta=1}^{N} e^{i(\sum_{\alpha=1}^{N}t_{\alpha}'c_{\alpha\beta}X_{\beta}}] =$$
+Como $X_{1}, \dots, X_{N}$ son independientes, tenemos que la esperanza del producto es el producto de las esperanzas:
+$$= \prod_{\beta=1}^{N} E[e^{i(\sum_{\alpha=1}^{N} t_{\alpha}'c_{\alpha\beta})X_{\beta}}] = \prod_{\beta=1}^{N} \Phi_{X_{\beta}}(\sum_{\alpha=1}^{N}t_{\alpha}c_{\alpha\beta}) =$$
+Como $X_{\beta} \sim N(\mu_{\beta}, \Sigma), \beta = 1, \dots, N$, tenemos:
+$$= \prod_{\beta=1}^{N} e^{i(\sum_{\alpha=1}^{N} t_{\alpha}c_{\alpha\beta})'\mu_{\beta} - \frac{1}{2}(\sum_{\alpha=1}^{N} t_{\alpha}c_{\alpha\beta})'\Sigma(\sum_{\gamma=1}^{N} t_{\gamma}c_{\gamma\beta})} =$$
+$$= e^{i\sum_{\beta=1}^{N}(\sum_{\alpha=1}^{N} t_{\alpha}c_{\alpha\beta})'\mu_{\beta} - \frac{1}{2} \sum_{\beta=1}^{N}[(\sum_{\alpha=1}^{N} t_{\alpha}c_{\alpha\beta})' \Sigma (\sum_{\gamma=1}^{N} t_{\gamma}c_{\gamma\beta})]} =$$
+$$= e^{i\sum_{\alpha=1}^{N} t_{\alpha}' (\sum_{\beta=1}^{N} c_{\alpha\beta}\mu_{\beta}) - \frac{1}{2} \sum_{\alpha=1}^{N} \sum_{\gamma=1}^{N}[t_{\alpha}' \Sigma t_{\gamma} (\sum_{\beta=1}^{N}c_{\alpha\beta}c_{\gamma\beta})]} =$$
+donde tenemos que $\sum_{\beta=1}^{N}c_{\alpha\beta}c_{\gamma\beta} = \delta_{\alpha\gamma}$.
+$$= e^{i\sum_{\alpha=1}^{N} t_{\alpha}'\mathcal{V}_{\alpha} - \frac{1}{2} \sum_{\alpha=1}^{N} t_{\alpha}' \Sigma t_{\alpha}} = \prod_{\alpha=1}^{N}e^{it_{\alpha}'\mathcal{V}_{\alpha} - \frac{1}{2}t_{\alpha}' \Sigma t_{\alpha}} = \prod_{\alpha=1}^{N} \Phi_{Y_{\alpha}}(t_{\alpha})$$
+$\Rightarrow Y_{1}, \dots, Y_{N}$ independientes.
 
 \item Demostración (esquema): Consideremos, en nuestro caso, una matriz $B = (b_{\alpha\beta})_{\alpha, \beta = 1, \dots, N}$ de dimensión $N \times N$, ortogonal, cuya última fila sea $(\frac{1}{\sqrt{N}}, \dots, \frac{1}{\sqrt{N}})$. Es decir, el resto de filas han de ser vectores ortogonales con éste y entre sí, con norma igual a 1. Definimos el vector:
 $$Z_{\alpha} = \sum_{\beta=1}^{N} b_{\alpha\beta} X_{\beta}, \hspace{1cm} \alpha = 1, \dots, N$$
@@ -1804,7 +1887,75 @@ Esto equivale a que la matriz $A$ es definida no negativa.
 
 Por otra parte, se cumple que
 $$\operatorname{rango}(Z) = \operatorname{rango}(Z') = \operatorname{rango}(Z'Z) = \operatorname{rango}(A)$$
-Por tanto, la demostración quedará concluida probando que $\operatorname{rango}(Z) = p$ con probabilidad 1 si y sólo si $N > p$ (6).
+Por tanto, la demostración quedará concluida probando que $\operatorname{rango}(Z) = p$ con probabilidad 1 si y sólo si $N > p \quad$ (6).
+
+\item (6) \begin{itemize}
+\item[$\Rightarrow$] Si fuese $N \leq p$, sería $N-1 < p$. Es decir, el rango de $Z$ sería como máximo igual a $N - 1 < p$.
+\item[$\Leftarrow$] Supongamos que $N > p$. Vamos a probar que, entonces, $\operatorname{rango}(Z) = \operatorname{rango}(A) = p$ con probabilidad 1.
+
+Probamos primero para $N = p+1$, y después se argumentará por inducción para cualquier $N > p$.
+
+$N = p + 1 \Rightarrow N - 1 = p \Rightarrow Z' = (Z_{1}, \dots, Z_{p})_{p \times p}$ y $Z_{\alpha} \sim N_{p}(0, \Sigma), \alpha = 1, \dots, N-1$ independientes.
+
+\begin{itemize}
+\item NOTA: Para cada $\alpha = 1, \dots, N-1 = p$, se tiene que
+$$P[Z_{\alpha} \in S] = 0, \forall S \in \mathcal{B}^{p} \text{ tal que } \underset{\text{medida de Lebesgue en } (\mathbb{R}^{p}, \mathcal{B}^{p})}{\lambda_{p}}(S) = 0$$
+$$P_{Z_{\alpha}} \underset{\text{``absolutamente continua''}}{<<} \lambda_{p}$$
+En particular, es cierto para cualquier hiperplano ($p-1$)-dimensional
+$$S(a_{1}, \dots, a_{p-1})$$
+engendrado por los vectores $a_{1}, \dots, a_{p-1} \in \mathbb{R}^{p}$.
+\end{itemize}
+
+Vamos a probar que la matriz $Z' = \begin{pmatrix} Z_{1}, \dots, Z_{p=N-1} \end{pmatrix}$ tiene rango $p$.
+$$P[\operatorname{rango}(Z) < p] = P[Z_{1}, \dots, Z_{p} \text{ son linealmente dependientes}]=$$
+$$= P[\{\omega \in \Omega: Z_{1}(\omega), \dots, Z_{p}(\omega) \text{ son linealmente dependientes}\}] \leq$$
+$$\leq \sum_{i=1}^{p}P[Z_{i} \in S(Z_{1}, \dots, Z_{i-1}, Z_{i+1}, \dots, Z_{p})] = pP[Z_{1} \in S(Z_{2}, \dots, Z_{p})] =$$
+$$= p \cdot 0 = 0$$
+$S(Z_{1}, \dots, Z_{i-1}, Z_{i+1}, \dots, Z_{p})$ hiperplano generado por $Z_{1}, \dots, Z_{i-1}, Z_{i+1}, \dots, Z_{p}$. \\
+Falta probar que $P[Z_{1} \in S(Z_{2}, \dots, Z_{p})] = 0$.
+
+\begin{itemize}
+\item NOTA: En general,
+$$P[A] = E_{p}[I_{A}(\cdot)] = \int_{\Omega} I_{A}(\omega) P(dw) = \int_{A} P(dw)$$
+\end{itemize}
+
+Para ello:
+$$P[Z_{1} \in S(Z_{2}, \dots, Z_{p})] = E_{p}[I_{[z_{1} \in S(z_{2}, \dots, z_{p})]}(\cdot)] =$$
+$$= \int_{\mathbb{R}^{p} \times \dots \times \mathbb{R}^{p}} I_{[z_{1} \in S(z_{2}, \dots, z_{p})]}(z_{1}, \dots, z_{p}) P_{Z_{1} \dots Z_{p}}(dz_{1}, \dots, dz_{p}) =$$
+
+\begin{itemize}
+\item Como son independientes
+$$P_{Z_{1}, \dots, Z_{p}} (dz_{1} \dots dz_{p}) = P_{Z_{1}}(dz_{1})P_{Z_{2}, \dots, Z_{p}}(dz_{2} \dots dz_{p})$$
+\end{itemize}
+
+$$= \int_{\mathbb{R}^{p} \times \dots \times \mathbb{R}^{p}} (\int_{\mathbb{R}^{p}} I_{[z_{1} \in S(z_{2}, \dots, z_{p})}(z_{1}, \dots, z_{p}) P_{Z_{1}}(dz_{1})) P_{z_{2}, \dots, z_{p}} (dz_{2}, \dots, dz_{p}) =$$
+$$= \int_{\mathbb{R}^{p} \times \dots \times \mathbb{R}^{p}} (P_{Z_{1}}[Z_{1} \in S(z_{2}, \dots, z_{p}]) P_{z_{2}, \dots, z_{p}} (dz_{2} \dots dz_{p}) =$$
+$$= \int_{\mathbb{R}^{p} \times \dots \times \mathbb{R}^{p}} 0 P_{z_{2}, \dots, z_{p}} (dz_{2} \dots dz_{p}) = 0$$
+
+Finalmente, veamos la inducción. Supongamos que la implicación se cumple para cierto $N > p$ y vamos a ver que entonces se cumple para $N' = N+1$.
+
+Definimos $Z^{[N]}$ como la matriz $Z$ definida previamente asociada al conjunto $X_{1}, \dots, X_{N}$, y $Z^{[N']}$ como la matriz asociada al conjunto $X_{1}, \dots, X_{N}, X_{N'}$.
+$$B^{[N]} = \begin{pmatrix}
+b_{11} & b_{12} & \dots & b_{1N} \\
+\vdots & \vdots & \ddots & \vdots \\
+b_{N-1 \hspace{0.1cm} 1} & b_{N-1 \hspace{0.1cm} 2} & \dots & b_{N-1 \hspace{0.1cm} N} \\
+\frac{1}{\sqrt{N}} & \frac{1}{\sqrt{N}} & \dots & \frac{1}{\sqrt{N}}
+\end{pmatrix}$$
+$$B^{[N']} = \begin{pmatrix}
+b_{11} & b_{12} & \dots & b_{1N} & 0 \\
+\vdots & \vdots & \ddots & \vdots & \vdots \\
+b_{N-1 \hspace{0.1cm} 1} & b_{N-1 \hspace{0.1cm} 2} & \dots & b_{N-1 \hspace{0.1cm} N} & 0 \\
+b_{N1} & b_{N2} & \dots & b_{NN} & b_{NN+1} \\
+\frac{1}{\sqrt{N}} & \frac{1}{\sqrt{N}} & \dots & \frac{1}{\sqrt{N}} & \frac{1}{\sqrt{N}}
+\end{pmatrix}$$
+
+$$Z^{[N]} = \begin{pmatrix}
+Z_{1}^{[N]'} \\ \vdots \\ Z_{N-1}^{[N]'}
+\end{pmatrix}$$
+$$Z^{[N']} = \begin{pmatrix}
+Z_{1}^{[N']'} = Z_{1}^{[N]'} \\ \vdots \\ Z_{N-1}^{[N']'} = Z_{N-1}^{[N]'} \\ Z_{N}^{[N']'}
+\end{pmatrix}$$
+\end{itemize}
 \end{itemize}
 
 \subsubsection{Teorema de Fisher multivariante}
