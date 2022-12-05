@@ -1980,17 +1980,25 @@ Sea $\mathbf{X} \sim N_{p}(\mu, \Sigma) \quad(\Sigma>0)$
 
 \begin{itemize}
 \item VECTOR DE MEDIAS MUESTRAL: \\
-$\hat{\mu}:=\bar{X}$ es un estimador insesgado de $\mu$
+$\hat{\mu}:=\bar{X}$ es un estimador insesgado de $\mu$ (7)
 
 (En realidad, en este caso no hace falta suponer normalidad, solo la existencia de $\mu$ )
 
-\item MATRIZ DE COVARIANZAS MUESTRAL:
-$\hat{\Sigma}:=S_{N}$ no es un estimador insesgado de $\Sigma$
+\item (7) $\hat{\mu} = \bar{X}$ es estimador insesgado de $\mu$. \\
+$(X_{1}, X_{2}, \dots, X_{N})$ v.a.i.i.d., $X_{i} \sim N(\mu, \Sigma)$.
+$$\bar{X} = \frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha} = E[\bar{X}] = E[\frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha}] \overset{\text{linealidad}}{=} |frac{1}{N} \sum_{\alpha=1}^{N} E[X_{\alpha}] = \frac{1}{N} N\mu = \mu$$
+
+\item MATRIZ DE COVARIANZAS MUESTRAL: \\
+$\hat{\Sigma}:=S_{N}$ no es un estimador insesgado de $\Sigma$ (8)
 
 (Tener en cuenta, por el teorema de Fisher, que $A \stackrel{d}{=} \sum_{\alpha=1}^{N-1} Z_{\alpha} Z_{\alpha}'$, con $Z_{\alpha} \sim N_{p}(0, \Sigma), \alpha=1, \ldots, N-1$, independientes)
 
 Se tiene, en este caso, que: \\
 $S_{N-1}=\frac{N}{N-1} S_{N}$ sí es un esimador insesgado de $\Sigma$
+
+\item (8) $\hat{\Sigma} = S_{N} = \frac{A}{N}$
+$$E[S_{N}] = E[\frac{A}{N}] = \frac{1}{N}E[\sum_{\alpha=1}^{N-1} Z_{\alpha}Z_{\alpha}'] = \frac{1}{N} \sim_{\alpha=1}^{N-1} E[Z_{\alpha}Z_{\alpha}']$$
+$$E[S_{N-1}] = E[\frac{N}{N-1}S_{N}] = \frac{N}{N-1} E[\frac{1}{N}] = \frac{1}{N-1}E[A] = \frac{1}{N-1} E[\sum_{\alpha=1}^{N-1} Z_{\alpha}Z_{\alpha}'] =$$ $$= \frac{1}{N-1}(N-1)E[Z_{\alpha}Z_{\alpha}'] = \Sigma$$
 \end{itemize}
 
 \subsubsection{Propiedades de los EMV \texorpdfstring{$\hat{\mu}$}) y \texorpdfstring{$\hat{\Sigma}$}): Sobre CONSISTENCIA}
@@ -2004,14 +2012,14 @@ $$P_{\theta} [\lim\limits_{N \to \infty} \hat{\theta}_{N}=\theta]=1$$
 \end{enumerate}
 
 Sea $X \sim N_{p}(\mu, \Sigma) \quad(\Sigma>0)$. Se demuestra que: \\
-$\hat{\mu}:=\bar{X}$ $\hat{\Sigma}:=S_{N}$ son estimadores fuertemente consistentes de $\boldsymbol{\mu}$ y $\Sigma$, respectivamente.
+$\hat{\mu}:=\bar{X}$ $\hat{\Sigma}:=S_{N}$ son estimadores fuertemente consistentes de $\mu$ y $\Sigma$, respectivamente.
 
-(En el caso de $\hat{\boldsymbol{\mu}}:=\overline{X}$, no se requiere normalidad. $S_{N-1}$ también es un estimador fuertemente consistente de $\Sigma$) [Se omite la demostración]
+(En el caso de $\hat{\mu}:=\overline{X}$, no se requiere normalidad. $S_{N-1}$ también es un estimador fuertemente consistente de $\Sigma$) [Se omite la demostración]
 
 \subsubsection{Propiedades de los EMV \texorpdfstring{$\hat{\mu}$}) y \texorpdfstring{$\hat{\Sigma}$}): Sobre EFICIENCIA}
 (Para estimadores insesgados)
 
-DEFINICIÓN: Sea $T=(T_{1}, \ldots, T_{k})'$ un estimador insesgado de un parámetro (en general, multidimensional) $\theta=(\theta_{1}, \ldots, \theta_{k})' \in \bar{\Theta}$, siendo $\Theta=\mathbb{R}^{k}$ o un 'rectángulo' en $\mathbb{R}^{k}$. Se dice que $T$ es eficiente para $\theta=(\theta_{1}, \ldots, \theta_{k})'$ si, para cualquier otro estimador insesgado $U$ de $\theta$, se verifica que la diferencia de matrices de covarianzas $\overline{\operatorname{Cov}_{\theta}(U)}-\operatorname{Cov}_{\theta}(T)$, para todo $\theta \in \Theta$, es una matriz definida no negativa [se suele denotar $\operatorname{Cov}_{\theta}(U) \geq \operatorname{Cov}_{\theta}(T)$ ]
+DEFINICIÓN: Sea $T=(T_{1}, \ldots, T_{k})'$ un estimador insesgado de un parámetro (en general, multidimensional) $\theta=(\theta_{1}, \ldots, \theta_{k})' \in \bar{\Theta}$, siendo $\Theta=\mathbb{R}^{k}$ o un 'rectángulo' en $\mathbb{R}^{k}$. Se dice que $T$ es eficiente para $\theta=(\theta_{1}, \ldots, \theta_{k})'$ si, para cualquier otro estimador insesgado $U$ de $\theta$, se verifica que la diferencia de matrices de covarianzas $\operatorname{Cov}_{\theta}(U)-\operatorname{Cov}_{\theta}(T)$, para todo $\theta \in \Theta$, es una matriz definida no negativa [se suele denotar $\operatorname{Cov}_{\theta}(U) \geq \operatorname{Cov}_{\theta}(T)$ ]
 
 Sea $X \sim N_{p}(\mu, \Sigma) \quad(\Sigma>0)$. Se demuestra que:
 \begin{itemize}
@@ -2048,11 +2056,408 @@ RESULTADO: Sea $X_{1}, \ldots, X_{N}, \ldots$ una sucesión de vectores aleatori
 $$N^{\frac{1}{2}}(\overline{X}_{N}-\mu)=N^{-\frac{1}{2}} \sum_{\alpha=1}^{N}(X_{\alpha}-\mu) \underset{N \to \infty}{\sim} N_{p}(0, \Sigma)$$
 (Se trata de una versión del Teorema Central del Límite, para vectores i.i.d. $\sim(\mu, \Sigma))$
 
+\item Demostración (Resultado): Sea:
+$$Y_{N} = N^{-\frac{1}{2}} \sum_{\alpha=1}^{N}(X_{\alpha} - \mu) \quad (p \times 1)$$
+Por el ``Teorema de continuidad de funciones características'', es suficiente probar que la función característica de este vector $\upphi_{Y_{N}}(t)$ converge a
+$$exp\{-\frac{1}{2}t' \Sigma t\}, \quad \forall t \in \mathbb{R}^{t}$$
+Sabemos que , para cada $t \in \mathbb{R}^{p}$, se tiene que
+$$\upphi_{Y_{N}}(t) = \upphi_{t'Y_{N}}(1)$$
+Veamos como es la función característica $\upphi_{t'Y_{N}}(s), s \in \mathbb{R}$.
+
+Tenemos que
+$$t'Y_{N} = N^{-\frac{1}{2}} \sum_{\alpha=1}^{N}(t'X_{\alpha} - t'\mu)$$
+donde sabes que cada sumando $t'X_{\alpha}-t'\mu \sim (0, t' \Sigma t)$ siendo estas variables i.i.d. Aplicamos el Teorema Central del Límite univariante $\star$.
+
+TCL univariante: \\
+Sean $X_{1}, X_{2}, \dots$ v.a. i.i.d. $\sim (\mu, \sigma^{2})$. Sea $W_{N} = \sum_{\alpha=1}^{N} X_{\alpha}, N \geq 1$ ($\overline{X}_{N} = \frac{1}{N}W_{N}$). Entonces:
+\begin{itemize}
+\item con $\sigma^{2} > 0,$ $$\quad \frac{W_{N} - E[W_{N}]}{\sqrt{Var(W_{N})}} = \frac{W_{N} - N\mu}{N^{\frac{1}{2}}\sigma} = \frac{\overline{X}_{N}-\mu}{N^{-\frac{1}{2}}\sigma} \underset{N \to \infty}{\sim} N(0, 1)$$
+\item En general (con $\sigma^{2} \geq 0$), $$W_{N} - N\mu \sim (0, N\sigma^{2})$$
+$$\overline{X}_{N} - \mu \sim N(0, \frac{\sigma^{2}}{N})$$
+\end{itemize}
+
+$$\star \quad t'Y_{N} \underset{N \to \infty}{\sim} N(0, t' \Sigma t)$$
+($\Sigma$ puede ser singular, $\Sigma \geq 0$). Si fuese $\Sigma > 0$, podemos escribir:
+$$\frac{t'Y_{N}}{\sqrt{t' \Sigma t}} \underset{N \to \infty}{\sim} N(0, 1)$$
+Por el teorema de continuidad de funciones características (caso univariante), tenemos que $\forall s \in \mathbb{R}$,
+$$\upphi_{t'Y_{N}}(s) \underset{N \to \infty}{\longrightarrow} exp\{-\frac{1}{2}s^{2}(t' \Sigma t)\}$$
+Para $s=1$:
+$$\upphi_{Y_{N}}(t) = \upphi_{t'Y_{N}}(1) \underset{N \to \infty}{\longrightarrow} exp\{-\frac{1}{2} t' \Sigma t\}$$
+Y esa es justamente la función característica de una distribución $N_{p}(0, \Sigma)$.
+
 \item Distribución asintótica de la matriz de dispersiones muestral, $A$. \\
-RESULTADO: Sea $X_{1}, \dots, X_{N}, \dots$ una sucesión de vectores aleatorios $p$-dimensionales indpendientes e idénticamente distribuidos, con vector de medias $\mu$ y matriz de covarianzas $\Sigma$ (i.e., $X_{\alpha} \sim (\mu, \Sigma), \alpha = 1, \dots, N, \dots, N)$, u con momentos de orden cuatro finitos. Sean $\bar{X}_{N} = \frac{1}{N}\sum_{\alpha=1}^{N} X_{\alpha}$ y $A_{n} = \sum_{\alpha=1}^{N}(X_{\alpha} - \bar{X}_{N})(X_{\alpha} - \bar{X}_{N})', \forall N \geq 1$. Entonces, cuando $N \to \infty$, se tiene la distribución asintótica
+RESULTADO: Sea $X_{1}, \dots, X_{N}, \dots$ una sucesión de vectores aleatorios $p$-dimensionales indpendientes e idénticamente distribuidos, con vector de medias $\mu$ y matriz de covarianzas $\Sigma$ (i.e., $X_{\alpha} \sim (\mu, \Sigma), \alpha = 1, \dots, N, \dots)$, u con momentos de orden cuatro finitos. Sean $\bar{X}_{N} = \frac{1}{N}\sum_{\alpha=1}^{N} X_{\alpha}$ y $A_{n} = \sum_{\alpha=1}^{N}(X_{\alpha} - \bar{X}_{N})(X_{\alpha} - \bar{X}_{N})', \forall N \geq 1$. Entonces, cuando $N \to \infty$, se tiene la distribución asintótica
 $$N^{-\frac{1}{2}}(A_{N} - N\Sigma) \underset{N \to \infty}{\sim} N_{p^{2}}(0, V)$$
 (en el sentido de que $N^{-\frac{1}{2}}(\operatorname{Vec}(A_{N} - N\operatorname{Vec}(\Sigma)) \underset{N \to \infty}{\sim} N_{p^{2}}(0, V))$, con $V = \operatorname{Cov}(\operatorname{Vec}((X_{\alpha} - \mu)(X_{\alpha} - \mu)'))$.
+
 (OBSERVACIÓN: La matriz $V$ será necesariamente singular, por lo que la distribución límite se refiere al caso general de la DNM)
+\end{itemize}
+
+\subsection{Distribución de Wishart}
+\subsubsection{Motivación}
+\begin{itemize}
+\item Según se vio en el Teorema de Fisher multivariante, dada una muestra aleatoria simple \\ $X_{1}, \dots, X_{N}$ de una distribución $N_{p}(\mu, \Sigma) \quad (\Sigma > 0)$, se tiene que la matriz de dispersiones muestral, $A = \sum_{\alpha=1}^{N}(X_{\alpha}-\bar{X})(X_{\alpha}-\bar{X})'$, se distribuye de igual modo que $\sum_{\alpha=1}^{N-1}Z_{\alpha}Z_{\alpha}'$, con $Z_{1}, \dots, Z_{N-1}$ vectores aleatorios independientes e idénticamente distribuidos según una $N_{p}(0, \Sigma)$ $(\Sigma > 0)$.
+
+\item Interesa, por tanto, conocer la forma explícita de esta distribución, que juega un papel fundamental en el contexto de la inferencia estadística multivariante.
+
+\item La distribución de Wishart (1928), que puede verse como una extensión de la distribución $\chi^{2}$ (entre otras distribuciones), constituye el modelo de referencia en relación con la cuestión planteada.
+\end{itemize}
+
+\subsubsection{Definición}
+\begin{itemize}
+\item DEFINICIÓN (IMPLÍCITA): $Z_{1}, \dots, Z_{n}$ vectores aleatorios independientes e idénticamente distribuidos según una $N_{p}(0, \Sigma) \quad (\Sigma \geq 0)$, con $n \geq p$. Se define la distribución de Wishart centrada con $n$ grados de libertad como la distribución de la matriz $\sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}'$. Se denota $W_{p}(n, \Sigma)$.
+
+\item Como consecuencia, en el caso de la matriz de dispersiones de derivadas del muestro aleatorio simple de una población $N_{p}(\mu, \Sigma) \quad (\Sigma > 0)$ [se puede extender al caso $\Sigma \geq 0$], tendremos que
+$$A = NS_{N} = (N-1)S_{N-1} \sim W_{p}(n, \Sigma), \quad \text{con } n = N-1$$
+
+\item En el caso $\Sigma > 0$, la función de densidad de la distribución $W_{p}(n, \Sigma)$ tiene la forma
+$$f(A) = \frac{|A|^{\frac{n-p-1}{2}} exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}A)\}}{2^{\frac{np}{2}}|\Sigma|^{\frac{n}{2}}\pi^{\frac{p(p-1)}{4}}\prod_{i=1}^{p}\Gamma(\frac{n+1-i}{2})}, \quad A > 0$$
+
+\item Recordando que la función \emph{función gamma multivariante de orden} $m$ se define como
+$$\Gamma_{m}(z) = \pi^{\frac{m(m-1)}{4}} \prod_{i=1}^{m} \Gamma(z - \frac{i-1}{2})$$
+se expresa la densidad de Wishart como
+$$f(A) = \frac{|A|^{\frac{n-p-1}{2}} exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}A)\}}{2^{\frac{np}{2}}|\Sigma|^{\frac{n}{2}}\Gamma_{p}(\frac{n}{2})}, \quad A > 0$$
+\end{itemize}
+
+\subsubsection{La distribución de Wishart como extensión de la \texorpdfstring{$\chi^{2}$})}
+\begin{itemize}
+\item Resultado: Si $a \sim W_{1}(n, \sigma^{2})$, entonces $\frac{a}{\sigma^{2}} \sim \chi_{n}^{2} \quad$ (1).
+
+\item (1) Suponemos $a \sim W_{1}(n, \sigma^{2}), \sigma^{2} > 0$.
+$$f(a) \overset{p=1}{=} \frac{a^{\frac{n-2}{2}}e^{\frac{a}{2\sigma^{2}}}}{2^{\frac{n}{2}}(\sigma^{2})^{\frac{n}{2}}\Gamma(\frac{n}{2})}, a > 0$$
+$$cv : c := \frac{a}{\sigma^{2}}, a = v\sigma^{2}, da = \sigma^{2}dv$$
+$$f(v) = \frac{(\sigma^{2}v)^{\frac{n-2}{2}} e^{-\frac{v}{2}}}{2^{\frac{n}{2}}(\sigma^{2})^{\frac{n}{2}}\Gamma(\frac{n}{2})}\sigma^{2} = \frac{v^{\frac{n-2}{2}}e^{-\frac{v}{2}}}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})}, v > 0$$
+$\Rightarrow v \sim \chi_{n}^{2} \Rightarrow \frac{a}{\sigma^{2}} \sim \chi_{n}^{2}$.
+
+También se puede demostrar de forma más sencilla a partir de la función característica, que veremos a continuación.
+
+\item OBSERVACIÓN: En relación con el resultado anterior, si
+$$\hat{\sigma^{2}} = s_{N}^{2} := \frac{1}{N} \sum_{\alpha=1}^{N}(x_{\alpha} - \bar{x})^{2}$$
+es el EMV de $\sigma^{2}$ en el caso unidimensional ($p=1$), entonces se tiene que
+$$\frac{Ns_{N}^{2}}{\sigma^{2}} = \frac{\sum_{\alpha=1}^{N}(x_{\alpha} - \bar{x})^{2}}{\sigma^{2}} \sim \chi_{n}^{2}, \quad \text{con } n=N-1$$
+\end{itemize}
+
+\subsubsection{Función característica}
+En primer lugar, veamos cómo se define, de forma general, la función característica de una matriz aleatoria (no necesariamente cuadrada):
+
+\begin{itemize}
+\item Sea $Y$ una matriz aleatoria $(r \times s)-$dimensional. Se define la función característica de $Y$ como
+$$\upphi_{Y}(\Theta) = E[e^{i\operatorname{tr}(\Theta'Y)}]$$
+$\forall \Theta$ en el espacio de matrices de dimensión $r \times s$.
+
+\item En realidad, esta expresión proviene de la vectorización de $Y$ u $\Theta$ y el cálculo usual correspondiente de la función característica según la forma vectorial:
+$$\upphi_{\operatorname{Vec}(Y)}(\operatorname{Vec}(\Theta)) = E[e^{i\operatorname{Vec}(\Theta)'\operatorname{Vec}(Y)}] = E[e^{i\sum_{l=1}^{s}\sum_{k=1}^{r}\theta_{kl}Y_{kl}}] = E[e^{i\operatorname{tr}(\Theta'Y)}]$$
+(es decir, en la doble suma solo intervienen los elementos diagonales de la matriz ($s \times s$)-dimensional $\Theta'Y$).
+
+\item Ahora bien, en el caso de una matriz aleatoria $Y$ ($r \times r$)-dimensional y simétrica, se puede restringir la formulación al conjunto de las $\frac{1}{2}r(r+1)$ variables correspondientes a la diagonal y la parte triangular superior [o inferior] de $Y$, adoptando la forma reducida.
+$$\upphi_{Y}^{\star}(\Theta) = E[\exp\{i\sum_{l=1}^{r}\sum_{\underset{k \leq l}{k=1}}^{r}\theta_{kl}Y_{kl}\}]$$
+$\forall \Theta$ en el espacio de matrices simétricas de dimensión $r \times r$.
+
+\item Se tiene el siguiente resultado para la distribución de Wishart: \\
+RESULTADO: Sea $A \sim W_{p}(n, \Sigma)$. Entonces:
+$$\upphi_{A}(\Theta) = |I_{p} - 2i\Theta\Sigma|^{-\frac{n}{2}}$$
+$$\upphi_{A}^{\star}(\Theta) = |I_{p} - i\Gamma\Sigma|^{-\frac{n}{2}}$$
+$\forall \Theta$ en el espacio de matrices simétricas de dimensión $p \times p$, siendo $\Gamma = (\gamma_{kl})$ (matriz ($p \times p$)-dimensional), con $\gamma_{kl} = (1 + \delta_{kl})\theta_{kl}$, y $\delta_{kl}$ la delta de Kronecker.
+\end{itemize}
+
+\subsubsection{Algunas propiedades de la distribución de Wishart}
+\begin{itemize}
+\item[1] MOMENTO DE PRIMER Y SEGUNDO ORDEN: \\
+RESULTADO: Sea $A \sim W_{p}(n, \Sigma)$. Entonces,
+$$E[A] = n \Sigma$$
+$$\operatorname{Cov}(a_{ij}, a_{kl}) = n(\sigma_{ij}\sigma_{jl} + \sigma_{il}\sigma_{jk}) \quad (i, j, k, l = 1, \dots, p)$$
+(Se puede obtener una expresión matricial para la matriz de covarianzas de $A$ en términos de productos de Kronecker).
+
+\item Teorema de Isserlis: En una DNM
+$$E[X_{i}X_{j}X_{k}X_{l}] = \sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{kl} + \sigma_{il}\sigma_{jk}$$
+(Se usa para la demostración de la propiedad 1)
+
+\item[2] REPRODUCTIVIDAD RESPECTO A GRADOS DE LIBERTAD: \\
+RESULTADO: Sean $A_{1}, \dots, A_{q}$ matrices aleatorias independientes, $A_{j} \sim W_{p}(n_{j}, \Sigma), j = 1, \dots, q$. Entonces:
+$$A = \sum_{j=1}^{q} A_{j} \sim W_{p}(n, \Sigma), \quad \text{con } n = \sum_{j=1}^{q}n_{j} \quad (2)$$
+
+\item (2) Si $A_{j} \sim W_{p}(n_{j}, \Sigma), j = 1, \dots, q \Rightarrow \upphi_{A_{j}}(\Theta) = |I_{p} - 2i\Theta\Sigma|^{-\frac{n}{2}}$.
+$$\upphi_{A}(\Theta) = \upphi_{\sum_{j=1}^{s}n_{j}} = E[e^{it2(\Theta\sum_{j=1}^{k}A_{k})}] = E[e^{it2(\sum_{j=1}^{k}\Theta A_{k})}] =$$ 
+$$= E[e^{i\sum_{j=1}^{k}t2(\Theta A_{j})}] = \prod_{j=1}^{k} E[e^{it2(\Theta A_{j})}] = \prod_{j=1}^{k} \upphi_{A_{j}}(\Theta)$$
+$$\upphi_{A}(\Theta) = \prod_{j=1}^{k} |I_{p} - 2i\Theta\Sigma|^{-\frac{n_{j}}{2}} = |I_{p} - 2i\Theta\Sigma|^{\frac{1}{2} \sum_{j=1}^{k}n_{j}} = |I_{p} - 2i\Theta\Sigma|^{-\frac{n}{2}}$$
+
+\item[3] REPRODUCTIVIDAD BAJO TRANSFORMACIONES LINEALES `RECTANGULARES': \\
+RESULTADO: Sea $A \sim W_{p}(n, \Sigma)$ y sea $M_{k \times p}$ una matriz no aleatoria de rango $k \leq p$. Entonces,
+$$MAM' \sim W_{k}(n, M \Sigma M') \quad (3)$$
+
+\item Se prueba también que
+$$(MA^{-1}M')^{-1} \sim W_{k}(n-p+k, (N\Sigma^{-1}M')^{-1})$$
+(No se verá la demostración, donde se usa el resultado sobre condicionamiento que se enuncia más adelante en la propiedad [5]).
+
+\item (3) Sea $A \sim W_{p}(n, \Sigma) \Rightarrow A \overset{d}{:=} \sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}'$, con $Z_{\alpha} \sim N(0, \Sigma)$ independientes, $\forall \alpha = 1, \dots, n$.
+
+Defino $Y_{\alpha} := MZ_{\alpha}$ que también son independientes $\forall \alpha = 1, \dots, n$ por serlo los $Z_{\alpha}$ y siguen también una distribución normal (por resultado del T1).
+$$Y_{\alpha} \sim N_{k}(0, M \Sigma M')$$
+$$\sum_{\alpha=1}^{n} Y_{\alpha}Y_{\alpha}' = \sum_{\alpha=1}^{n} (MZ_{\alpha})(MZ_{\alpha})' = \sum_{\alpha=1}^{n} MZ_{\alpha}Z_{\alpha}'M' = M(\sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}')M' = MAM'$$
+$\Rightarrow MAM' \sim W_{k}(n, M \Sigma M')$, con $k = \operatorname{rango}(M)$.
+
+\item[4] DISTRIBUCIÓN DE LAS MATRICES DE COVARIANZAS Y CUASI-CONVARIANZAS \\ MUESTRALES: \\
+RESULTADO: Sean $S_{N} = \frac{A}{N}$ y $S_{n} = \frac{A}{n}$ (con $n=N-1$) las matrices de covarianzas y cuasi-covarianzas muestrales correspondientes a una muestra aleatoria simple de tamaño $N$ de una distribución $N_{p}(\mu, \Sigma)$. Entonces,
+$$\begin{aligned}
+S_{N} \sim W_{p}(n, \frac{\Sigma}{N}) \\
+S_{n} \sim W_{p}(n, \frac{\Sigma}{n})
+\end{aligned} \quad (4)$$
+(Este resultado es consecuencia del resultado visto en la propiedad [3]).
+
+\item (4) $A \sim W_{p}(n, \Sigma)$.
+$$S_{N} = \frac{1}{N}A$$
+$$M = \frac{1}{\sqrt{N}} I \Rightarrow MAM' = \frac{1}{\sqrt{N}} I A \frac{1}{\sqrt{N}} I = \frac{1}{N} A = S_{N} \Rightarrow$$
+$$\Rightarrow S_{N} \sim W_{p}(n, M \Sigma M') = W_{p}(n, \frac{1}{N}\Sigma)$$
+
+$$S_{n} = \frac{1}{n}A = \frac{1}{N-1}A$$
+$$M = \frac{1}{\sqrt{N-1}} I \Rightarrow MAM' = \frac{1}{\sqrt{N-1}} I A \frac{1}{\sqrt{N-1}} I = \frac{1}{N-1}A = S_{n} \Rightarrow$$
+$$\Rightarrow S_{n} \sim W_{p}(n, M \Sigma N') = W_{p}(n, \frac{1}{N-1}\Sigma)$$
+
+\item[5] MARGINALIZACIÓN (DIAGONAL Y POR BLOQUES) Y CONDICIONAMIENTO:
+\begin{itemize}
+\item RESULTADO 1: Sea $A \sim W_{p}(n, \Sigma)$. Entonces:
+$$\frac{a_{ii}}{\sigma_{i}^{2}} \sim \chi_{n}^{2}, \quad i=1,\dots,p \quad (5)$$
+
+\item (5) $M = (0, \dots, 0, \overset{i}{1}, 0, \dots, 0)_{1 \times p} \Rightarrow M \Sigma M' = a_{i} = \sigma_{i}^{2}, i = 1, \dots, p$.
+$$MAM' = a_{ii} \Rightarrow a_{ii} \sim W_{1}(n, \sigma_{i}^{2}), i = 1, \dots, p$$
+$$\Rightarrow \frac{a_{ii}}{\sigma_{i}^{2}} \sim \chi_{n}^{2}, i = 1, \dots, p$$
+
+\item RESULTADO 2: Sea $A \sim W_{p}(n, \Sigma)$, y sea el particionamiento por cajas:
+$$A = \begin{pmatrix}
+A_{11} & A_{12} \\
+A_{21} & A_{22}
+\end{pmatrix}$$
+y, correspondientemente,
+$$\Sigma = \begin{pmatrix}
+\Sigma_{11} & \Sigma_{12} \\
+\Sigma_{21} & \Sigma_{22}
+\end{pmatrix}$$
+con $A_{11}$ de dimensión $q \times q$ y $A_{22}$ de dimensión $(p-q)\times(p-q)$. Entonces:
+\begin{itemize}
+\item[(i)] $A_{11} \sim W_{q}(n, \Sigma_{11})$ y $A_{22} \sim W_{p-q}(n, \Sigma_{22})$.
+\item[(ii)] Si además $\Sigma_{12} = 0$, entonces $A_{11}$ y $A_{22}$ son independientes (6).
+\end{itemize}
+
+\item (6) $A \sim W_{p}(n, \Sigma)$
+\begin{itemize}
+\item[(i)] $M_{1} = \begin{pmatrix} I_{q} \mid 0_{q \times (p-q)} \end{pmatrix}$, $M_{2} = \begin{pmatrix} 0_{(p-q) \times q} \mid I_{p-q} \end{pmatrix}$. \\
+Entonces
+$$\begin{aligned}
+M_{1} A M_{1}' = A_{11}, & & M_{2} A M_{2}' = A_{22} \\
+M_{1} \Sigma M_{1}' = \Sigma_{11}, & & M_{2} \Sigma M_{2}' = \Sigma_{22}
+\end{aligned}$$
+Aplicamos el resultado 3.
+\item[(ii)] $A \overset{d}{=} \sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}'$, con $Z_{\alpha} \sim N_{p}(0, \Sigma)$, con:
+$$\Sigma = \begin{pmatrix}
+\Sigma_{11} & 0 \\
+0 & \Sigma_{22}
+\end{pmatrix}$$
+Para cada $\alpha$, consideramos el particionamiento $Z_{\alpha} = \begin{pmatrix} Z_{\alpha, [1]} \\ Z_{\alpha, [2]} \end{pmatrix}$ independientes. \\
+Puedo escribir:
+$$\begin{aligned}
+A_{11} = \sum_{\alpha=1}^{n} Z_{\alpha, [1]} Z_{\alpha, [1]}' \\
+A_{22} = \sum_{\alpha=1}^{n} Z_{\alpha, [2]} Z_{\alpha, [2]}'
+\end{aligned} \text{independientes}$$
+\end{itemize}
+
+\item RESULTADO 3: Sea $A \sim W_{p}(n, \Sigma)$, y sea el particionamiento por cajas considerado en el resultado anterior (Resultado 2). Entonces, con
+$$\begin{matrix}
+A_{11 \cdot 2} = A_{11} - A_{12}A_{22}^{-1}A_{21}, & A_{22 \cdot 1} = A_{22} - A_{21}A_{11}^{-1}A_{12} \\
+\Sigma_{11 \cdot 2} = \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}, & \Sigma_{22 \cdot 1} = \Sigma_{22} - \Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}
+\end{matrix}$$
+se tiene que
+\begin{itemize}
+\item[(a)] $A_{11 \cdot 2} \sim W_{q}(n-(p-q), \Sigma_{11 \cdot 2})$ y es independiente de $A_{12}$ y $A_{22}$.
+\item[(b)] $A_{22 \cdot 1} \sim W_{p-q}(n-q, \Sigma_{22 \cdot 1})$ y es independiente de $A_{12}$ y $A_{11}$.
+\item[(c)] $A_{12} \mid A_{22} \sim N_{q \times (p-q)}(\Sigma_{12}\Sigma_{22}^{-1}A_{22}, \Sigma_{11 \cdot 2} \otimes A_{22})$.
+\end{itemize}
+\end{itemize}
+
+\item[6] El siguiente resultado será útil en relación con distribución $T^{2}$ de Hotelling: \\
+RESULTADO: Sea $A \sim W_{p}(n, \Sigma)$ y sea $Y$ un vector aleatorio $p$-dimensional independiente de $A$ tal que $P[Y=0]=0$. Entonces,
+$$\frac{Y'AY}{Y'\Sigma Y} \sim \chi_{n}^{2}$$
+siendo independiente de $Y$.
+
+\item Se prueba también que
+$$\frac{Y'\Sigma^{-1}Y}{Y'A^{-1}Y} \sim \chi_{n-p+1}^{2}$$
+siendo independiente de $Y$.
+
+\item Una consecuencia interesante, en el contexto de la inferencia, viene dada por el siguiente resultado:
+
+Sea $\{X_{\alpha}: \alpha=1,\dots,N\}$ una muestra aleatoria simple de una distribución $N_{p}(\mu, \Sigma)$. Entonces, con $n = N-1$,
+$$n\frac{\bar{X}'S_{n}\bar{X}}{\bar{X}'\Sigma\bar{X}} \sim \chi_{n}^{2}$$
+siendo independiente de $\bar{X}$.
+\end{itemize}
+
+\subsubsection{Algunos aspectos complementarios}
+Entre otros aspectos, a partir de este punto se podrían estudiar, como complemento:
+\begin{itemize}
+\item La \emph{distribución de Wishart inversa}, que permite representar de forma directa la distribución de $A^{-1}$ para $A \sim W_{p}(n, \Sigma)$:
+$$A^{-1} \sim W_{p}^{-1}(n+p+1, \Sigma^{-1})$$
+
+\item La \emph{distribución de Wishart descentrada}, que permite cubrir el caso en que $A = \sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}'$, con $Z_{\alpha} \sim N_{p}(\mu, \Sigma)$.
+
+\item Formas cuadráticas normales matriciales y su relación con la distribución de Wishart.
+\end{itemize}
+
+\subsection{Distribución \texorpdfstring{$T^{2}$}) de Hotelling}
+\subsubsection{Distribución \texorpdfstring{$T^{2}$}) de Hotelling}
+\begin{itemize}
+\item DEFINICIÓN: Sea $X$ un vector aleatorio $p$-dimensional con distribución $N_{p}(\mu, \Sigma) \quad (\Sigma > 0)$. Sea $B$ una matriz aleatoria $(p \times p)$-dimensional con distribución $W_{p}(n, \Sigma), n \geq p$. Supongamos, además, que $X$ y $B$ son independientes. Entonces, se define la distribución $T^{2}$ de Hotelling no centrada, con $p$ y $n$ grados de libertad y parámetro de no centralidad $\delta = \mu'\Sigma\mu$, como la distribución de la variable aleatoria (unidimensional) dada por la forma cuadrática
+$$T^{2} = nX'BP{-1}X$$
+
+\item La distribución anterior es conocida, y se relaciona con la distribución $F$ de Snedecor no centrada del siguiente modo: \\
+RESULTADO: Bajo las condiciones de la definición anterior, se tiene que
+$$\frac{T^{2}}{n} \frac{n-p+1}{p} \sim F_{p, n-p+1}(\delta)$$
+con parámetro de no centralidad $\delta = \mu'\Sigma^{-1}\mu$
+\begin{itemize}
+\item Si $\mu=0$, se tiene entonces una $F_{p, n-p+1}$ centrada.
+\item En el caso $p=1$, se tiene que $T^{2} \equiv F_{1, n}(\delta)$, con $\delta = (\frac{\mu}{\sigma})^{2}$.
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Estadístico \texorpdfstring{$T^{2}$}) de Hotelling (inderencia multivariante)}
+\begin{itemize}
+\item Originalmente, el denominado `estadístico $T^{2}$ de Hotelling' fue introducido por Harold Hotelling (1931) en el contexto de la inferencia estadística a partir del muestreo de una población con DNM (puede verse como una generalización, multivariante y no estandarizada, del estadístico $t$ de Student).
+
+Este uso se explica a continuación, como aplicación de la definición y el resultado anteriores:
+
+\item DEFINICIÓN: Sea $X_{1}, \dots, X_{N}$ una muestra aleatoria simple de una distribución $N_{p}(\mu, \Sigma) \quad (\Sigma > 0)$, y sean $\bar{X}, A, S_{N}$ y $S_{n}$ (con $n=N-1$) los correspondientes estadísticos vector de medias, matriz de dispersiones y matrices de covarianzas y cuasi-covarianzas muestrales. Se define el estadístico $T^{2}$ de Hotelling, basado en la muestra, como
+$$T^{2} := n\bar{X}'S_{N}^{-1}\bar{X} = N\bar{X}'S_{n}^{-1}\bar{X} = nN\bar{X}'A^{-1}\bar{X}$$
+(Formalmente, se escribiría $T^{2}(X_{1}, \dots, X_{N})$, con $T^{2}: \mathbb{R}^{Np} \to \mathbb{R}_{0}^{+}$ medible, aunque se suele sobreentender de forma implícita el argumento).
+
+\item Por el resultado visto al inicio, se tiene el siguiente, donde se caracteriza convenientemente la distribución del estadístico $T^{2}$ en términos de la distribución $F$ de Snedecor no centrada: \\
+RESULTADO: Bajo las condiciones anteriores, el estadístico $T^{2}$ se distribuye como sigue:
+$$\frac{T^{2}}{n} \frac{n-p+1}{p} \sim F_{p, n-p+1}(\delta)$$
+o, equivalentemente,
+$$\frac{T^{2}}{N-1} \frac{N-p}{p} \sim F_{p, N-p}(\delta)$$
+con parámetro de no centralidad $\delta = N\mu'\Sigma^{-1}\mu$.
+\end{itemize}
+
+\subsubsection{Aplicación: Contraste sobre el vector de medias en una DNM}
+\begin{itemize}
+\item PLANTEAMIENTO: Sea $X_{1}, \dots, X_{N}$ una muestra aleatoria simple extraída de una población con distribución $N_{p}(\mu, \Sigma) \quad (\Sigma > 0)$, siendo $N > p$.
+
+Denotaremos $X = (X_{1}, \dots, X_{N})'$ (matriz correspondiente a la muestra aleatoria) y, correspondientemente, $x = (x_{1}, \dots, x_{N})'$ (matriz de datos muestrales observados).
+
+PROBLEMA DE CONTRASTE: Se consideran las hipótesis:
+$$\begin{cases}
+H_{0}: \mu = \mu_{0} & \text{(`hipótesis nula')} \\
+H_{1}: \mu \neq \mu_{0} & \text{(`hipótesis alternativa')}
+\end{cases}$$
+donde $\mu_{0} \in \mathbb{R}^{p}$ es un vector fijo dado.
+
+\item DOS ESCENARIOS:
+\begin{itemize}
+\item $\Sigma$ conocida $\to$ Se resuelve a partir de la distribución $\chi^{2}(\delta)$.
+\item $\Sigma$ desconocida $\to$ Se resuelve a partir de la distribución $T^{2}$.
+\end{itemize}
+
+\item Caso $\Sigma$ conocida \\
+Estadístico de contraste:
+$$U := N(\bar{X}-\mu_{0})'\Sigma^{-1}(\bar{X}-\mu_{0}) \sim \chi_{p}^{2}(\delta)$$
+con $\delta=N(\mu-\mu_{0})'\Sigma^{-1}(\mu-\mu_{0})$.
+
+Función `test': Con $\upphi: \mathbb{R}^{Np} \to \{0, 1\}$
+$$\upphi(x) = \begin{cases}
+1 & \text{si } u := U(x) > \chi_{p, \alpha}^{2} \\
+0 & \text{si } u := U(x) \leq \chi_{p, \alpha}^{2}
+\end{cases}$$
+para todo $x \in \mathbb{R}^{Np}$, siendo $\chi_{p, \alpha}^{2}$ el valor de una distribución $\chi^{2}$ (centrada) con $p$ grados de libertad que deja a su derecha una masa de probabilidad igual a $\alpha$.
+
+\item Caso $\Sigma$ desconocida: \\
+Estadístico de contraste:
+$$T^{2} := N(\bar{X} - \mu_{0})' S_{n}^{-1} (\bar{X} - \mu_{0})$$
+verificándose que
+$$\frac{T^{2}}{n} \frac{n-p+1}{p} \sim F_{p, n-p+1}(\delta)$$
+con $\delta = N(\mu-\mu_{0})' \Sigma^{-1} (\mu-\mu_{0})$.
+
+Función `test': Con $\upphi: \mathbb{R}^{Np} \to \{0, 1\}$,
+$$\upphi(x) = \begin{cases}
+1 & \text{si } u := T^{2}(x) > \frac{np}{n-p+1}F_{p,n-p+1,\alpha} \\
+0 & \text{si } u := T^{2}(x) \leq \frac{np}{n-p+1}F_{p,n-p+1,\alpha}
+\end{cases}$$
+para todo $x \in \mathbb{R}^{Np}$, siendo $F_{p, n-p+1, \alpha}$ el valor de una distribución $F$ (centrada) con ($p, n-p+1$) grados de libertad que deja a su derecha una masa de probabilidad igual a $\alpha$.
+\end{itemize}
+
+\subsubsection{Ejemplo}
+`Altura' (pulgadas) y `Peso' (libras) para una muestra de $N = 20$ individuos.
+\begin{center}
+\begin{tabular}{|c|cc||c|cc|}
+\hline
+& Altura & Peso & & Altura & Peso \\
+Individuo & ($X_{1}$) & ($X_{2}$) & Individuo & ($X_{1}$) & ($X_{2}$) \\ \hline
+1 & 69 & 153 & 11 & 72 & 140 \\
+2 & 74 & 175 & 12 & 79 & 265 \\
+3 & 68 & 155 & 13 & 74 & 185 \\
+4 & 70 & 135 & 14 & 67 & 112 \\
+5 & 72 & 172 & 15 & 66 & 140 \\
+6 & 67 & 150 & 16 & 71 & 150 \\
+7 & 66 & 115 & 17 & 74 & 165 \\
+8 & 70 & 137 & 18 & 75 & 185 \\
+9 & 76 & 200 & 19 & 75 & 210 \\
+10 & 68 & 130 & 20 & 76 & 220 \\ \hline
+\end{tabular}
+\end{center}
+
+Estadísticos muestales básicos:
+\begin{itemize}
+\item Vector de medias muestral:
+$$\bar{x} = \begin{pmatrix} 71.45 \\ 164.7 \end{pmatrix}$$
+\item Matriz de cuasi-covarianzas muestral ($n = N-1 = 19$(
+$$S_{n} = \begin{pmatrix}
+14.576 & 128.88 \\
+128.88 & 1441.2653
+\end{pmatrix}$$
+\item Coeficiente de correlación muestral:
+$$r_{12} = 0.889$$
+\end{itemize}
+
+Se quiere contrastar las hipótesis:
+$$\begin{cases}
+H_{0}: \mu = \begin{pmatrix} 70 \\ 170 \end{pmatrix} \\
+H_{1}: \mu \neq \begin{pmatrix} 70 \\ 170 \end{pmatrix}
+\end{cases}$$
+
+Contraste sobre el vector de medias $\mu$, con $\Sigma$ conocida: \\
+Supongamos que se conoce que, para la población de referencia, la matriz de covarianzas es
+$$\Sigma = \begin{pmatrix}
+20 & 100 \\
+100 & 1000
+\end{pmatrix}$$
+\begin{itemize}
+\item Valor del estadístico de contraste:
+$$u = (20) \begin{pmatrix}
+71.45 - 70 \\
+164.7 - 170
+\end{pmatrix}' \begin{pmatrix}
+20 & 100 \\
+100 & 1000
+\end{pmatrix}^{-1} \begin{pmatrix}
+71.45 - 70 \\
+164.7 - 170
+\end{pmatrix} = 8.4026$$
+\item Comparación con el valor teórico bajo $H_{0}$ a un nivel de significación $\alpha = 0.05, \chi^{2}_{2, 0.05} = 5.99$
+$$u = 8.4026 > 5.99 = \chi^{2}_{2, 0.05} \to \text{Se rechazaría } H_{0}$$
+\item Comparación con el valor teórico bajo $H_{0}$ a un nivel de significación $\alpha = 0.01, \chi^{2}_{2, 0.01} = 9.21$
+$$u = 8.4026 < 9.21 = \chi^{2}_{2, 0.01} \to \text{No se rechazaría } H_{0}$$
+\end{itemize}
+
+Contraste sobre el vector de medias $\mu$, con $\Sigma$ desconocida:
+\begin{itemize}
+\item Valor del estadístico de contraste:
+$$u = (20) \begin{pmatrix}
+71.45 - 70 \\
+164.7 - 170
+\end{pmatrix}' \begin{pmatrix}
+14.576 & 128.88 \\
+128.88 & 1441.2653
+\end{pmatrix}^{-1} \begin{pmatrix}
+71.45 - 70 \\
+164.7 - 170
+\end{pmatrix} = \dots$$
+\item Valor de comparación teórico bajo $H_{0}$ a un nivel de significación $\alpha$:
+$$\frac{(19)(2)}{19-2+1}F_{2, 19-2+1, \alpha} = \frac{38}{18}F_{2, 18, \alpha} = \dots$$
 \end{itemize}
 
 \end{document}

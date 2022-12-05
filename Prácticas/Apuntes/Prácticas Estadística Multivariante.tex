@@ -347,6 +347,12 @@ $$\sigma_{1} = \dots = \sigma_{k} = \sigma$$
 
 Supongo que $Y = \{1, 2\}$. Calcular $\log(\frac{P[\sfrac{Y=1}{X=x}]}{P[\sfrac{Y=2}{X=x}]})$.
 
+$$P[\sfrac{Y=1}{X=x}] = \frac{P[\sfrac{X=x}{Y=1}]\pi_{1}}{\pi_{1}P[\sfrac{X=x}{Y=1}] + \pi_{2}P[\sfrac{x=x}{Y=2}]}$$
+$$P[\sfrac{Y=2}{X=x}] = \frac{P[\sfrac{X=x}{Y=2}]\pi_{2}}{\pi_{1}P[\sfrac{X=x}{Y=1}] + \pi_{2}P[\sfrac{x=x}{Y=2}]}$$
+$$\log(\frac{P[\sfrac{Y=1}{X=x}]}{P[\sfrac{Y=2}{X=x}]}) = \log(P[\sfrac{Y=1}{X=x}]) - \log(P[\sfrac{Y=2}{X=x}]) =$$
+$$= \log(\frac{\pi_{1}}{\sqrt{2\pi\sigma}} e^{-\frac{x-\mu_{1})^{2}}{2\sigma^{2}}}) - \log(\frac{\pi_{2}}{\sqrt{2\pi\sigma}}e^{-\frac{(x-\mu_{2})^{2}}{2\sigma^{2}}}) =$$
+$$= \log(\frac{\pi_{1}}{\pi_{2}}) - \frac{(x-\mu_{1})^{2}}{2\sigma^{2}} + \frac{(x-\mu_{2})^{2}}{2\sigma^{2}} = \frac{x(\mu_{1}-\mu_{2})}{\sigma^{2}} + \frac{\mu_{2}^{2}-\mu_{1}^{2}}{2\sigma^{2}} + \log(\frac{\pi_{1}}{\pi_{2}})$$
+
 Si la expresión anterior es mayor que 0, es decir, si $\frac{P[\sfrac{Y=1}{X=x}]}{P[\sfrac{Y=2}{X=x}]}$ es mayor que 1, entonces clasificamos $Y=1$, y si no, $Y=2$.
 
 Nota: Como $\frac{P[\sfrac{Y=1}{X=x}]}{P[\sfrac{Y=2}{X=x}]}$ es la división de dos probabilidades, el valor no tiene que estar en $[0,1]$, por lo que no lo podemos llamar la probabilidad.

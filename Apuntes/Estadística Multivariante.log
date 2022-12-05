@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.4.2)  23 NOV 2022 08:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.4.2)  5 DEC 2022 09:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -540,7 +540,7 @@ LaTeX Info: Redefining \nameref on input line 33.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-</Users/pedrors/Desktop/DGIIM/Latex/UGR.png, id=261, 1284.8pt x 722.7pt>
+</Users/pedrors/Desktop/DGIIM/Latex/UGR.png, id=309, 1284.8pt x 722.7pt>
 File: /Users/pedrors/Desktop/DGIIM/Latex/UGR.png Graphic file (type png)
 <use /Users/pedrors/Desktop/DGIIM/Latex/UGR.png>
 Package pdftex.def Info: /Users/pedrors/Desktop/DGIIM/Latex/UGR.png  used on in
@@ -574,20 +574,20 @@ l.50 ...ción Normal Multivariante}{39}{section.2}
 [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18] [19] [20] [21]
 [22] [23] [24] [25] [26] [27] [28] [29] [30] [31] [32] [33] [34] [35] [36]
 [37] [38] [39] [40] [41] [42] [43] [44] [45] [46] [47] [48] [49] [50] [51]
-(./Estadística Multivariante.aux
+[52] [53] [54] [55] [56] [57] [58] [59] [60] (./Estadística Multivariante.aux
 LaTeX Info: Redefining \. on input line 26.
 LaTeX Info: Redefining \% on input line 26.
 )
 Package rerunfilecheck Info: File `"Estadística Multivariante".out' has not c
 hanged.
-(rerunfilecheck)             Checksum: FD7A7EBF2C437DE1992DA20B6A41DB9A;17862.
+(rerunfilecheck)             Checksum: 73C757DC6B7A7A73F913D41FE45F0E3F;20664.
  ) 
 Here is how much of TeX's memory you used:
- 12843 strings out of 478994
- 186721 string characters out of 5858185
- 536420 words of memory out of 5000000
- 29986 multiletter control sequences out of 15000+600000
- 420061 words of font info for 88 fonts, out of 8000000 for 9000
+ 12860 strings out of 478994
+ 187071 string characters out of 5858185
+ 536425 words of memory out of 5000000
+ 29990 multiletter control sequences out of 15000+600000
+ 417386 words of font info for 79 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  71i,16n,74p,749b,662s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
@@ -602,7 +602,6 @@ usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb
 sr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr
 /local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/l
 ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loc
-al/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/loc
 al/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local
 /texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/t
 exlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texl
@@ -616,12 +615,13 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2021/texmf
 ist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2021/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2021/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2021/texmf-dist/
-fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2021/texmf-d
-ist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on "Estadística Multivariante.pdf" (52 pages, 554449 bytes).
+fonts/type1/public/amsfonts/euler/eurm10.pfb></usr/local/texlive/2021/texmf-dis
+t/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2021/texmf
+-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
+Output written on "Estadística Multivariante.pdf" (61 pages, 590582 bytes).
 PDF statistics:
- 716 PDF objects out of 1000 (max. 8388607)
- 626 compressed objects within 7 object streams
- 134 named destinations out of 1000 (max. 500000)
- 518 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 819 PDF objects out of 1000 (max. 8388607)
+ 719 compressed objects within 8 object streams
+ 155 named destinations out of 1000 (max. 500000)
+ 614 words of extra memory for PDF output out of 10000 (max. 10000000)
 
