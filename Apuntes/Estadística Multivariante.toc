@@ -25,17 +25,17 @@
 \contentsline {subsubsection}{\numberline {1.5.2}Vector de medias y matriz de covarianzas}{14}{subsubsection.1.5.2}%
 \contentsline {subsubsection}{\numberline {1.5.3}Algunas propiedades (caso $\Sigma > 0$)}{14}{subsubsection.1.5.3}%
 \contentsline {subsubsection}{\numberline {1.5.4}Función característica de la DNM (caso $\Sigma > 0$)}{18}{subsubsection.1.5.4}%
-\contentsline {subsubsection}{\numberline {1.5.5}Marginalización (caso $\Sigma > 0$)}{20}{subsubsection.1.5.5}%
+\contentsline {subsubsection}{\numberline {1.5.5}Marginalización (caso $\Sigma > 0$)}{19}{subsubsection.1.5.5}%
 \contentsline {subsubsection}{\numberline {1.5.6}Caracterización de la DNM en términos de normalidad de combinaciones lineales de las componentes (caso $\Sigma > 0$)}{20}{subsubsection.1.5.6}%
 \contentsline {subsubsection}{\numberline {1.5.7}Caracterización de la DNM en términos de la densidad esférica estándar (caso $\Sigma > 0$)}{20}{subsubsection.1.5.7}%
 \contentsline {subsection}{\numberline {1.6}Extensión al caso general, $\Sigma \geq 0$}{21}{subsection.1.6}%
 \contentsline {subsubsection}{\numberline {1.6.1}Introducción}{21}{subsubsection.1.6.1}%
 \contentsline {subsubsection}{\numberline {1.6.2}Sobre la descomposición espectral de la matriz de covarianzas, $\Sigma \geq 0$}{22}{subsubsection.1.6.2}%
 \contentsline {subsubsection}{\numberline {1.6.3}Función característica de la DNM (caso $\Sigma \geq 0$)}{22}{subsubsection.1.6.3}%
-\contentsline {subsubsection}{\numberline {1.6.4}Transformaciones lineales de rango no necesariamente máximo (caso $\Sigma \geq 0$)}{23}{subsubsection.1.6.4}%
+\contentsline {subsubsection}{\numberline {1.6.4}Transformaciones lineales de rango no necesariamente máximo (caso $\Sigma \geq 0$)}{22}{subsubsection.1.6.4}%
 \contentsline {subsubsection}{\numberline {1.6.5}Extensión de la caracterización [C-I] (caso $\Sigma \geq 0$)}{23}{subsubsection.1.6.5}%
 \contentsline {subsubsection}{\numberline {1.6.6}Extensión de la caracterización [C-III] (caso $\Sigma \geq 0$)}{25}{subsubsection.1.6.6}%
-\contentsline {subsubsection}{\numberline {1.6.7}Discusión en relación con la posible no existencia de densidad en todo $\mathbb {R}^{p}$ (caso $\Sigma \geq 0$)}{26}{subsubsection.1.6.7}%
+\contentsline {subsubsection}{\numberline {1.6.7}Discusión en relación con la posible no existencia de densidad en todo $\mathbb {R}^{p}$ (caso $\Sigma \geq 0$)}{25}{subsubsection.1.6.7}%
 \contentsline {subsubsection}{\numberline {1.6.8}Normalidad de combinaciones lineales de vectores aleatorios con DNM (versión general) independientes}{26}{subsubsection.1.6.8}%
 \contentsline {subsubsection}{\numberline {1.6.9}[Complemento] El ``problema de Lévy-Cramér'' (teorema de Cramér)}{26}{subsubsection.1.6.9}%
 \contentsline {subsection}{\numberline {1.7}Complemento: Distribuciones esféricas y elípticas}{27}{subsection.1.7}%
@@ -58,7 +58,7 @@
 \contentsline {subsubsection}{\numberline {2.2.3}Teorema de Dykstra}{44}{subsubsection.2.2.3}%
 \contentsline {subsubsection}{\numberline {2.2.4}Teorema de Fisher multivariante}{48}{subsubsection.2.2.4}%
 \contentsline {subsubsection}{\numberline {2.2.5}Propiedades de los EMV $\hat {\mu }$ y $\hat {\Sigma }$}{48}{subsubsection.2.2.5}%
-\contentsline {subsubsection}{\numberline {2.2.6}Propiedades de los EMV $\hat {\mu }$ y $\hat {\Sigma }$ Sobre INSESGADEZ}{49}{subsubsection.2.2.6}%
+\contentsline {subsubsection}{\numberline {2.2.6}Propiedades de los EMV $\hat {\mu }$ y $\hat {\Sigma }$ Sobre INSESGADEZ}{48}{subsubsection.2.2.6}%
 \contentsline {subsubsection}{\numberline {2.2.7}Propiedades de los EMV $\hat {\mu }$ y $\hat {\Sigma }$: Sobre CONSISTENCIA}{49}{subsubsection.2.2.7}%
 \contentsline {subsubsection}{\numberline {2.2.8}Propiedades de los EMV $\hat {\mu }$ y $\hat {\Sigma }$: Sobre EFICIENCIA}{50}{subsubsection.2.2.8}%
 \contentsline {subsubsection}{\numberline {2.2.9}Teorema de Zehna: INVARIANCIA de los estimadores MV}{50}{subsubsection.2.2.9}%
@@ -69,9 +69,9 @@
 \contentsline {subsubsection}{\numberline {2.3.3}La distribución de Wishart como extensión de la $\chi ^{2}$}{53}{subsubsection.2.3.3}%
 \contentsline {subsubsection}{\numberline {2.3.4}Función característica}{53}{subsubsection.2.3.4}%
 \contentsline {subsubsection}{\numberline {2.3.5}Algunas propiedades de la distribución de Wishart}{54}{subsubsection.2.3.5}%
-\contentsline {subsubsection}{\numberline {2.3.6}Algunos aspectos complementarios}{57}{subsubsection.2.3.6}%
-\contentsline {subsection}{\numberline {2.4}Distribución $T^{2}$ de Hotelling}{57}{subsection.2.4}%
-\contentsline {subsubsection}{\numberline {2.4.1}Distribución $T^{2}$ de Hotelling}{57}{subsubsection.2.4.1}%
-\contentsline {subsubsection}{\numberline {2.4.2}Estadístico $T^{2}$ de Hotelling (inderencia multivariante)}{57}{subsubsection.2.4.2}%
-\contentsline {subsubsection}{\numberline {2.4.3}Aplicación: Contraste sobre el vector de medias en una DNM}{58}{subsubsection.2.4.3}%
-\contentsline {subsubsection}{\numberline {2.4.4}Ejemplo}{59}{subsubsection.2.4.4}%
+\contentsline {subsubsection}{\numberline {2.3.6}Algunos aspectos complementarios}{58}{subsubsection.2.3.6}%
+\contentsline {subsection}{\numberline {2.4}Distribución $T^{2}$ de Hotelling}{58}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}Distribución $T^{2}$ de Hotelling}{58}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Estadístico $T^{2}$ de Hotelling (inferencia multivariante)}{58}{subsubsection.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.4.3}Aplicación: Contraste sobre el vector de medias en una DNM}{59}{subsubsection.2.4.3}%
+\contentsline {subsubsection}{\numberline {2.4.4}Ejemplo}{60}{subsubsection.2.4.4}%

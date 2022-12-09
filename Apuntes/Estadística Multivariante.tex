@@ -12,7 +12,8 @@
 \usepackage{amssymb}
 \usepackage{upgreek}
 \usepackage{enumitem}
-
+\usepackage{xfrac}
+\usepackage{lmodern}
 
 \usepackage[bookmarks=true,
 					 bookmarksnumbered=false,
@@ -2172,6 +2173,36 @@ $$\operatorname{Cov}(a_{ij}, a_{kl}) = n(\sigma_{ij}\sigma_{jl} + \sigma_{il}\si
 $$E[X_{i}X_{j}X_{k}X_{l}] = \sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{kl} + \sigma_{il}\sigma_{jk}$$
 (Se usa para la demostración de la propiedad 1)
 
+\item Demostración extra: $A \sim W_{p}(n, \Sigma) \Rightarrow A \overset{d}{=} \sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}', Z_{\alpha} \sim N_{p}(0, \Sigma)$.
+$$E[A] = E[\sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}'] = \sum_{\alpha=1}^{n} E[Z_{\alpha}Z_{\alpha}'] = \sum_{\alpha=1}^{n}(\Sigma) = n\Sigma$$
+$$Cov[a_{ij}, a_{kl}] = E[a_{ij}a_{kl}] - E[a_{ij}]E[a_{kl}] = \star$$
+Como $a_{ij} \overset{d}{=} \sum_{\alpha=1}^{n} Z_{\alpha_{i}}Z_{\alpha_{j}}$:
+$$A \overset{d}{=} \sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}' = \sum_{\alpha=1}^{n} \begin{pmatrix} Z_{\alpha_{1}} \\ \vdots \\ Z_{\alpha_{p}} \end{pmatrix} \begin{pmatrix} Z_{\alpha_{1}} & \dots & Z_{\alpha_{p}} \end{pmatrix} = \sum_{\alpha=1}^{n} \begin{pmatrix}
+Z_{\alpha_{1}}^{2} & Z_{\alpha_{1}}Z_{\alpha_{2}} & \dots \\
+\vdots & \vdots & \ddots
+\end{pmatrix}$$
+$$E[a_{ij}] = E[\sum_{\alpha=1}^{n}Z_{\alpha_{i}}Z_{\alpha_{j}}] = \sum_{\alpha=1}^{n} E[Z_{\alpha_{i}}Z_{\alpha_{j}}] = \sum_{\alpha=1}^{n} \sigma_{ij} = n\sigma_{ij}$$
+$$E[a_{ij}a_{kl}] = E[(\sum_{\alpha=1}^{n} Z_{\alpha_{i}}Z_{\alpha_{j}})(\sum_{\beta=1}^{n}Z_{\beta_{k}}Z_{\beta_{l}})] = E[\sum_{\alpha=1}^{n} \sum_{\beta=1}^{n} Z_{\alpha_{i}}Z_{\alpha_{j}} Z_{\beta_{k}} Z_{\beta_{l}}] =$$
+$$= \sum_{\alpha=1}^{n} \sum_{\beta=1}^{n} E[Z_{\alpha_{i}} Z_{\alpha_{j}} Z_{\beta_{k}} Z_{\beta_{l}}] \overset{\text{T. Isserlis}}{=} \sum_{\alpha=1}^{n} \sum_{\beta=1}^{n} (\sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{jl} + \sigma_{il}\sigma_{jk}) =$$
+$$= n^{2} (\sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{jl} + \sigma_{il}\sigma_{jk})$$
+$$\star = n^{2}(\sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{jl} + \sigma_{il}\sigma_{jk}) - n\sigma_{ij}n\sigma_{kl} = n^{2}(\sigma_{ij}\sigma_{jl} + \sigma_{ij}\sigma_{jk})$$
+
+Otra forma de verlo es razonar igual hasta $E[a_{ij}a_{kl}]$, y luego distinguimos casos:
+$$E[Z_{\alpha_{i}} Z_{\alpha_{j}} Z_{\beta_{k}} Z_{\beta_{l}}] = \begin{cases}
+E[Z_{\alpha_{i}}Z_{\alpha_{j}}] E[Z_{\alpha_{k}} Z_{\alpha_{l}} & \text{si } \alpha \neq \beta \\
+E[Z_{\alpha_{i}} Z_{\alpha_{j}} Z_{\alpha_{k}} Z_{\alpha_{l}}] & \text{si } \alpha = \beta
+\end{cases}$$
+Entonces:
+$$E[a_{ij}a_{kl}] = \begin{cases}
+\sigma_{ij}\sigma_{kl} & \alpha \neq \beta \\
+\sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{jl} + \sigma_{il}\sigma_{jk} & \alpha = \beta 
+\end{cases}$$
+$$E[a_{ij}a_{kl}] = \sum_{\alpha=1}^{n} E[Z-{\alpha_{i}} Z_{\alpha_{j}} Z_{\alpha_{k}} Z_{\alpha_{l}}] + \sum_{\underset{\alpha \neq \beta}{\alpha, \beta = 1}}^{n} E[Z_{\alpha_{i}} Z_{\alpha_{j}} Z_{\beta_{k}} Z_{\beta_{l}}] =$$
+$$= n(\sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{jl} + \sigma_{il}\sigma_{jk}) + (n^{2}-n)\sigma_{ij}\sigma_{kl}$$
+Por lo que
+$$Cov(a_{ij}a_{kl}) = n(\sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{jl} + \sigma_{il}\sigma_{jk}) + (n^{2}-n)(\sigma_{ij}\sigma_{kl}) - n^{2}\sigma_{ij}\sigma_{kl} =$$
+$$= n(\sigma_{ij}\sigma_{kl} + \sigma_{ik}\sigma_{jl} + \sigma_{il}\sigma_{jk}) - n\sigma_{ij}\sigma_{kl} = n(\sigma_{ij}\sigma_{jl} + \sigma_{il}\sigma_{jk})$$
+
 \item[2] REPRODUCTIVIDAD RESPECTO A GRADOS DE LIBERTAD: \\
 RESULTADO: Sean $A_{1}, \dots, A_{q}$ matrices aleatorias independientes, $A_{j} \sim W_{p}(n_{j}, \Sigma), j = 1, \dots, q$. Entonces:
 $$A = \sum_{j=1}^{q} A_{j} \sim W_{p}(n, \Sigma), \quad \text{con } n = \sum_{j=1}^{q}n_{j} \quad (2)$$
@@ -2242,10 +2273,10 @@ con $A_{11}$ de dimensión $q \times q$ y $A_{22}$ de dimensión $(p-q)\times(p-
 \begin{itemize}
 \item[(i)] $M_{1} = \begin{pmatrix} I_{q} \mid 0_{q \times (p-q)} \end{pmatrix}$, $M_{2} = \begin{pmatrix} 0_{(p-q) \times q} \mid I_{p-q} \end{pmatrix}$. \\
 Entonces
-$$\begin{aligned}
-M_{1} A M_{1}' = A_{11}, & & M_{2} A M_{2}' = A_{22} \\
-M_{1} \Sigma M_{1}' = \Sigma_{11}, & & M_{2} \Sigma M_{2}' = \Sigma_{22}
-\end{aligned}$$
+$$\begin{matrix}
+M_{1} A M_{1}' = A_{11}, & M_{2} A M_{2}' = A_{22} \\
+M_{1} \Sigma M_{1}' = \Sigma_{11}, & M_{2} \Sigma M_{2}' = \Sigma_{22}
+\end{matrix}$$
 Aplicamos el resultado 3.
 \item[(ii)] $A \overset{d}{=} \sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}'$, con $Z_{\alpha} \sim N_{p}(0, \Sigma)$, con:
 $$\Sigma = \begin{pmatrix}
@@ -2269,14 +2300,28 @@ se tiene que
 \begin{itemize}
 \item[(a)] $A_{11 \cdot 2} \sim W_{q}(n-(p-q), \Sigma_{11 \cdot 2})$ y es independiente de $A_{12}$ y $A_{22}$.
 \item[(b)] $A_{22 \cdot 1} \sim W_{p-q}(n-q, \Sigma_{22 \cdot 1})$ y es independiente de $A_{12}$ y $A_{11}$.
-\item[(c)] $A_{12} \mid A_{22} \sim N_{q \times (p-q)}(\Sigma_{12}\Sigma_{22}^{-1}A_{22}, \Sigma_{11 \cdot 2} \otimes A_{22})$.
+\item[(c)] $A_{12} \mid A_{22} \sim N_{q \times (p-q)}(\Sigma_{12}\Sigma_{22}^{-1}A_{22}, \Sigma_{11 \cdot 2} \otimes A_{22})$. \\
+donde $A \otimes B = \begin{pmatrix}
+a_{11}B & a_{12}B & \dots \\
+a_{21}B & a_{22}B & \dots \\
+\vdots & \vdots & \ddots
+\end{pmatrix}$.
 \end{itemize}
 \end{itemize}
 
 \item[6] El siguiente resultado será útil en relación con distribución $T^{2}$ de Hotelling: \\
 RESULTADO: Sea $A \sim W_{p}(n, \Sigma)$ y sea $Y$ un vector aleatorio $p$-dimensional independiente de $A$ tal que $P[Y=0]=0$. Entonces,
-$$\frac{Y'AY}{Y'\Sigma Y} \sim \chi_{n}^{2}$$
+$$\frac{Y'AY}{Y'\Sigma Y} \sim \chi_{n}^{2} \quad (7)$$
 siendo independiente de $Y$.
+
+\item (7) Aplicamos el resultado 3, condicionalmente a que $Y = y \neq 0$. Tomamos
+$$M = y' \overset{\text{Resultado } 3}{\Longrightarrow} y'Ay \sim W_{1}(n, y' \Sigma y)$$
+Tenemos en cuenta que
+$$Y'AY \mid Y = y \overset{d}{\equiv} y'(A \mid Y=y)y = y'Ay$$
+(por ser $A$ e $Y$ independientes).
+$$\frac{y'Ay}{y' \Sigma y} \sim \chi_{n}^{2}$$
+no depende de $y$. Por tanto:
+$$\frac{Y'AY}{Y' \Sigma Y} \sim \chi_{n}^{2}$$
 
 \item Se prueba también que
 $$\frac{Y'\Sigma^{-1}Y}{Y'A^{-1}Y} \sim \chi_{n-p+1}^{2}$$
@@ -2285,8 +2330,14 @@ siendo independiente de $Y$.
 \item Una consecuencia interesante, en el contexto de la inferencia, viene dada por el siguiente resultado:
 
 Sea $\{X_{\alpha}: \alpha=1,\dots,N\}$ una muestra aleatoria simple de una distribución $N_{p}(\mu, \Sigma)$. Entonces, con $n = N-1$,
-$$n\frac{\bar{X}'S_{n}\bar{X}}{\bar{X}'\Sigma\bar{X}} \sim \chi_{n}^{2}$$
+$$n\frac{\bar{X}'S_{n}\bar{X}}{\bar{X}'\Sigma\bar{X}} \sim \chi_{n}^{2} \quad (8)$$
 siendo independiente de $\bar{X}$.
+
+\item (8) $\{X_{\alpha}: \alpha=1, \dots, N\}$ m.a.s, $X \sim N_{p}(\mu, \Sigma)$.
+$$A = nS_{n} = NS_{N} \sim W_{p}(n, \Sigma)$$
+$$\bar{X} \sim N_{p}(\mu, \frac{\Sigma}{N})$$
+$A$ y $\bar{X}$ son independientes (teorema de Fisher). Además, $P(\bar{X}=0)=0$. Aplicamos el resultado 6:
+$$\frac{\bar{X}'A\bar{X}}{\bar{X}'\Sigma\bar{X}} = n \frac{\bar{X}'S_{n}\bar{X}}{\bar{X}'\Sigma\bar{X}} \sim \chi_{n}^{2}$$
 \end{itemize}
 
 \subsubsection{Algunos aspectos complementarios}
@@ -2308,15 +2359,23 @@ $$T^{2} = nX'BP{-1}X$$
 
 \item La distribución anterior es conocida, y se relaciona con la distribución $F$ de Snedecor no centrada del siguiente modo: \\
 RESULTADO: Bajo las condiciones de la definición anterior, se tiene que
-$$\frac{T^{2}}{n} \frac{n-p+1}{p} \sim F_{p, n-p+1}(\delta)$$
+$$\frac{T^{2}}{n} \frac{n-p+1}{p} \sim F_{p, n-p+1}(\delta) \quad (1)$$
 con parámetro de no centralidad $\delta = \mu'\Sigma^{-1}\mu$
 \begin{itemize}
 \item Si $\mu=0$, se tiene entonces una $F_{p, n-p+1}$ centrada.
 \item En el caso $p=1$, se tiene que $T^{2} \equiv F_{1, n}(\delta)$, con $\delta = (\frac{\mu}{\sigma})^{2}$.
 \end{itemize}
+
+\item (1) $X \sim N_{p}(\mu, \Sigma), \Sigma > 0, B \sim W_{p}(n, \Sigma), n \geq p$ independientes.
+$$\frac{T^{2}}{n} \frac{n-p+1}{p} = \frac{nX'B^{-1}X}{n} \frac{n-p+1}{p} = X'B^{-1}X \frac{X'\Sigma^{-1}X}{X'\Sigma^{-1}X} \frac{n-p+1}{p} = \frac{\sfrac{X\Sigma^{-1}X}{p}}{\sfrac{\frac{X'\Sigma^{-1}X}{X'B^{-1}X}}{n-p+1}}$$
+Sabemos que, como $X \sim N_{p}(\mu, \Sigma)$ con $\Sigma > 0 \Rightarrow X'\Sigma^{-1}X \sim \chi^{2}_{p}(\delta), \delta = \mu'\Sigma^{-1}\mu$. Además, como $B \sim W_{p}(n, \Sigma)$ y $X$ y $B$ son independientes $\Rightarrow \frac{X'\Sigma^{-1}X}{X'B^{-1}X} \sim \chi_{n-p+1}^{2}$ independiente de $X$, luego independiente de $X'\Sigma^{-1}X$.
+
+Por tanto, $\frac{T^{2}}{n}\frac{n-p+1}{p} \sim F_{p, n-p+1}(\delta)$, con $\delta = \mu'\Sigma^{-1}\mu$.
+
+\item NOTA: $t_{n}^{2} \equiv F_{1, n}$.
 \end{itemize}
 
-\subsubsection{Estadístico \texorpdfstring{$T^{2}$}) de Hotelling (inderencia multivariante)}
+\subsubsection{Estadístico \texorpdfstring{$T^{2}$}) de Hotelling (inferencia multivariante)}
 \begin{itemize}
 \item Originalmente, el denominado `estadístico $T^{2}$ de Hotelling' fue introducido por Harold Hotelling (1931) en el contexto de la inferencia estadística a partir del muestreo de una población con DNM (puede verse como una generalización, multivariante y no estandarizada, del estadístico $t$ de Student).
 
@@ -2325,6 +2384,8 @@ Este uso se explica a continuación, como aplicación de la definición y el res
 \item DEFINICIÓN: Sea $X_{1}, \dots, X_{N}$ una muestra aleatoria simple de una distribución $N_{p}(\mu, \Sigma) \quad (\Sigma > 0)$, y sean $\bar{X}, A, S_{N}$ y $S_{n}$ (con $n=N-1$) los correspondientes estadísticos vector de medias, matriz de dispersiones y matrices de covarianzas y cuasi-covarianzas muestrales. Se define el estadístico $T^{2}$ de Hotelling, basado en la muestra, como
 $$T^{2} := n\bar{X}'S_{N}^{-1}\bar{X} = N\bar{X}'S_{n}^{-1}\bar{X} = nN\bar{X}'A^{-1}\bar{X}$$
 (Formalmente, se escribiría $T^{2}(X_{1}, \dots, X_{N})$, con $T^{2}: \mathbb{R}^{Np} \to \mathbb{R}_{0}^{+}$ medible, aunque se suele sobreentender de forma implícita el argumento).
+
+\item NOTA: $\bar{X} \sim N_{p}(\mu, \frac{\Sigma}{N}), S_{N} \sim (n, \frac{\Sigma}{N})$.
 
 \item Por el resultado visto al inicio, se tiene el siguiente, donde se caracteriza convenientemente la distribución del estadístico $T^{2}$ en términos de la distribución $F$ de Snedecor no centrada: \\
 RESULTADO: Bajo las condiciones anteriores, el estadístico $T^{2}$ se distribuye como sigue:
@@ -2357,6 +2418,9 @@ donde $\mu_{0} \in \mathbb{R}^{p}$ es un vector fijo dado.
 Estadístico de contraste:
 $$U := N(\bar{X}-\mu_{0})'\Sigma^{-1}(\bar{X}-\mu_{0}) \sim \chi_{p}^{2}(\delta)$$
 con $\delta=N(\mu-\mu_{0})'\Sigma^{-1}(\mu-\mu_{0})$.
+
+Nota:
+$$X \sim N_{p}(\mu, \Sigma) \Rightarrow \bar{X} \sim N_{p}(\mu, \frac{\Sigma}{N}) \Rightarrow X-\mu \sim N_{p}(\mu - \mu_{0}, \frac{\Sigma}{N})$$
 
 Función `test': Con $\upphi: \mathbb{R}^{Np} \to \{0, 1\}$
 $$\upphi(x) = \begin{cases}
