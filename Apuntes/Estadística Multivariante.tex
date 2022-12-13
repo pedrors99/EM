@@ -1703,12 +1703,12 @@ $$\ln(L(\mu,\Sigma)) = -\frac{pN}{2}\ln(2\pi) -\frac{N}{2}\ln(|\Sigma|) -\frac{1
 
 $$\sum_{\alpha=1}^{N} (x_{\alpha}-\mu)' \Sigma^{-1} (x_{\alpha}-\mu) = \sum_{\alpha=1}^{N}[(x_{\alpha}-\bar{x}) + (\bar{x}-\mu)]' \Sigma^{-1} [(x_{\alpha}-\bar{x}) + (\bar{x} - \mu)] =$$
 $$= \sum_{\alpha=1}^{N} [(x_{\alpha} - \bar{x})' + (\bar{x}-\mu)'] \Sigma^{-1} [(x_{\alpha} - \bar{x}) + (\bar{x} - \mu)] =$$
-$$= \sum_{\alpha=1}^{N} (x_{\alpha} - \bar{x})' \Sigma^{-1} (x_{\alpha} - \mu) + \sum_{\alpha=1}^{N}(x_{\alpha}-\bar{x})' \Sigma^{-1}(\bar{x}-\mu) +$$
+$$= \sum_{\alpha=1}^{N} (x_{\alpha} - \bar{x})' \Sigma^{-1} (x_{\alpha} - \bar{x}) + \sum_{\alpha=1}^{N}(x_{\alpha}-\bar{x})' \Sigma^{-1}(\bar{x}-\mu) +$$
 $$+ \sum_{\alpha=1}^{N} (\bar{x}-\mu) \Sigma^{-1} (x_{\alpha} - \bar{x}) + \sum_{\alpha=1}^{N} (\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
-$$= \sum_{\alpha=1}^{N} \operatorname{traza}(x_{\alpha} - \bar{x})' \Sigma^{-1} (x_{\alpha} - \mu) + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
-$$= \sum_{\alpha=1}^{N} \operatorname{traza} [\Sigma^{-1}(x_{\alpha} - \mu)(x_{\alpha} - \bar{x})'] + N(\bar{x} - \mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
-$$= \operatorname{traza}[\sum_{\alpha=1}^{N} \Sigma^{-1}(x_{\alpha} - \mu) (x_{\alpha} - \bar{x}'] + N(\bar{x} - \mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
-$$= \operatorname{traza}[\Sigma^{-1} \sum_{\alpha=1}^{N} (x_{\alpha} - \mu)(x_{\alpha} - \bar{x})'] + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \sum_{\alpha=1}^{N} \operatorname{traza}[(x_{\alpha} - \bar{x})' \Sigma^{-1} (x_{\alpha} - \bar{x})] + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \sum_{\alpha=1}^{N} \operatorname{traza} [\Sigma^{-1}(x_{\alpha} - \bar{x})(x_{\alpha} - \bar{x})'] + N(\bar{x} - \mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \operatorname{traza}[\sum_{\alpha=1}^{N} \Sigma^{-1}(x_{\alpha} - \bar{x}) (x_{\alpha} - \bar{x}'] + N(\bar{x} - \mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
+$$= \operatorname{traza}[\Sigma^{-1} \sum_{\alpha=1}^{N} (x_{\alpha} - \bar{x})(x_{\alpha} - \bar{x})'] + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
 $$= \operatorname{traza}(\Sigma^{-1}\bar{A}) + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu)$$
 
 $$L(\mu, \Sigma; x_{1}, \dots, x_{n}) = \frac{1}{(2\pi)^{\frac{pN}{2}}|\Sigma|^{\frac{N}{2}}} \operatorname{exp}\{-\frac{1}{2} \operatorname{traza}(\Sigma^{-1}\bar{A}) - \frac{N}{2}(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu)\}$$
