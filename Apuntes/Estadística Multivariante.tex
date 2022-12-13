@@ -1674,7 +1674,7 @@ $$= \underset{A}{\sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(X_{\alpha} - \bar{X}
 
 $$B \Rightarrow \sum_{\alpha=1}^{N}(\bar{X} - b)(\bar{X} - b)' = N (\bar{X} - b)(\bar{X} - b)'$$
 $$C \Rightarrow \sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(\bar{X} - b)' = \sum_{\alpha=1}^{N}X_{\alpha}\bar{X}' - \sum_{\alpha=1}^{N}X_{\alpha}b' - \sum_{\alpha=1}^{N}\bar{X}\bar{X}' + \sum_{\alpha=1}^{N}\bar{X}b' =$$
-$$= N\bar{X}\bar{X}^{-1} - N\bar{X}b' - N\bar{X}\bar{X}^{-1} + N\bar{X}b^{-1} = 0$$
+$$= N\bar{X}\bar{X}' - N\bar{X}b' - N\bar{X}\bar{X}' + N\bar{X}b' = 0$$
 $$D \Rightarrow \sum_{\alpha=1}^{N} (\bar{X} - b)(X_{\alpha} - \bar{X})' = \sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(\bar{X} - b)' = 0$$
 
 $$\star = A + N(\bar{X}-b)(\bar{X}-b)'$$
@@ -1701,9 +1701,9 @@ $$\ln(L(\mu,\Sigma)) = -\frac{pN}{2}\ln(2\pi) -\frac{N}{2}\ln(|\Sigma|) -\frac{1
 
 \item (1) $$L(\mu, \Sigma; x_{1}, \dots, x_{n}) = \frac{1}{(2\pi)^{\frac{pN}{2}}|\Sigma|^{\frac{N}{2}}} \operatorname{exp}\{-\frac{1}{2} \sum_{\alpha=1}^{N}(x_{\alpha}-\mu)'\Sigma^{-1}(x_{\alpha}-\mu)\}$$
 
-$$\sum_{\alpha=1}^{N} (x_{\alpha}-\mu)' \Sigma^{-1} (x_{\alpha}-\mu) = \sum_{\alpha=1}^{N}[(x_{\alpha}-\bar{x}) + (\bar{X}-\mu)]' \Sigma^{-1} [(x_{\alpha}-\bar{x}) + (\bar{x} - \mu)] =$$
-$$= \sum_{\alpha=1}^{N} [(x_{\alpha} - \bar{x})' + (\bar{X}-\mu)'] \Sigma^{-1} [(x_{\alpha} - \bar{x}) + (\bar{x} - \mu)] =$$
-$$= \sum_{\alpha=1}^{N} (x_{\alpha} - \bar{X})' \Sigma^{-1} (x_{\alpha} - \mu) + \sum_{\alpha=1}^{N}(x_{\alpha}-\bar{x})' \Sigma^{-1}(\bar{x}-\mu) +$$
+$$\sum_{\alpha=1}^{N} (x_{\alpha}-\mu)' \Sigma^{-1} (x_{\alpha}-\mu) = \sum_{\alpha=1}^{N}[(x_{\alpha}-\bar{x}) + (\bar{x}-\mu)]' \Sigma^{-1} [(x_{\alpha}-\bar{x}) + (\bar{x} - \mu)] =$$
+$$= \sum_{\alpha=1}^{N} [(x_{\alpha} - \bar{x})' + (\bar{x}-\mu)'] \Sigma^{-1} [(x_{\alpha} - \bar{x}) + (\bar{x} - \mu)] =$$
+$$= \sum_{\alpha=1}^{N} (x_{\alpha} - \bar{x})' \Sigma^{-1} (x_{\alpha} - \mu) + \sum_{\alpha=1}^{N}(x_{\alpha}-\bar{x})' \Sigma^{-1}(\bar{x}-\mu) +$$
 $$+ \sum_{\alpha=1}^{N} (\bar{x}-\mu) \Sigma^{-1} (x_{\alpha} - \bar{x}) + \sum_{\alpha=1}^{N} (\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
 $$= \sum_{\alpha=1}^{N} \operatorname{traza}(x_{\alpha} - \bar{x})' \Sigma^{-1} (x_{\alpha} - \mu) + N(\bar{x}-\mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
 $$= \sum_{\alpha=1}^{N} \operatorname{traza} [\Sigma^{-1}(x_{\alpha} - \mu)(x_{\alpha} - \bar{x})'] + N(\bar{x} - \mu)' \Sigma^{-1} (\bar{x}-\mu) =$$
@@ -1815,7 +1815,7 @@ $$Y_{\alpha} = \sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta}, \hspace{1cm} \alpha=
 se tiene que
 $$\sum_{\alpha=1}^{n}X_{\alpha}X_{\alpha}' = \sum_{\alpha=1}^{N}Y_{\alpha}Y_{\alpha}' \hspace{1cm} (4)$$
 
-\item (4) $$\sum_{\alpha=1}^{N} Y_{\alpha}Y_{\alpha}' = \sum_{\alpha=1}^{N} \sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta})(\sum_{\gamma=1}^{N} c_{\alpha\gamma}X_{\gamma})' = \sum_{\alpha=1}^{N} \sum_{\beta=1}^{N} \sum_{\gamma=1}^{N} c_{\alpha\beta} c_{\alpha\gamma} X_{\beta}X_{\gamma}' =$$
+\item (4) $$\sum_{\alpha=1}^{N} Y_{\alpha}Y_{\alpha}' = \sum_{\alpha=1}^{N} (\sum_{\beta=1}^{N} c_{\alpha\beta}X_{\beta})(\sum_{\gamma=1}^{N} c_{\alpha\gamma}X_{\gamma})' = \sum_{\alpha=1}^{N} \sum_{\beta=1}^{N} \sum_{\gamma=1}^{N} c_{\alpha\beta} c_{\alpha\gamma} X_{\beta}X_{\gamma}' =$$
 $$= \sum_{\beta=1}^{N} \sum_{\gamma=1}^{N} X_{\beta} X_{\gamma}' (\sum_{\alpha=1}^{N} c_{\alpha\beta} c_{\alpha\gamma}) =$$
 Como tenemos $(\sum_{\alpha=1}^{N} c_{\alpha\beta} c_{\alpha\gamma}) = <c_{\beta}, c_{\gamma}> = \delta_{\beta\gamma} = \begin{cases}
 0 & \text{si } \beta \neq \gamma \\
@@ -1831,14 +1831,14 @@ se tiene
 \item Los vectores $\{Y_{\alpha}: \alpha=1,\dots,N\}$ son independientes (6).
 \end{itemize}
 
-\item (5) $$c_{\alpha\beta} X_{\beta} = C_{\alpha\beta} I_{p} X_{\beta} = \begin{pmatrix}
+\item (5) $$c_{\alpha\beta} X_{\beta} = c_{\alpha\beta} I_{p} X_{\beta} = \begin{pmatrix}
 c_{\alpha\beta} & 0 & \dots & 0 \\
 0 & c_{\alpha\beta} & \dots & 0 \\
 \vdots & \vdots & \ddots & \vdots \\
 0 & 0 & \dots & c_{\alpha\beta}
 \end{pmatrix} X_{\beta} = A_{\alpha\beta} X_{\beta}$$
 $$Y_{\alpha} = \sum_{\beta=1}^{N} A_{\alpha\beta} X_{\beta} \sim N_{p}(\sum_{\beta=1}^{N}(A_{\alpha\beta}\mu_{\beta}), \sum_{\beta=1}^{N} A_{\alpha\beta} \Sigma A_{\alpha\beta}') \equiv N_{p}(\sum_{\alpha=1}^{N}c_{\alpha\beta} \mu_{\beta}, \sum_{\beta=1}^{N}c_{\alpha\beta}^{2}\Sigma) \equiv N_{p}(\mathcal{V}_{\alpha}, \Sigma)$$
-donde hemos usado que $\sum_{\beta=1}^{N} c_{\alpha\beta} c_{\alpha\beta}^{2}=1$.
+donde hemos usado que $\sum_{\beta=1}^{N} c_{\alpha\beta}^{2}=1$.
 
 Entonces
 $$\Phi_{Y_{\alpha}}(t) = e^{it'\mathcal{V}_{\alpha} - \frac{1}{2}t' \Sigma t}$$
@@ -1987,7 +1987,7 @@ $\hat{\mu}:=\bar{X}$ es un estimador insesgado de $\mu$ (7)
 
 \item (7) $\hat{\mu} = \bar{X}$ es estimador insesgado de $\mu$. \\
 $(X_{1}, X_{2}, \dots, X_{N})$ v.a.i.i.d., $X_{i} \sim N(\mu, \Sigma)$.
-$$\bar{X} = \frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha} = E[\bar{X}] = E[\frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha}] \overset{\text{linealidad}}{=} |frac{1}{N} \sum_{\alpha=1}^{N} E[X_{\alpha}] = \frac{1}{N} N\mu = \mu$$
+$$\bar{X} = \frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha} = E[\bar{X}] = E[\frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha}] \overset{\text{linealidad}}{=} |\frac{1}{N} \sum_{\alpha=1}^{N} E[X_{\alpha}] = \frac{1}{N} N\mu = \mu$$
 
 \item MATRIZ DE COVARIANZAS MUESTRAL: \\
 $\hat{\Sigma}:=S_{N}$ no es un estimador insesgado de $\Sigma$ (8)

@@ -1,0 +1,281 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+
+\usepackage[bookmarks=true,
+			bookmarksnumbered=false,
+			bookmarksopen=false,
+			colorlinks=true,
+			allcolors=blue,
+			urlcolor=blue]{hyperref}
+
+\usepackage[ruled]{algorithm2e}
+\SetKwInOut{Parameter}{parameter}
+
+\usepackage{array}
+\newcolumntype{N}{>{\centering\arraybackslash}m{0.5cm}}
+\newcolumntype{M}{>{\centering\arraybackslash}m{1cm}}
+
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+
+\begin{document}\pagenumbering{arabic}
+
+\textbf{Nombre:} Pedro Ramos Suárez.
+
+\begin{enumerate}[label=\arabic*.]
+\bfseries
+\item Sea $\mathbf{A}$ una matriz aleatoria con distribución $\mathbf{W_{p}(n, I_{p})}$. Probar que $\mathbf{\operatorname{tr}(A)}$. tiene distribución $\mathbf{\chi_{np}^{2}}$.
+
+
+\vspace{0.5cm}
+\normalfont
+
+El resultado 1 sobre marginalización asegura que:
+$$\frac{a_{ii}}{\sigma_{i}^{2}} \sim \chi_{n}^{2}, \quad i = 1, \dots, p$$
+y como $\sigma_{i}^{2} = 1, \forall i = 1, \dots, p$ (por ser $\Sigma = I_{p}$), se tiene que
+$$a_{ii} \sim \chi_{n}^{2}, \forall i = 1, \dots, p$$.
+
+Por otro lado, como $A \sim W_{p}(n, I_{p})$ será, por definición, $A \overset{d}{=} \sum_{\alpha=1}^{n} Z_{\alpha}Z_{\alpha}'$, con $Z_{\alpha} \sim N_{p}(0, I_{p})$ independientes, $\forall \alpha = 1, \dots, n \quad (n \geq p)$. Para cada $\alpha$, podemos escribir $Z_{\alpha} = \begin{pmatrix} Z_{\alpha_{1}} \\ \vdots \\ Z_{\alpha_{p}} \end{pmatrix}$. Como $I_{p}$ es una matriz diagonal, las variables aleatorias $Z_{\alpha_{1}}, \dots, Z_{\alpha_{p}}$ componentes del vector $Z_{\alpha}$ son independientes, $\forall \alpha = 1, \dots, n$ (pues en el caso de una DNM incorrelación implica independencia), con $Z_{\alpha_{i}} \sim N(0, 1), i = 1, \dots, p$. Puesto que
+$$a_{ii} \overset{d}{=} \sum_{\alpha=1}^{n} Z_{\alpha_{i}}Z_{\alpha_{i}}', \quad i = 1, \dots, p$$
+es claro que $a_{11}, \dots, a_{pp}$ son independientes. Aplicando finalmente la propiedad de reproductividad de la distribución $\chi^{2}$ llegamos al resultado buscado:
+$$\operatorname{tr}(A) = \sum_{i=1}^{p} a_{ii} \sim \chi_{np}^{2}$$
+donde hemos tenido en cuenta que $\sum_{i=1}^{p} n = np$.
+
+\newpage
+\bfseries
+\item Sea $\mathbf{}$ una matriz aleatoria con distribución $\mathbf{W_{p}(n, \Sigma)}$ $\mathbf{(\Sigma > 0)}$. Probar que, para cualesquiera vectores $\mathbf{a, b \in \mathbb{R}^{p}}$, las variables aleatorias $\mathbf{a'Aa}$ y $\mathbf{b'Ab}$ son independientes si y sólo si $\mathbf{a' \Sigma b = 0}$.
+
+\vspace{0.5cm}
+\normalfont
+
+\begin{itemize}
+\item $a$ y $b$ linealmente independientes: Consideramos la matriz $M = \begin{pmatrix} a & b \end{pmatrix}_{p \times 2}$, de rango 2. Tenemos:
+$$M'AM = \begin{pmatrix} a' \\ b' \end{pmatrix} A \begin{pmatrix} a & b \end{pmatrix} = \begin{pmatrix}
+a'Aa & a'Ab \\
+b'Aa & b'Ab
+\end{pmatrix}_{4 \times 4}$$
+y, por la propiedad de reproductividad bajo transformaciones lineales rectangulares de la distribución de Wishart, se cumple que
+$$M'AM \sim W_{2}(n, M'\Sigma M) \equiv W_{2}(n, \begin{pmatrix}
+a' \Sigma a & a' \Sigma b \\
+b' \Sigma a & b' \Sigma b
+\end{pmatrix})$$
+
+\begin{itemize}
+\item[$\Leftarrow$] Si $a' \Sigma b = 0$, el resultado sobre marginalización por bloques en una distribución de Wishart nos asegura entonces que $a'Aa$ y $b'Ab$ son independientes.
+
+\item[$\Rightarrow$] Si $a'Aa$ y $b'Ab$ son independientes, se tiene que:
+$$0 = Cov(a'Aa, b'Ab) = n((a' \Sigma b)^{2} + (a' \Sigma b)^{2}) = 2n(a' \Sigma b)^{2}$$
+Luego ha de ser $a' \Sigma b = 0$.
+\end{itemize}
+
+\item $a$ y $b$ linealmente dependiente: Existirá entonces $\alpha \in \mathbb{R}$ tal que $a = \alpha b$, luego
+$$a'Aa = (\alpha b') A \alpha b = \alpha^{2} (b' A b)$$
+esto es, las variables $a'Aa$ y $b'Ab$ no son independientes. Por otro lado, será $a' \Sigma b = \alpha (b' \Sigma b) \neq 0$ ya que $\Sigma$ es definida positva. Así pues, el contrarrecíproco se cumple trivialmente.
+
+\item $a = 0$ ó $b = 0$: Entonces $a'Aa = 0$ ó $b'Ab = 0$, es decir, una de las variables es degenerada, con $P[a'Aa=0]=1$ ó $P[b'Ab=0]=1$, y una variable aleatoria degenerada es independiente de cualquier otra. Además, será $a' \Sigma b = 0$, de manera que el resultado se cumple trivialmente.
+\end{itemize}
+
+\newpage
+\bfseries
+\item Probar que si $\mathbf{X_{1}, \dots, X_{N}}$ constituyen una muestra aleatoria simple de una distribución $\mathbf{N_{p}(\mu, \Sigma)}$ $\mathbf{(\Sigma > 0)}$, y el parámetro vector de medias $\mathbf{\mu}$ es conocido, entonces el estimador máximo-verosímil de $\mathbf{\Sigma}$ es:
+$$\mathbf{\hat{\Sigma} := \frac{1}{N} \sum_{\alpha=1}^{N} (X_{\alpha} - \mu)(X_{\alpha} - \mu)'}$$
+(bajo la condición de ser esta matriz definida positiva). Comprobar si este estimador es o no insesgado.
+
+\vspace{0.5cm}
+\normalfont
+
+Vamos a buscar el máximo en $\Sigma$ de la función $\ln(L(\mu, \Sigma))$, que será el mismo que el de $L(\mu, \Sigma)$ por ser el logaritmo estrictamente creciente.
+$$\ln(L(\mu, \Sigma)) = -\frac{pN}{2}\ln(2\pi) - \frac{N}{2}\ln(|\Sigma|) - \frac{1}{2}\sum_{\alpha=1}^{N} (X_{\alpha} - \mu)' \Sigma^{-1} (X_{\alpha} - \mu)$$
+donde $\sum_{\alpha=1}^{N} (X_{\alpha} - \mu)' \Sigma^{-1} (X_{\alpha} - \mu)$ es un escalar, de modo que coincide con su traza:
+$$\sum_{\alpha=1}^{N} (X_{\alpha} - \mu)' \Sigma^{-1} (X_{\alpha} - \mu) = \operatorname{tr} (\sum_{\alpha=1}^{N} (X_{\alpha} - \mu)' \Sigma^{-1} (X_{\alpha} - \mu)) = \sum_{\alpha=1}^{N} \operatorname{tr} (X_{\alpha}-\mu)' \Sigma^{-1} (X_{\alpha}-\mu)) =$$
+$$= \sum_{\alpha=1}^{N} \operatorname{tr}(\Sigma^{-1}(X_{\alpha} - \mu)(X_{\alpha} - \mu)') = \operatorname{tr}(\sum_{\alpha=1}^{N}(\Sigma^{-1}(X_{\alpha}-\mu)(X_{\alpha}-\mu)') =$$
+$$= \operatorname{tr}(\Sigma^{-1} \sum_{\alpha=1}^{N} (X_{\alpha}-\mu)(X_{\alpha}-\mu)')$$
+
+Así, llegamos a
+$$\ln(L(\mu, \Sigma)) = -\frac{pN}{2} \ln(2\pi) - \frac{N}{2} \ln(|\Sigma|) - \frac{1}{2} \operatorname{tr}(\Sigma^{-1} \sum_{\alpha=1}^{N} (X_{\alpha}-\mu)(X_{\alpha}-\mu)')$$
+Consideramos ahora la función
+$$f(\Sigma) = 2[\ln(L(\mu, \Sigma)) + \frac{pN}{2}\ln(2\pi)] = -N\ln(|\Sigma|) - \operatorname{tr}(\Sigma^{-1} \sum_{\alpha=1}^{N}(X_{\alpha}-\mu)(X_{\alpha}-\mu)')$$
+y aplicamos el lema de Watson con $G = \Sigma$ y $D = \sum_{\alpha=1}^{N}(X_{\alpha}-\mu)(X_{\alpha}-\mu)'$, ambas matrices simétricas y definidas positivas, para obtener que $f$ alcanza el único máximo respecto a $\Sigma$ en $\Sigma = \frac{1}{N} \sum_{\alpha=1}^{N}(X_{\alpha}-\mu)(X_{\alpha}-\mu)'$. Es claro que $f$ y $\ln(L(\mu, \Sigma))$ alcanzan el máximo para $\Sigma$ en el mismo punto, de donde deducimos entonces que $\hat{\Sigma} = \frac{1}{N} \sum_{\alpha=1}^{N} (X_{\alpha}-\mu)(X_{\alpha}-\mu)'$ es el estimador máximo versímil de $\Sigma$.
+
+Comprobamos que es insesgado:
+$$E[\hat{\Sigma}] = E[\frac{1}{N} \sum_{\alpha=1}^{N} (X_{\alpha}-\mu)(X_{\alpha}-\mu)'] = \frac{1}{N} \sum_{\alpha=1}^{N} E[(X_{\alpha}-\mu)(X_{\alpha}-\mu)'] = \frac{1}{N} \sum_{\alpha=1}{N} \Sigma = \Sigma$$
+luego $\hat{\Sigma}$ es un estimador insesgado.
+
+\newpage
+\bfseries
+\item Sea $\mathbf{A}$ una matriz aleatoria con distribución $\mathbf{W_{p}(n, \Sigma)}$ $\mathbf{(\Sigma > 0)}$. Probar usando la función de densidad de Wishart, que
+$$\mathbf{E[|A|^{r}] = |\Sigma|^{r} 2^{pr} \frac{\Gamma_{p}(\frac{1}{2}n+r)}{\Gamma_{p}(\frac{1}{2}n)}, \quad \forall r > 0}$$
+[OBSERVACIÓN: La definición de la `densidad de Wishart', y de la correspondiente `función característica de Wishart', sigue siendo válida, por extensión, tomando como parámetro `grados de libertad' cualquier número real \emph{n} tal que $\mathbf{n > p-1}$ (aunque la definición implícita en términos de vectores $\mathbf{Z_{\alpha} \sim N_{p}(0, \Sigma)}$ $\mathbf{(\Sigma > 0)}$ independientes sólo se aplicaría para el caso en que \emph{n} es entero, con $\mathbf{n \geq p}$)]
+
+\vspace{0.5cm}
+\normalfont
+
+Sea $\mathcal{M}_{p}$ el espacio de las matrices reales, simétricas y definidas positivas de orden $p$. Entonces:
+$$E[|A|^{r}] = \int_{\mathcal{M}_{p}} |A|^{r} \frac{|A|^{\frac{n-p-1}{2}} \exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}A)\}}{2^{\frac{np}{2}}|\Sigma|^{\frac{n}{2}}\Gamma_{p}(\frac{n}{2})} dA =$$
+$$= \int_{\mathcal{M}_{p}} \frac{|A|^{\frac{n+2r-p-1}{2}} \exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}A)\}}{2^{\frac{np}{2}}|\Sigma|^{\frac{n}{2}}\Gamma_{p}(\frac{n}{2})} \cdot \frac{2^{pr} \Gamma_{p}(\frac{n+2r}{2})|\Sigma|^{r}}{2^{pr}\Gamma_{p}(\frac{n+2r}{2})|\Sigma|^{r}} dA =$$
+$$= \int_{\mathcal{M}_{p}} \frac{|A|^{\frac{n+2r-p-1}{2}} \exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}A)\}}{2^{\frac{p(n+2r)}{2}}|\Sigma|^{\frac{n+2r}{2}}\Gamma_{p}(\frac{n+2r}{2})} \cdot \frac{2^{pr} \Gamma_{p}(\frac{n+2r}{2})|\Sigma|^{r}}{\Gamma_{p}(\frac{n}{2})} dA =$$
+$$= \frac{2^{pr}\Gamma_{p}(\frac{n+2r}{2})|\Sigma|^{r}}{\Gamma_{p}(\frac{n}{2})} \cdot \int_{\mathcal{M}_{p}} \frac{|A|^{\frac{n+2r-p-1}{1}} \exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}A)\}}{2^{\frac{p(n+2r)}{2}} |\Sigma|^{\frac{n+2r}{2}} \Gamma_{p}(\frac{n+2r}{2})} dA$$
+Usando que:
+$$f(A) = \frac{|A|^{\frac{n+2r-p-1}{2}} \exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}A)\}}{2^{\frac{p(n+2r)}{2}}|\Sigma|^{\frac{n+2r}{2}}\Gamma_{p}(\frac{n+2r}{2})}$$
+es la función de distribución de Wishart con $n+2r$ grados de libertad ($W_{p}(n+2r, \Sigma)$), tenemos:
+$$\int_{\mathcal{M}_{p}} \frac{|A|^{\frac{n+2r-p-1}{1}} \exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^{-1}A)\}}{2^{\frac{p(n+2r)}{2}} |\Sigma|^{\frac{n+2r}{2}} \Gamma_{p}(\frac{n+2r}{2})} dA = 1$$
+y por lo tanto:
+$$E[|A|^{r}] = \frac{|\Sigma|^{r}2^{pr}\Gamma_{p}(\frac{n+2r}{2})}{\Gamma_{p}(\frac{n}{2})} = |\Sigma|^{r} 2^{pr} \frac{\Gamma_{p}(\frac{1}{2}n+r)}{\Gamma_{p}(\frac{1}{2}n)}, \quad \forall r > 0$$
+
+\newpage
+\bfseries
+\item Sea $\mathbf{X_{1}, \dots, X_{N}}$ una muestra aleatoria simple de una distribución $\mathbf{N_{p}(\mu, \Sigma)}$ $\mathbf{(\Sigma > 0)}$. Sea $\mathbf{A = \sum_{\alpha=1}^{N} (X_{\alpha}-\bar{X})(X_{\alpha}-\bar{X})'}$ la matriz de dispersiones muestral, con \\ $\mathbf{\bar{X} = \frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha}}$ el vector de medias muestral.
+
+\vspace{1cm}
+\begin{enumerate}[label=(\alph*)]
+\item Probar que la matriz $\mathbf{\operatorname{Cov}(\bar{X}, X_{\alpha}-\bar{X})}$ es nula, para $\mathbf{\alpha=1,\dots,N}$. Deducir, entonces, que $\mathbf{\bar{X}}$ y $\mathbf{A}$ son independientes.
+
+\vspace{0.5cm}
+\normalfont
+
+Sea $\begin{pmatrix} \bar{X} \\ X_{\alpha}-\bar{X} \end{pmatrix}, \alpha = 1, \dots, N$. Entonces:
+$$\begin{pmatrix} \bar{X} \\ X_{\alpha}-\bar{X} \end{pmatrix} = \begin{pmatrix}
+\frac{1}{N} I_{p} & \dots & \frac{1}{N}I_{p} & \dots & \frac{1}{N}I_{p} \\
+-\frac{1}{N}I_{p} & \dots & \frac{N-1}{N}I_{p} & \dots & -\frac{1}{N}I_{p}
+\end{pmatrix} \begin{pmatrix}
+X_{1} \\ \vdots \\ X_{\alpha} \\ \vdots \\ X_{N}
+\end{pmatrix} = M \begin{pmatrix}
+X_{1} \\ \vdots \\ X_{\alpha} \\ \vdots \\ X_{N}
+\end{pmatrix}$$
+Notemos que $\begin{pmatrix} X_{1} \\ \vdots \\ X_{N} \end{pmatrix} \sim N_{pN}(\bar{\mu}, \bar{\Sigma})$, con 
+$$\bar{\mu} = \begin{pmatrix} \mu \\ \vdots \\ \mu \end{pmatrix} \quad \text{y} \quad \bar{\Sigma} = \begin{pmatrix}
+\Sigma & 0 & \dots & 0 \\
+0 & \Sigma & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & \Sigma
+\end{pmatrix} = \operatorname{diag}(\Sigma, \dots, \Sigma)$$
+por se los vectores $X_{\alpha} \sim N_{p}(\mu, \Sigma)$ independientes $\forall \alpha = 1, \dots, N$.
+
+Por el resultado sobre transformaciones lineales de rango máximo de una DNM tenemos que $\begin{pmatrix} \bar{X} \\ X_{\alpha}-\bar{X} \end{pmatrix} \sim N_{2p}(M\bar{\mu}, M\bar{\Sigma}M'), \forall \alpha = 1, \dots, N$, con:
+$$M\bar{\Sigma}M' = \begin{pmatrix}
+\frac{1}{N} I_{p} & \dots & \frac{1}{N}I_{p} & \dots & \frac{1}{N}I_{p} \\
+-\frac{1}{N}I_{p} & \dots & \frac{N-1}{N}I_{p} & \dots & -\frac{1}{N}I_{p}
+\end{pmatrix} \begin{pmatrix}
+\Sigma & 0 & \dots & 0 \\
+0 & \Sigma & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \ddots & \Sigma
+\end{pmatrix} \begin{pmatrix}
+\frac{1}{N} I_{p} & -\frac{1}{N}I_{p} \\
+\vdots & \vdots \\
+\frac{1}{N}I_{p} & \frac{N-1}{N}I_{p} \\
+\vdots & \vdots \\
+\frac{1}{N}I_{p} & -\frac{1}{N}I_{p}
+\end{pmatrix} =$$
+$$=\begin{pmatrix}
+\frac{1}{N}\Sigma & \dots & \frac{1}{N}\Sigma & \dots & \frac{1}{N}\Sigma \\
+-\frac{1}{N}\Sigma & \dots & \frac{N-1}{N}\Sigma & \dots & -\frac{1}{N}\Sigma
+\end{pmatrix} \begin{pmatrix}
+\frac{1}{N} I_{p} & -\frac{1}{N}I_{p} \\
+\vdots & \vdots \\
+\frac{1}{N}I_{p} & \frac{N-1}{N}I_{p} \\
+\vdots & \vdots \\
+\frac{1}{N}I_{p} & -\frac{1}{N}I_{p}
+\end{pmatrix} = \begin{pmatrix}
+\frac{1}{N}\Sigma & 0_{p \times p} \\
+0_{p \times p 0} & \frac{N-1}{N}\Sigma
+\end{pmatrix}$$
+Tenemos entonces que $Cov(\bar{X}, X_{\alpha}-\bar{X}) = 0_{p \times p}$ y, además, como en el caso de una DNM la incorrelación implica independencia, los vectores aleatorios $\bar{X}$ y $X_{\alpha}-\bar{X}$ son independientes $\forall \alpha = 1, \dots, N$.
+
+Finalmente, al ser $A$ una función medible de los vectores $X_{\alpha} - \bar{X}$, tenemos que $A$ y $\bar{X}$ son independientes.
+
+\vspace{1cm}
+\bfseries
+\item Encontrar una matriz $\mathbf{B}$ tal que $\mathbf{A = X'BX}$, con $\mathbf{X = (X_{1}, \dots, X_{N})'}$ \\ (matriz $\mathbf{(N \times p)-}$dimensional).
+
+\vspace{0.5cm}
+\normalfont
+
+$$A = \sum_{\alpha=1}^{N} (X_{\alpha}-\bar{X})(X_{\alpha}-\bar{X})' = \begin{pmatrix}
+X_{1} - \bar{X} & \dots & X_{N}-\bar{X}
+\end{pmatrix} \begin{pmatrix}
+X_{1}'-\bar{X}' \\ \vdots X_{N}'-\bar{X}'
+\end{pmatrix} =$$
+$$= [\begin{pmatrix}
+X_{1} & \dots & X_{N}
+\end{pmatrix} - \begin{pmatrix}
+\bar{X} & \dots & \bar{X}
+\end{pmatrix}] [\begin{pmatrix}
+X_{1}' \\ \vdots \\ X_{N}'
+\end{pmatrix} - \begin{pmatrix}
+\bar{X}' \\ \vdots \\ \bar{X}'
+\end{pmatrix}] =$$
+$$= [\begin{pmatrix}
+X_{1} & \dots & X_{N}
+\end{pmatrix} - \frac{1}{N} \begin{pmatrix}
+\sum_{\alpha=1}^{N}X_{\alpha} & \dots & \sum_{\alpha=1}^{N}X_{\alpha}
+\end{pmatrix}] [\begin{pmatrix}
+X_{1}' \\ \vdots \\ X_{N}'
+\end{pmatrix} - \frac{1}{N} \begin{pmatrix}
+\sum_{\alpha=1}^{N}X_{\alpha}' \\ \vdots \\ \sum_{\alpha=1}^{N}X_{\alpha}'
+\end{pmatrix}] =$$
+$$= [\begin{pmatrix}
+X_{1} & \dots & X_{N}
+\end{pmatrix} (I_{N} - \frac{1}{N} \begin{pmatrix}
+1 & \dots & 1 \\
+\vdots & \ddots & \vdots \\
+1 & \dots & 1
+\end{pmatrix})][(I_{N} - \frac{1}{N} \begin{pmatrix}
+1 & \dots & 1 \\
+\vdots & \ddots & \vdots \\
+1 & \dots & 1
+\end{pmatrix}) \begin{pmatrix}
+X_{1}' \\ \vdots \\ X_{N}'
+\end{pmatrix}] =$$
+$$= X' B X$$
+donde
+$$B = (I_{N} - \frac{1}{N} \begin{pmatrix}
+1 & \dots & 1 \\
+\vdots & \ddots & \vdots \\
+1 & \dots & 1
+\end{pmatrix}) (I_{N} - \frac{1}{N} \begin{pmatrix}
+1 & \dots & 1 \\
+\vdots & \ddots & \vdots \\
+1 & \dots & 1
+\end{pmatrix} =$$
+$$= I_{N} - \frac{1}{N} \begin{pmatrix}
+1 & \dots & 1 \\
+\vdots & \ddots & \vdots \\
+1 & \dots & 1
+\end{pmatrix} = \begin{pmatrix}
+\frac{N-1}{N} & -\frac{1}{N} & \dots & -\frac{1}{N} \\
+-\frac{1}{N} & \frac{N-1}{N} & \dots & -\frac{1}{N} \\
+\vdots & \vdots & \ddots & \vdots \\
+-\frac{1}{N} & - \frac{1}{N} & \dots & \frac{N-1}{N}
+\end{pmatrix}$$
+
+\vspace{1cm}
+\bfseries
+\item Suponiendo que $\mathbf{N > p}$, encontrar alguna matriz $\mathbf{(p \times p)-}$dimensional $\mathbf{G}$ tal que \\ $\mathbf{GAG' \sim W_{p}(N-1,I_{p})}$.
+
+\vspace{0.5cm}
+\normalfont
+
+Puesto que $A \sim W_{p}(N-1, \Sigma)$, tenemos por el resultado de reproductividad bajo transformaciones lineales rectangulares de una distribución de Wishart que $GAG' \sim W_{p}(N-1, G \Sigma G')$. Así pues, basta encontrar una matriz $G$ de orden $p$ tal que $G \Sigma G' = I_{p}$.
+
+Tomamos una matriz $C$ de dimensión $p \times p$ no singular tal que $\Sigma = CC'$ (que existe por ser $\Sigma > 0$) y, llamando $G = C^{-1}$ llegamos a que
+$$G \Sigma G' = G C C' G' = C^{-1} C C' (C^{-1})' = C^{-1} CC' (C')^{-1} = I_{p}$$
+como buscábamos.
+
+\end{enumerate}
+\end{enumerate}
+
+\end{document}
