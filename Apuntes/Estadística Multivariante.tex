@@ -1987,7 +1987,7 @@ $\hat{\mu}:=\bar{X}$ es un estimador insesgado de $\mu$ (7)
 
 \item (7) $\hat{\mu} = \bar{X}$ es estimador insesgado de $\mu$. \\
 $(X_{1}, X_{2}, \dots, X_{N})$ v.a.i.i.d., $X_{i} \sim N(\mu, \Sigma)$.
-$$\bar{X} = \frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha} = E[\bar{X}] = E[\frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha}] \overset{\text{linealidad}}{=} |\frac{1}{N} \sum_{\alpha=1}^{N} E[X_{\alpha}] = \frac{1}{N} N\mu = \mu$$
+$$\bar{X} = \frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha} \Rightarrow E[\bar{X}] = E[\frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha}] \overset{\text{linealidad}}{=} |\frac{1}{N} \sum_{\alpha=1}^{N} E[X_{\alpha}] = \frac{1}{N} N\mu = \mu$$
 
 \item MATRIZ DE COVARIANZAS MUESTRAL: \\
 $\hat{\Sigma}:=S_{N}$ no es un estimador insesgado de $\Sigma$ (8)
@@ -1998,8 +1998,8 @@ Se tiene, en este caso, que: \\
 $S_{N-1}=\frac{N}{N-1} S_{N}$ sí es un esimador insesgado de $\Sigma$
 
 \item (8) $\hat{\Sigma} = S_{N} = \frac{A}{N}$
-$$E[S_{N}] = E[\frac{A}{N}] = \frac{1}{N}E[\sum_{\alpha=1}^{N-1} Z_{\alpha}Z_{\alpha}'] = \frac{1}{N} \sim_{\alpha=1}^{N-1} E[Z_{\alpha}Z_{\alpha}']$$
-$$E[S_{N-1}] = E[\frac{N}{N-1}S_{N}] = \frac{N}{N-1} E[\frac{1}{N}] = \frac{1}{N-1}E[A] = \frac{1}{N-1} E[\sum_{\alpha=1}^{N-1} Z_{\alpha}Z_{\alpha}'] =$$ $$= \frac{1}{N-1}(N-1)E[Z_{\alpha}Z_{\alpha}'] = \Sigma$$
+$$E[S_{N}] = E[\frac{A}{N}] = \frac{1}{N}E[\sum_{\alpha=1}^{N-1} Z_{\alpha}Z_{\alpha}'] = \frac{1}{N} \sum_{\alpha=1}^{N-1} E[Z_{\alpha}Z_{\alpha}']$$
+$$E[S_{N-1}] = E[\frac{N}{N-1}S_{N}] = \frac{N}{N-1} E[\frac{A}{N}] = \frac{1}{N-1}E[A] = \frac{1}{N-1} E[\sum_{\alpha=1}^{N-1} Z_{\alpha}Z_{\alpha}'] =$$ $$= \frac{1}{N-1}(N-1)E[Z_{\alpha}Z_{\alpha}'] = \Sigma$$
 \end{itemize}
 
 \subsubsection{Propiedades de los EMV \texorpdfstring{$\hat{\mu}$}) y \texorpdfstring{$\hat{\Sigma}$}): Sobre CONSISTENCIA}
@@ -2125,8 +2125,8 @@ $$f(A) = \frac{|A|^{\frac{n-p-1}{2}} exp\{-\frac{1}{2} \operatorname{tr}(\Sigma^
 \item Resultado: Si $a \sim W_{1}(n, \sigma^{2})$, entonces $\frac{a}{\sigma^{2}} \sim \chi_{n}^{2} \quad$ (1).
 
 \item (1) Suponemos $a \sim W_{1}(n, \sigma^{2}), \sigma^{2} > 0$.
-$$f(a) \overset{p=1}{=} \frac{a^{\frac{n-2}{2}}e^{\frac{a}{2\sigma^{2}}}}{2^{\frac{n}{2}}(\sigma^{2})^{\frac{n}{2}}\Gamma(\frac{n}{2})}, a > 0$$
-$$cv : c := \frac{a}{\sigma^{2}}, a = v\sigma^{2}, da = \sigma^{2}dv$$
+$$f(a) \overset{p=1}{=} \frac{a^{\frac{n-2}{2}}e^{-\frac{a}{2\sigma^{2}}}}{2^{\frac{n}{2}}(\sigma^{2})^{\frac{n}{2}}\Gamma(\frac{n}{2})}, a > 0$$
+$$v := \frac{a}{\sigma^{2}}, a = v\sigma^{2}, da = \sigma^{2}dv$$
 $$f(v) = \frac{(\sigma^{2}v)^{\frac{n-2}{2}} e^{-\frac{v}{2}}}{2^{\frac{n}{2}}(\sigma^{2})^{\frac{n}{2}}\Gamma(\frac{n}{2})}\sigma^{2} = \frac{v^{\frac{n-2}{2}}e^{-\frac{v}{2}}}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})}, v > 0$$
 $\Rightarrow v \sim \chi_{n}^{2} \Rightarrow \frac{a}{\sigma^{2}} \sim \chi_{n}^{2}$.
 
@@ -2166,7 +2166,7 @@ $\forall \Theta$ en el espacio de matrices simétricas de dimensión $p \times p
 \item[1] MOMENTO DE PRIMER Y SEGUNDO ORDEN: \\
 RESULTADO: Sea $A \sim W_{p}(n, \Sigma)$. Entonces,
 $$E[A] = n \Sigma$$
-$$\operatorname{Cov}(a_{ij}, a_{kl}) = n(\sigma_{ij}\sigma_{jl} + \sigma_{il}\sigma_{jk}) \quad (i, j, k, l = 1, \dots, p)$$
+$$\operatorname{Cov}(a_{ij}, a_{kl}) = n(\sigma_{ik}\sigma_{jl} + \sigma_{il}\sigma_{jk}) \quad (i, j, k, l = 1, \dots, p)$$
 (Se puede obtener una expresión matricial para la matriz de covarianzas de $A$ en términos de productos de Kronecker).
 
 \item Teorema de Isserlis: En una DNM
@@ -2208,9 +2208,9 @@ RESULTADO: Sean $A_{1}, \dots, A_{q}$ matrices aleatorias independientes, $A_{j}
 $$A = \sum_{j=1}^{q} A_{j} \sim W_{p}(n, \Sigma), \quad \text{con } n = \sum_{j=1}^{q}n_{j} \quad (2)$$
 
 \item (2) Si $A_{j} \sim W_{p}(n_{j}, \Sigma), j = 1, \dots, q \Rightarrow \upphi_{A_{j}}(\Theta) = |I_{p} - 2i\Theta\Sigma|^{-\frac{n}{2}}$.
-$$\upphi_{A}(\Theta) = \upphi_{\sum_{j=1}^{s}n_{j}} = E[e^{it2(\Theta\sum_{j=1}^{k}A_{k})}] = E[e^{it2(\sum_{j=1}^{k}\Theta A_{k})}] =$$ 
+$$\upphi_{A}(\Theta) = E[e^{it2(\Theta\sum_{j=1}^{k}A_{k})}] = E[e^{it2(\sum_{j=1}^{k}\Theta A_{k})}] =$$ 
 $$= E[e^{i\sum_{j=1}^{k}t2(\Theta A_{j})}] = \prod_{j=1}^{k} E[e^{it2(\Theta A_{j})}] = \prod_{j=1}^{k} \upphi_{A_{j}}(\Theta)$$
-$$\upphi_{A}(\Theta) = \prod_{j=1}^{k} |I_{p} - 2i\Theta\Sigma|^{-\frac{n_{j}}{2}} = |I_{p} - 2i\Theta\Sigma|^{\frac{1}{2} \sum_{j=1}^{k}n_{j}} = |I_{p} - 2i\Theta\Sigma|^{-\frac{n}{2}}$$
+$$\upphi_{A}(\Theta) = \prod_{j=1}^{k} |I_{p} - 2i\Theta\Sigma|^{-\frac{n_{j}}{2}} = |I_{p} - 2i\Theta\Sigma|^{-\frac{1}{2} \sum_{j=1}^{k}n_{j}} = |I_{p} - 2i\Theta\Sigma|^{-\frac{n}{2}}$$
 
 \item[3] REPRODUCTIVIDAD BAJO TRANSFORMACIONES LINEALES `RECTANGULARES': \\
 RESULTADO: Sea $A \sim W_{p}(n, \Sigma)$ y sea $M_{k \times p}$ una matriz no aleatoria de rango $k \leq p$. Entonces,
@@ -2242,7 +2242,7 @@ $$\Rightarrow S_{N} \sim W_{p}(n, M \Sigma M') = W_{p}(n, \frac{1}{N}\Sigma)$$
 
 $$S_{n} = \frac{1}{n}A = \frac{1}{N-1}A$$
 $$M = \frac{1}{\sqrt{N-1}} I \Rightarrow MAM' = \frac{1}{\sqrt{N-1}} I A \frac{1}{\sqrt{N-1}} I = \frac{1}{N-1}A = S_{n} \Rightarrow$$
-$$\Rightarrow S_{n} \sim W_{p}(n, M \Sigma N') = W_{p}(n, \frac{1}{N-1}\Sigma)$$
+$$\Rightarrow S_{n} \sim W_{p}(n, M \Sigma M') = W_{p}(n, \frac{1}{N-1}\Sigma)$$
 
 \item[5] MARGINALIZACIÓN (DIAGONAL Y POR BLOQUES) Y CONDICIONAMIENTO:
 \begin{itemize}
