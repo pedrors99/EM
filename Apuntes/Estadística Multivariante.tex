@@ -1630,7 +1630,14 @@ X_{N1} & \dots & X_{Ni} & \dots & X_{Np}
 
 Como se verá, los \emph{estimadores máximo-verosímiles} de $\mu$ y $\Sigma$ se expresarán en términos de medidas descriptivas de la muestra dadas por el \emph{vector de medias muestral} y la \emph{matriz de dispersiones muestral} (respecto del vector de medias muestral).
 
-\item VECTOR DE MEDIAS MUESTRALES (COMPLETAR).
+\item VECTOR DE MEDIAS MUESTRALES ($p \times 1$)
+$$\bar{X} := \frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha} = \begin{pmatrix}
+\frac{1}{N} \sum_{\alpha=1}^{N} x_{\alpha 1} \\
+\vdots \\
+\frac{1}{N} \sum_{\alpha=1}^{N} x_{\alpha p}
+\end{pmatrix} =: \begin{pmatrix} \bar{X}_{1} \\ \vdots \\ \bar{X}_{p} \end{pmatrix}$$
+(cada componente $\bar{X}_{i} = \frac{1}{N} \sum_{\alpha=1}^{N} X_{\alpha i}$ representa la media muestral para la variable correspondiente $X_{i}, i = 1, \dots, p$). \\
+$\bar{X}$ puede verse como el `centroide' (aleatorio) de la muestra en $\mathbb{R}^{p}$.
 
 \item MATRIZ DE DISPERSIONES MUESTRAL ($p \times p$)
 $$A := \sum_{\alpha=1}^{N} (X_{\alpha} - \bar{X})(X_{\alpha} - \bar{X})' =$$
@@ -1797,7 +1804,7 @@ es el EMV (único, c.s.) de $\Sigma$.
 
 \item Se comprueba que el valor máximo alcanzado por la función de verosimilitud en el punto $(\mu, \Sigma) = (\bar{x}, \bar{S}_{N})$ del espacio paramétrico es:
 $$L(\mu, \Sigma) = \frac{1}{(2\pi e)^{\frac{pN}{2}}|\bar{S}_{N}|^{\frac{N}{2}}} = [\frac{N}{(2\pi e)|\bar{A}|^{\frac{1}{p}}}]^{\frac{pN}{2}} \hspace{1cm} (3)$$
-Como puede verse [...] % COMPLETAR
+Como puede verse, este valor máximo no depende directamente del vector de medias muestra, sino del determinante (producto de autovalores) de la matriz dispersiones muestral respecto a éste, de forma inversa.
 \end{itemize}
 
 \subsubsection{Teorema de Dykstra}
@@ -2355,7 +2362,7 @@ $$A^{-1} \sim W_{p}^{-1}(n+p+1, \Sigma^{-1})$$
 \subsubsection{Distribución \texorpdfstring{$T^{2}$}) de Hotelling}
 \begin{itemize}
 \item DEFINICIÓN: Sea $X$ un vector aleatorio $p$-dimensional con distribución $N_{p}(\mu, \Sigma) \quad (\Sigma > 0)$. Sea $B$ una matriz aleatoria $(p \times p)$-dimensional con distribución $W_{p}(n, \Sigma), n \geq p$. Supongamos, además, que $X$ y $B$ son independientes. Entonces, se define la distribución $T^{2}$ de Hotelling no centrada, con $p$ y $n$ grados de libertad y parámetro de no centralidad $\delta = \mu'\Sigma\mu$, como la distribución de la variable aleatoria (unidimensional) dada por la forma cuadrática
-$$T^{2} = nX'BP{-1}X$$
+$$T^{2} = nX'B^{-1}X$$
 
 \item La distribución anterior es conocida, y se relaciona con la distribución $F$ de Snedecor no centrada del siguiente modo: \\
 RESULTADO: Bajo las condiciones de la definición anterior, se tiene que
