@@ -111,7 +111,7 @@ $$f(\Sigma) = 2[\ln(L(\mu, \Sigma)) + \frac{pN}{2}\ln(2\pi)] = -N\ln(|\Sigma|) -
 y aplicamos el lema de Watson con $G = \Sigma$ y $D = \sum_{\alpha=1}^{N}(X_{\alpha}-\mu)(X_{\alpha}-\mu)'$, ambas matrices simétricas y definidas positivas, para obtener que $f$ alcanza el único máximo respecto a $\Sigma$ en $\Sigma = \frac{1}{N} \sum_{\alpha=1}^{N}(X_{\alpha}-\mu)(X_{\alpha}-\mu)'$. Es claro que $f$ y $\ln(L(\mu, \Sigma))$ alcanzan el máximo para $\Sigma$ en el mismo punto, de donde deducimos entonces que $\hat{\Sigma} = \frac{1}{N} \sum_{\alpha=1}^{N} (X_{\alpha}-\mu)(X_{\alpha}-\mu)'$ es el estimador máximo versímil de $\Sigma$.
 
 Comprobamos que es insesgado:
-$$E[\hat{\Sigma}] = E[\frac{1}{N} \sum_{\alpha=1}^{N} (X_{\alpha}-\mu)(X_{\alpha}-\mu)'] = \frac{1}{N} \sum_{\alpha=1}^{N} E[(X_{\alpha}-\mu)(X_{\alpha}-\mu)'] = \frac{1}{N} \sum_{\alpha=1}{N} \Sigma = \Sigma$$
+$$E[\hat{\Sigma}] = E[\frac{1}{N} \sum_{\alpha=1}^{N} (X_{\alpha}-\mu)(X_{\alpha}-\mu)'] = \frac{1}{N} \sum_{\alpha=1}^{N} E[(X_{\alpha}-\mu)(X_{\alpha}-\mu)'] = \frac{1}{N} \sum_{\alpha=1}^{N} \Sigma = \Sigma$$
 luego $\hat{\Sigma}$ es un estimador insesgado.
 
 \newpage
