@@ -1,0 +1,510 @@
+---
+title: "Estadística Multivariante: Práctica Final"
+author: "Pedro Ramos Suárez"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    number_sections: no
+    toc_float:
+      collapsed: yes
+      smooth_scroll: yes
+  word_document:
+    toc: yes
+    toc_depth: '3'
+  pdf_document: default
+---
+<style>
+.math {
+  font-size: 8.25pt;options(encoding = 'UTF-8')
+}
+</style>
+
+<div style="text-align: justify">
+---
+
+Instalación de paquetes necesarios.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+#install.packages("foreign")
+#install.packages("moments")
+#install.packages("performance")
+#install.packages("psych")
+#install.packages("ggplot2")
+#install.packages("factoextra")
+#install.packages("polycor")
+#install.packages("ggcorrplot")
+#install.packages("corrplot")
+#install.packages("stats")
+#install.packages("MVN")
+#install.packages("tidyverse")
+#install.packages("cluster")
+#install.packages("gridExtra")
+```
+
+# 0. *Descripción de la base de datos*
+Los datos estan constituidos por 13 empresas se ha clasificado según las puntuaciones obtenidas en 8 indicadores económicos en el archivo *DB_2.sav*:
+
+- X1: Indicador de volumen de facturación de la empresa.
+- X2: Indicador del nivel de nueva contratación.
+- X3: Indicador del total de clientes
+- X4: Indicador de beneficios de la empresa.
+- X5: Indicador de nivel de retribución salarial de los empleados.
+- X6: Indicador de nivel de organización empresarial dentro de la empresa.
+- X7: Indicador de nivel de relaciones con otras empresas.
+- X8: Indicador de nivel de equipamiento (ordenadores, maquinaria, etc.).
+
+# 1. **Analisis exploratorio univariante**
+## Recodificaciones o agrupaciones de datos
+El archivo de datos tiene extensión *.sav* que indica que se ha creado con el software SPSS. Para la carga del fichero utilizaremos la función *read.spss* dentro del paquete *foreign*.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library(foreign)
+datos<-read.spss("DB_2.sav", to.data.frame=TRUE, reencode="utf-8")
+```
+
+Visualicemos los datos. Debido a que la base de datos es relativamente pequeña, podemos visualizar todos los datos.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+print(datos)
+```
+Según la descripción de los datos, hay 13 empresas, pero tenemos 14 filas, lo cuál nos hace sospechar que hay una errónea.
+
+Como todas las variables son numéricas, no es necesario recodificar los datos. Además, como el número de valores es pequeño, tampoco tenemos que reagruparlos.
+
+Finalmente, veamos una descripción de los datos.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+summary(datos)
+```
+
+## *Identificación y tratamiento de valores perdidos (NA)*
+Aunque en la tabla anterior podemos visualizar donde se encuentran los datos perdidos, vamos a calcular la media de datos perdidos por cada columna.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+colMeans(is.na(datos))
+```
+
+Además, viendo el resumen de los datos, podemos ver que la media de *x1* es mucho mas alta que los cuartiles. Esto se debe, a como podemos ver en la tabla, que su valor en la última fila (la misma que contiene los datos pérdidos) es un valor muy alto.
+
+Debido a esto y a que, como hemos comentado, tenemos una fila de más de las que nos indica la descripción de la base de datos, podemos suponer que esta fila extra es la última y, por lo tanto, podemos eliminarla.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+datos <- datos[-14,]
+```
+
+Con esto, no tnemos ningún valor perdido, por lo que no es necesario analizar el patrón.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+colMeans(is.na(datos))
+```
+
+## *Análisis descriptivo numérico clásico*
+El resumen de los datos obtenidos es el siguiente.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+summary(datos)
+```
+
+Vamos a visualizar en un boxplot la distribución de las variables.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+boxplot(datos, main="Análisis de los datos", xlab="Indicadores económicos", ylab="Valor", col=rainbow(ncol(datos)))
+```
+Debido a que el número de datos era pequeño, podemos visualizarlos simultáneamente.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+boxplot(datos, col="white", main="Análisis de los datos", xlab="Indicadores económicos", ylab="Valor")
+stripchart(datos, method="jitter", pch=19, vertical=TRUE, add=TRUE, col=rainbow(ncol(datos)), main="Análisis de los datos", xlab="Indicadores económicos", ylab="Valor")
+```
+
+Por último, obtenemos el coeficiente de simetría.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library(moments)
+skewness(datos)
+```
+
+## *Valores extremos (outliers)*
+
+Aunque en el plotbox parece que hay valores pérdidos, utilizamos la siguiente función para analizarlos.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library("performance")
+check_outliers(datos, method="mahalanobis")
+```
+De donde obtenemos que no hay outliers, por lo que no es necesario tratarlos. Sin embargo, si decidiesemos elimarlos según el boxplot, podríamos utilizar la función vista en clase.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+outlier<-function(data,na.rm=T){
+  H<-1.5*IQR(data)
+  data[data<quantile(data,0.25,na.rm = T)-H]<-NA
+  data[data>quantile(data,0.75, na.rm = T)+H]<-NA
+  data[is.na(data)]<-mean(data, na.rm = T)
+  H<-1.5*IQR(data)
+  
+  if (TRUE %in% (data<quantile(data,0.25,na.rm = T)-H) | TRUE %in% (data>quantile(data,0.75,na.rm = T)+H))
+    outlier(data)
+  else
+    return(data)
+}
+```
+
+## *Supuesto de normalidad*
+
+Finalmente, comprobamos si los datos están normalizados (media 0 y varianza 1). Para ello, calculamos la media y la varianza de los datos-
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+round(colMeans(datos), 5)
+round(apply(datos, 2, sd), 5)
+```
+
+Podemos ver que no lo están, por lo que vamos a normalizarlos.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+datos_normalizados <- scale(datos)
+datos_normalizados <- as.data.frame(datos_normalizados)
+```
+
+Visualicemos los nuevos datos normalizados.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+print(datos_normalizados)
+```
+
+Comprobemos que ahora si están normalizados.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+round(colMeans(datos_normalizados), 5)
+round(apply(datos_normalizados, 2, sd), 5)
+```
+
+También podemos usar el gráfico qqplot para estudiar la normalidad. Primero veamos los datos sin normalizar.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+invisible(apply(datos, 2, function(x) {
+  qqnorm(x, main=NULL)
+  abline(a=0, b=1, col="red")
+}))
+```
+
+Y los datos normalizados.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+invisible(apply(datos_normalizados, 2, function(x) {
+  qqnorm(x, main=NULL)
+  abline(a=0, b=1, col="red")
+}))
+```
+
+También podemos usar el test Shapiro–Wilk, que plantea la hipótesis nula que la muestra proviene de una distribución normal. 
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+apply(datos, 2, shapiro.test)
+```
+
+En todos los casos, menos *x6* y *x8*, el p-valor es superior a 0.05.
+
+# 2.*Análisis exploratorio multivariante.*
+
+## *Correlación entre variables (test de Bartlett)*
+Comprobamos si existe correlación entre las variables usando el test de Bartlett.
+
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library("psych")
+cortest.bartlett(cor(datos_normalizados), nrow(datos_normalizados))
+```
+
+Como el valor es muy pequeño, tenemos que las variables están correladas, por lo que podemos realizar un Análisis de Componentes Principales (ACP).
+
+## *Análisis de Componentes Principales (ACP)*
+Comenzamos viendo la correlación entre cada variable.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+round(cor(datos_normalizados), 5)
+```
+
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+# Realización del ACP
+PCA<-prcomp(datos_normalizados, scale=T, center=T)
+
+# El campo "rotation" del objeto "PCA" es una matriz cuyas columnas
+# son los coeficientes de las componentes principales, es decir, el
+# peso de cada variable en la correspondiente componente principal
+PCA$rotation
+
+# En el campo "sdev" del objeto "PCA" y con la función summary aplicada
+# al objeto, obtenemos información relevante: desviaciones típicas de 
+# cada componente principal, proporción de varianza explicada y acumulada.
+PCA$sdev
+summary(PCA)
+```
+
+El siguiente gráfico ilustra el comportamiento de la varianza explicada por cada componente principal.
+
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library("ggplot2")
+
+# Proporción de varianza explicada
+varianza_explicada <- PCA$sdev^2 / sum(PCA$sdev^2)
+ggplot(data = data.frame(varianza_explicada, pc = 1:8),
+       aes(x = pc, y = varianza_explicada, fill=varianza_explicada )) +
+  geom_col(width = 0.3) +
+  scale_y_continuous(limits = c(0,0.6)) + theme_bw() +
+  labs(x = "Componente principal", y= " Proporción de varianza explicada")
+```
+
+El siguiente gráfico ilustra el comportamiento de la varianza explicada acumulada.
+
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+# Proporción de varianza explicada acumulada
+varianza_acum<-cumsum(varianza_explicada)
+ggplot( data = data.frame(varianza_acum, pc = 1:8),
+        aes(x = pc, y = varianza_acum ,fill=varianza_acum )) +
+  geom_col(width = 0.5) +
+  scale_y_continuous(limits = c(0,1)) +
+  theme_bw() +
+  labs(x = "Componente principal",
+       y = "Proporción varianza explicada acumulada")
+```
+
+### *Reducción de la dimensionalidad*
+
+Vamos a calcular el número de componentes principales óptimo. Para ello, calculamos la varianza y el promedio de la media.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+# Varianza
+PCA$sdev^2
+
+# Promedio de la varianza
+mean(PCA$sdev^2)
+```
+
+Nos quedamos con el número de componentes cuya propocrión de varianza explicada supere la media, que es 1, por lo que nos quedamos con 3 componentes.
+
+También podemos usar el método del codo.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+ggplot( data = data.frame(varianza_acum, pc=1:8),
+        aes(x = pc, y = varianza_acum)) +
+  geom_line(size=1, colour="blue") +
+  geom_point(size=2, colour="black") +
+  scale_y_continuous(limits = c(0,1)) +
+  theme_bw() +
+  labs(x = "Componente principal",
+       y = "Proporción varianza explicada acumulada")
+```
+
+
+### *Contribuciones a las dimensiones principales*
+
+Los siguientes gráficos muestran la **comparativa entre distintas componentes principales** mediante una proyección al plano sobre cada dos componentes. En esta representación se aprecia cuáles de las variables originales tienen mayor o menor peso en cada una de las componentes enfrentadas.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library("factoextra")
+
+# Comparativa entre la primera y segunda componente principal
+fviz_pca_var(PCA, axes=c(1,2), alpha.ind="contrib",
+             repel=TRUE, col.var="cos2", gradient.cols=c("aliceblue","black"),
+             legend.title="Distancia")+theme_bw()
+
+# Comparativa entre la primera y tercera componente principal 
+fviz_pca_var(PCA, axes=c(1,3), alpha.ind="contrib",
+             repel=TRUE, col.var="cos2", gradient.cols=c("aliceblue","black"),
+             legend.title="Distancia")+theme_bw()
+
+# Comparativa entre la segunda y tercera componente principal
+fviz_pca_var(PCA, axes=c(2,3), alpha.ind="contrib",
+             repel=TRUE, col.var="cos2", gradient.cols=c("aliceblue","black"),
+             legend.title="Distancia")+theme_bw()
+
+``` 
+
+Es posible también **representar las observaciones** de los objetos junto con las componentes principales mediante la orden *contrib* de la función *fviz_pca_ind* anterior, así como identificar con colores aquellas observaciones que mayor varianza explican.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+# Observaciones en la primera y segunda componente principal
+fviz_pca_ind(PCA, axes=c(1,2), col.ind="contrib",
+             gradient.cols=c("aliceblue","black"),
+             repel=TRUE, legend.title="Contrib.var")+theme_bw()
+
+# Observaciones en la primera y tercera componente principal
+fviz_pca_ind(PCA, axes=c(1,3), col.ind="contrib",
+             gradient.cols=c("aliceblue","black"),
+             repel=TRUE, legend.title="Contrib.var")+theme_bw()
+
+# Observaciones en la segunda y tercera componente principal
+fviz_pca_ind(PCA, axes=c(2,3), col.ind="contrib",
+             gradient.cols=c("aliceblue","black"),
+             repel=TRUE, legend.title="Contrib.var")+theme_bw()
+
+``` 
+
+Finalmente se puede obtener una **representación conjunta de variables y observaciones** que relaciona visualmente las posibles relaciones entre las observaciones, las contribuciones de los individuos a las varianzas  y el peso de las variables en cada componente principal.
+
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+# Variables y observaciones en las 1ª  y 2ª componente principal
+fviz_pca(PCA, axes=c(1,2),
+         alpha.ind="contrib", col.var="cos2", col.ind="seagreen",
+         gradient.cols=c("aliceblue","black"),
+         repel=TRUE,
+         legend.title="Distancia")+theme_bw()
+
+# Variables y observaciones en las 1ª  y 3ª componente principal
+fviz_pca(PCA, axes=c(1,3),
+         alpha.ind="contrib", col.var="cos2", col.ind="seagreen",
+         gradient.cols=c("aliceblue","black"),
+         repel=TRUE,
+         legend.title="Distancia")+theme_bw()
+
+# Variables y observaciones en las 2ª  y 3ª componente principal
+fviz_pca(PCA, axes=c(2,3),
+         alpha.ind="contrib", col.var="cos2", col.ind="seagreen",
+         gradient.cols=c("aliceblue","black"),
+         repel=TRUE,
+         legend.title="Distancia")+theme_bw()
+
+``` 
+
+## *Analisis factorial (AF)*
+
+Podemos tener una representación visual de las correlaciones. Calculamos la matriz de correlaciones policárica.
+
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library("polycor")
+library("ggcorrplot")
+
+poly_cor <- hetcor(datos_normalizados)$correlations
+ggcorrplot(poly_cor, type="lower",hc.order=T)
+```
+
+Podemos utilizar otra representación visual:
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library("corrplot") 
+corrplot(cor(datos_normalizados), order = "hclust", tl.col='black', tl.cex=1)
+```
+
+Vamos a comparar las salidas con el método del factor principal y con el de máxima verosimilitud.
+
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+# Modelo máxima verosimilitud
+modelo1<-fa(poly_cor,
+            nfactors = 3,
+            rotate = "none",
+            fm="mle")
+
+# Modelo mínimo residuo
+modelo2<-fa(poly_cor,
+            nfactors = 3,
+            rotate = "none",
+            fm="minres")
+```
+
+Comparando las comunalidades:
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+sort(modelo1$communality,decreasing = T)->c1
+sort(modelo2$communality,decreasing = T)->c2
+head(cbind(c1,c2))
+```
+
+Comparación de las unicidades, es decir la proporción de varianza que no ha sido explicada por el factor (1-comunalidad):
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+sort(modelo1$uniquenesses,decreasing = T)->u1
+sort(modelo2$uniquenesses,decreasing = T)->u2
+head(cbind(u1,u2))
+```
+
+Determinemos ahora el número óptimo de factores.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+scree(poly_cor)
+fa.parallel(poly_cor, n.obs=200, fa="fa", fm="minres")
+```
+
+Se deduce que el número óptimo de Factores es 3.
+
+Estimamos el modelo factorial con 3 factores implementando una rotación tipo varimax para buscar una interpretación más simple.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+modelo_varimax <- fa(poly_cor, nfactors=3, rotate="varimax", fa="mle")
+```
+
+Mostramos la matriz de pesos factorial rotada:
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+print(modelo_varimax$loadings,cut=0) 
+```
+
+Visualmente podríamos hacer el esfuerzo de ver con qué variables correlacionan cada uno de los factores, pero es muy tedioso de modo que utilizamos la siguiente representación:
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+fa.diagram(modelo_varimax)
+```
+
+En este diagrama, entre otras cosas se ve que el primer factor esta asociado con los items *x6*, *x7* y *x8*, el segundo factor esta asociado con los items *x1*, *x2* y *x3*, y el tercer factor está asociado con los items *x4* y *x5*.
+
+Otra forma de hacerlo, con test de hipótesis al final que contrasta si el numero de factores es suficiente:
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library(stats)
+factanal(datos_normalizados, factors=3, rotation="none")
+```
+
+## *Análisis de la normalidad multivariante*
+
+El paquete MVN contiene funciones que permiten realizar los tres test que se utilizan habitualmente para contrastar la normalidad multivariante. Esta normalidad multivariante puede verse afectada por la presencia de outliers. En este paquete también encontramos funciones para el análisis de outliers.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library(MVN)
+hz_test <- mvn(data=datos_normalizados, mvnTest="hz", multivariateOutlierMethod="quan")
+```
+
+Se detectan 2 outliers en las observaciones 3 y 7.
+
+Relizamos el test de Royston.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+royston_test <- mvn(data = datos[,-3], mvnTest = "royston", multivariatePlot = "qq")
+royston_test$multivariateNormality
+```
+
+Realizamos el test de Henze-Zirkler.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+hz_test <- mvn(data=datos_normalizados, mvnTest="hz")
+hz_test$multivariateNormality
+```
+
+Ambos tests nos dicen que siguen una normal multivariante.
+
+
+## *Clasificación*
+
+Comenzamos visualizando la matriz de distancias, que muestra en rojo aquellos estados que presentan grandes disimilirades (distancias), frente a aquellos que parecen más cercanos en azul.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+library(cluster)
+library(tidyverse)
+distancias <- get_dist(datos_normalizados)
+fviz_dist(distancias, gradient=list(low ="#00AFBB", mid = "white", high = "#FC4E07"))
+```
+
+Aplicamos clustering con K-Medias, probando con distintos valores de K (distinto número de clusters):
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+k2 <- kmeans(datos_normalizados, centers=2, nstart=25)
+k3 <- kmeans(datos_normalizados, centers=3, nstart=25)
+k4 <- kmeans(datos_normalizados, centers=4, nstart=25)
+k5 <- kmeans(datos_normalizados, centers=5, nstart=25)
+
+# Plots to compare
+p1 <- fviz_cluster(k2, geom="point", data=datos_normalizados) + ggtitle("k = 2")
+p2 <- fviz_cluster(k3, geom="point", data=datos_normalizados) + ggtitle("k = 3")
+p3 <- fviz_cluster(k4, geom="point", data=datos_normalizados) + ggtitle("k = 4")
+p4 <- fviz_cluster(k5, geom="point", data=datos_normalizados) + ggtitle("k = 5")
+
+library(gridExtra)
+grid.arrange(p1, p2, p3, p4, nrow=2)
+```
+
+Determinamos el número óptimo de clusters:
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+# Método de Elbow
+fviz_nbclust(datos_normalizados, kmeans, method="wss")
+
+# Método de Silhouette
+fviz_nbclust(datos_normalizados, kmeans, method="silhouette")
+
+# Método estadístico de brecha (GAP)
+gap_stat <- clusGap(datos_normalizados, FUN=kmeans, nstart=25, K.max=10, B=50)
+fviz_gap_stat(gap_stat)
+```
+
+Obtenemos incosistencias en la búsqueda del número óptimo de clusters, seguramente debido al bajo número de datos.
+
+Podemos quedarnos con 4 tal y como nos indica el *Test de Silhouette*.
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+print(k4)
+```
+
+```{r echo=TRUE, include=TRUE, warning=FALSE}
+plot(silhouette(k4$cluster, dist(datos_normalizados)))
+```
+
+
+
+
+
+
+
+
+
+
+
+
